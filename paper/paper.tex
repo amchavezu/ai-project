@@ -1,164 +1,793 @@
-% Final paper -- Artificial Intelligence and Economic Modeling (UP 2026-II)
-%
-% Body: 8 to 20 pages in THIS format (11pt, 1-inch margins, single column).
-% Do not change the geometry or the font size to fit the limit.
-% References and appendices do not count towards the limit.
 \documentclass[11pt]{article}
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[margin=1in]{geometry}
-\usepackage{amsmath,amssymb,amsthm}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{booktabs}
-\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{geometry}
+\usepackage{enumitem}
 \usepackage{xcolor}
-\usepackage[round]{natbib}
-\usepackage[colorlinks=true,allcolors=blue!50!black]{hyperref}
+\usepackage{hyperref}
+\geometry{margin=1in}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black}
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{lemma}{Lemma}
 \newtheorem{corollary}{Corollary}
-\theoremstyle{definition}
 \newtheorem{assumption}{Assumption}
+\theoremstyle{definition}
 \newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
 
-% Every \replace box is an instruction to you, not text for the reader.
-% A submitted paper has none left: delete the macro to be sure.
-\newcommand{\replace}[1]{\par\smallskip\noindent
-  \fcolorbox{orange!80!black}{yellow!12}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
-  \small\textbf{Replace.} #1}}\par\smallskip}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\kb}{k_B}
+\newcommand{\km}{k_M}
+\newcommand{\Rb}{R_B}
+\newcommand{\Rm}{R_M}
 
-\title{Your Title: State the Result, Not the Topic}
-\author{Your Name\thanks{Universidad del Pac\'ifico. Repository:
-  \url{https://github.com/your-user/ai-project}. Track A (extension of a course
-  paper) or Track B (thesis model): say which.}}
-\date{\today}
+\title{Credit Quantity, Credit Prices, and Future Output:\\
+A Model of Heterogeneous Financing Access}
+\author{Alvaro Marcelo Chavez Unyen\\
+\small Artificial Intelligence and Economic Modeling, Universidad del Pacifico}
+\date{October 2026 -- research draft}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-\noindent\replace{One paragraph, at most 150 words: the question, the model in
-one sentence, the main result \emph{with its condition}, and what the Lean
-formalization does and does not certify.}
+Preliminary evidence for Peru suggests that credit volume may contain more
+forecasting information for non-tradable activity at relatively short
+horizons, whereas a credit-price spread may become more informative for
+tradable activity over a longer horizon. This paper develops a deliberately
+small model that can rationalize that qualitative asymmetry. Firms invest at
+date zero and produce at
+date one. Bank credit is relatively cheap but capped; some firms can finance
+investment beyond the bank ceiling in an external market at a wedge. The
+firm's optimum has a quantity regime, in which the bank ceiling is binding,
+and a price regime, in which external finance funds the marginal unit. In the
+quantity regime, a larger credit ceiling raises investment and future output,
+whereas a small spread change has no local real effect. In the price regime,
+a larger bank ceiling changes financing composition but not investment, while
+a spread increase lowers investment and output. Aggregating firms shows that
+a sector with more bank-dependent firms is more quantity-sensitive and less
+price-sensitive. The model provides a theoretical bridge from financing
+heterogeneity to the sector-specific patterns being studied in the thesis. A
+quadratic specialization yields closed-form first-order conditions. A direct
+Lean 4 prototype checks the core algebra; the course-required
+AppliedModelingLib formalization remains part of the final-paper workflow.
 \end{abstract}
 
+\noindent\textbf{Keywords:} credit constraints; external finance; sectoral
+heterogeneity; investment; forecasting.\\
+\textbf{JEL codes:} E22, E32, E44, G21, G32.
+
 \section{Introduction}
-\replace{The question, why it matters, and your answer. State the main result
-in words in the first page. Say which paper you extend and which assumption you
-relax (Track A), or which thesis model you formulate (Track B). End with what
-is new relative to the closest paper. The toy model below only shows the
-mechanics of this template; none of it is yours to keep.}
 
-\section{Related literature}
-\replace{Two or three paragraphs. Position the paper against the closest
-work, cite the exact result you depart from (proposition and page), and check
-the editorial status of every preprint you cite.}
+Credit conditions can affect firms through two conceptually different
+margins. A quantity restriction limits how much a firm can invest even when a
+project has positive marginal value. A price change alters the marginal cost
+of funds and therefore the desired scale of investment. Treating these margins
+as interchangeable can hide economically meaningful heterogeneity.
 
-The task-based view of automation follows \citet{acemoglu2018race}; the
-decision-theoretic view of AI assistance follows \citet{agrawal2025bicycles}.
+Fernandez and Chavez (2026) compare autoregressive benchmarks with models
+augmented by credit indicators for Peruvian tradable and non-tradable sectors.
+Their work in progress points to a qualitative asymmetry: credit volume appears
+more informative for non-tradable activity at relatively short horizons,
+whereas a credit-price spread appears more informative for tradable activity
+over a longer horizon. These results remain preliminary and should not be read
+as a settled ranking of exact forecast horizons. Moreover, predictive content
+alone does not supply an optimizing model that explains why the relevant
+credit margin might differ across sectors.
 
-\section{Model}\label{sec:model}
-\replace{Primitives, timing, information, and the agent's problem written
-formally: what is maximised, over which variable, subject to which
-constraints. Number every assumption; a result may only use numbered
-assumptions.}
+This paper supplies that missing mechanism. Firms have internal funds and a
+bank credit line. Bank credit is cheaper than external market finance, but the
+line is capped. Firms differ in whether, and at what wedge, they can use an
+alternative source after exhausting the bank line. Current financing choices
+fund capital that produces next-period output, so the model generates a direct
+lead-lag relation from credit conditions to real activity.
 
-A worker chooses effort $e \ge 0$. Output is $a e$, where $a$ is productivity
-with AI assistance, and effort costs $\tfrac{c}{2}e^{2}$.
+The main result is a regime separation. When the firm's desired capital stock
+lies at the bank ceiling, quantity is locally decisive: relaxing the ceiling
+raises capital one for one, while a small funding-price movement leaves capital
+unchanged. When the firm uses market finance at the margin, price is decisive:
+the common spread changes desired capital, while a larger bank line merely
+replaces market finance with bank finance. Sectoral differences follow from
+composition. If non-tradables contain more bank-dependent firms than tradables,
+non-tradable output is more sensitive to credit quantity and tradable output is
+more sensitive to spreads.
 
-\begin{assumption}\label{ass:params}
-$a > 0$ and $c > 0$.
+The contribution is intentionally narrow. It is not a full financial
+accelerator or a structural interpretation of the thesis's forecast tests.
+Instead, it isolates the minimum mechanism needed to convert the empirical
+price-versus-quantity asymmetry into a proposition with explicit conditions.
+
+\section{Related literature and positioning}
+
+The first strand studies equilibrium credit rationing. Stiglitz and Weiss
+(1981) show that asymmetric information can prevent the interest rate from
+clearing the loan market, so observationally similar borrowers may face a
+quantity restriction. Petersen and Rajan (1994) find that lending relationships
+benefit small firms primarily through greater availability of funds rather
+than large price reductions. The quantity regime below takes a credit ceiling
+as a reduced-form representation of those frictions; it does not reproduce
+their screening or relationship formation models.
+
+The second strand studies balance-sheet and collateral amplification.
+Kiyotaki and Moore (1997) make durable assets both productive inputs and
+collateral, generating persistent responses through endogenous credit limits.
+Bernanke, Gertler, and Gilchrist (1999) embed an external-finance premium and
+heterogeneous capital-market access in a dynamic macroeconomic framework.
+Holmstrom and Tirole (1997) link firm net worth and intermediary capital to the
+supply of loanable funds. The present paper treats net worth and the credit
+ceiling as predetermined in its baseline. Section~\ref{sec:extensions} shows
+how an endogenous ceiling can recover an accelerator without obscuring the
+main regime result.
+
+The third strand establishes firm heterogeneity. Gertler and Gilchrist (1994)
+document that small firms contract more sharply after monetary tightening,
+while Petersen and Rajan (1994) emphasize their dependence on institutional
+lenders. These findings motivate a higher constrained share among
+non-tradable firms. This is a composition assumption to be disciplined by
+data, not a theorem that every small firm is non-tradable or every tradable
+firm has market access.
+
+The fourth strand concerns leading financial indicators. Gilchrist and
+Zakrajsek (2012) construct a credit-spread measure with predictive power for
+future activity, and Faust et al. (2013) find that credit spreads improve
+real-time activity forecasts. Stock and Watson (2003) caution that predictive
+performance can be unstable across countries and periods. For Peru, Lahura
+(2011) finds a stable long-run credit-output relationship, while Butron and
+Pozo (2025) document a positive relationship using sectoral and regional
+heterogeneity.
+
+The closest paper for the sectoral motivation is Muller and Verner (2024).
+They show that credit allocation toward non-tradable rather than tradable
+sectors predicts different macroeconomic outcomes, discuss smaller and more
+constrained non-tradable firms, and report robustness involving bond issuance.
+That evidence means neither the tradable/non-tradable split nor financing
+heterogeneity can be claimed as novel here. Holmstrom and Tirole's (1994)
+working-paper version and their published 1997 model also already contain
+capital thresholds associated with monitored and direct finance. Gilchrist,
+Sim, and Zakrajsek (2014) subsequently model the joint dynamics of investment
+and credit spreads.
+
+The narrower course-paper contribution is to combine a capped, relatively
+cheap bank tranche with a marginal outside-finance tranche and derive a
+specific comparative-static ranking: a sector with more firms at the cap is
+more sensitive to observed credit quantity, while a sector with more firms
+financing the marginal unit externally is more sensitive to a common funding
+price. The reviewed papers do not state that quantity-versus-price ranking in
+this form. This is a provisional positioning claim, not a claim that the
+broader ingredients or empirical sector pattern are new.
+
+\section{Environment}
+
+There are two dates, $t$ and $t+1$, and sectors $s\in\{N,T\}$, interpreted as
+non-tradable and tradable. A firm enters date $t$ with internal funds $n>0$.
+It chooses capital $k$, bank borrowing $b$, and external market finance $m$.
+Capital becomes productive at $t+1$, making date-$t$ credit conditions leading
+indicators of output.
+
+\subsection{Technology}
+
+The general model uses a differentiable production function $F:\R_+\to\R_+$.
+
+\begin{assumption}[Technology]\label{ass:technology}
+$F(0)=0$, $F'(k)>0$, and $F''(k)<0$ on the economically relevant domain.
+Future revenue is $F(k)$ and its date-$t$ value is $\beta F(k)$, where
+$\beta\in(0,1]$.
 \end{assumption}
 
-The worker solves
-\begin{equation}\label{eq:problem}
-  \max_{e \ge 0}\; a e - \frac{c}{2}\, e^{2}.
+Closed forms and the Lean verification use
+\begin{equation}\label{eq:quadratic}
+F(k)=ak-\frac{c}{2}k^2,\qquad a>0,\quad c>0,
+\end{equation}
+restricted to $k<a/c$, where output is increasing. This quadratic form is a
+local second-order representation of any smooth concave technology and keeps
+all regime boundaries transparent.
+
+\subsection{Financing}
+
+The firm's sources satisfy
+\begin{equation}\label{eq:financeidentity}
+k=n+b+m,\qquad 0\le b\le \bar b,\qquad m\ge 0.
+\end{equation}
+Bank finance has gross marginal cost
+\begin{equation}
+\Rb(z)=R_f+z,
+\end{equation}
+where $z$ is a common credit-spread factor. External market finance costs
+\begin{equation}
+\Rm(z,\tau)=\Rb(z)+\tau,\qquad \tau\ge 0.
+\end{equation}
+The access wedge $\tau$ includes issuance costs, information costs, and other
+barriers to non-bank funding. A bank-only firm is the limiting case in which
+$m=0$ is imposed. A market-access firm can choose $m\ge0$.
+
+\begin{assumption}[Funding order]\label{ass:fundingorder}
+$0<\Rb\le\Rm<\beta a$. The firm uses internal funds first, bank credit second,
+and market finance last. The strict upper bound guarantees a positive target
+capital stock in the quadratic specialization.
+\end{assumption}
+
+The assumption that $z$ shifts both funding costs is important. Empirically,
+the observed corporate loan spread is interpreted as a proxy for a broader
+external-finance condition, not as an isolated price that leaves bond and
+foreign-credit costs fixed. Section~\ref{sec:extensions} discusses this
+identification boundary.
+
+\section{The firm problem}
+
+The firm maximizes discounted profits:
+\begin{equation}\label{eq:firmproblem}
+\max_{k,b,m}\quad \beta F(k)-\Rb b-\Rm m
+\quad\text{s.t.}\quad \eqref{eq:financeidentity}.
+\end{equation}
+Let the capital stock attainable after exhausting the bank line be
+\begin{equation}
+\bar k\equiv n+\bar b.
+\end{equation}
+Because bank finance is weakly cheaper, the reduced problem is continuous and
+piecewise:
+\begin{equation}\label{eq:piecewiseprofit}
+\Pi(k)=
+\begin{cases}
+\beta F(k)-\Rb(k-n), & n\le k\le\bar k,\\[3pt]
+\beta F(k)-\Rb\bar b-\Rm(k-\bar k), & k>\bar k.
+\end{cases}
+\end{equation}
+The left and right first-order conditions are
+\begin{align}
+\beta F'(k)&=\Rb &&\text{(bank-finance margin)},\label{eq:focbank}\\
+\beta F'(k)&=\Rm &&\text{(market-finance margin)}.\label{eq:focmarket}
+\end{align}
+Let $\kb$ and $\km$ solve \eqref{eq:focbank} and
+\eqref{eq:focmarket}. Strict concavity makes both targets unique. Since
+$\Rm\ge\Rb$, declining marginal product implies $\km\le\kb$.
+
+Under \eqref{eq:quadratic},
+\begin{equation}\label{eq:targets}
+\kb=\frac{\beta a-\Rb}{\beta c},
+\qquad
+\km=\frac{\beta a-\Rm}{\beta c},
+\qquad \km\le\kb.
 \end{equation}
 
-\section{Results}\label{sec:results}
-\replace{Every proposition with \emph{all} its conditions and a complete
-proof. A proof may be moved to Appendix~\ref{app:proofs}, but the statement and
-the idea of the proof stay here.}
+\begin{lemma}[Optimal capital with market access]\label{lem:policy}
+Under Assumptions~\ref{ass:technology}--\ref{ass:fundingorder}, the unique
+optimal capital stock is
+\begin{equation}\label{eq:policy}
+k^*=\begin{cases}
+n, & \kb\le n,\\
+\kb, & n<\kb<\bar k,\\
+\bar k, & \km\le\bar k\le\kb,\\
+\km, & \bar k<\km.
+\end{cases}
+\end{equation}
+For a bank-only firm, the last segment is infeasible and
+$k^*=\min\{\max\{n,\kb\},\bar k\}$.
+\end{lemma}
 
-\begin{proposition}\label{prop:effort}
-Under Assumption~\ref{ass:params}, problem~\eqref{eq:problem} has the unique
-solution $e^{*} = a/c$, and $\partial e^{*}/\partial a = 1/c > 0$.
+\begin{proof}
+On $[n,\bar k]$, the derivative of profit is
+$\beta F'(k)-\Rb$; on $(\bar k,\infty)$ it is
+$\beta F'(k)-\Rm$. Both are strictly decreasing. If $\kb\le n$, the
+left derivative is already non-positive at $n$. If
+$n<\kb<\bar k$, it crosses zero at $\kb$ before the kink. If
+$\km\le\bar k\le\kb$, the derivative is weakly positive immediately to the
+left of the kink and weakly negative immediately to its right, so the kink is
+optimal. Finally, if $\bar k<\km$, profit continues increasing after the bank
+line is exhausted and reaches its maximum at $\km$. Strict concavity gives
+uniqueness, with adjacent formulas agreeing at equality boundaries.
+\end{proof}
+
+\section{Quantity and price transmission}
+
+The two empirically relevant cases are the kink and market-finance regimes.
+
+\begin{proposition}[Quantity versus price]\label{prop:regimes}
+Suppose all inequalities defining a regime are strict, so sufficiently small
+parameter changes do not cause a regime switch.
+
+\begin{enumerate}[label=(\roman*)]
+\item If $\km<\bar k<\kb$, the bank ceiling binds and
+\begin{equation}
+k^*=\bar k=n+\bar b,\qquad
+\frac{\partial k^*}{\partial\bar b}=1,\qquad
+\frac{\partial k^*}{\partial z}=0.
+\end{equation}
+Hence
+\begin{equation}\label{eq:quantityeffects}
+\frac{\partial y_{t+1}}{\partial\bar b}=F'(\bar k)>0,
+\qquad
+\frac{\partial y_{t+1}}{\partial z}=0.
+\end{equation}
+
+\item If $\bar k<\km$, the firm uses market finance at the margin and
+\begin{equation}
+k^*=\km(z,\tau),\qquad
+\frac{\partial k^*}{\partial\bar b}=0,\qquad
+\frac{\partial k^*}{\partial z}=\frac{1}{\beta F''(\km)}<0.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:priceeffects-general}
+\frac{\partial y_{t+1}}{\partial\bar b}=0,
+\qquad
+\frac{\partial y_{t+1}}{\partial z}
+=\frac{F'(\km)}{\beta F''(\km)}<0.
+\end{equation}
+A larger bank line replaces market finance one for one until $m=0$; it raises
+profits by reducing funding costs but does not change capital or output.
+\end{enumerate}
 \end{proposition}
 
 \begin{proof}
-The objective is twice differentiable with second derivative $-c < 0$, so it is
-strictly concave and has at most one maximiser. The first-order condition
-$a - c e = 0$ gives $e = a/c$, which is positive under
-Assumption~\ref{ass:params}, so the constraint $e \ge 0$ does not bind and
-$e^{*} = a/c$. Differentiating, $\partial e^{*}/\partial a = 1/c > 0$.
+Part (i) follows from the third line of \eqref{eq:policy}. Since strict
+inequalities preserve the regime locally, $k^*=n+\bar b$ is independent of
+$z$. Differentiating $F(k^*)$ gives \eqref{eq:quantityeffects}.
+
+For part (ii), the market-margin condition is
+$\beta F'(\km)=\Rm(z,\tau)$. Implicit differentiation with respect to $z$,
+using $\partial\Rm/\partial z=1$, yields
+$\beta F''(\km)\,\partial\km/\partial z=1$. Because $F''<0$, the response is
+negative. While $m>0$, a marginal increase in $\bar b$ increases bank
+borrowing and reduces market finance by the same amount, leaving total capital
+unchanged. Applying the chain rule to output gives
+\eqref{eq:priceeffects-general}.
 \end{proof}
 
-\section{Simulations}\label{sec:sim}
-\replace{A symbolic or numerical check of every result (SymPy, Monte Carlo, or
-both), produced by the scripts in \texttt{code/}. Say what the simulation can
-and cannot show: it checks a derivation on a grid, it does not prove it.}
+For the quadratic technology, the price-regime comparative statics become
+especially transparent:
+\begin{equation}\label{eq:quadraticcs}
+\frac{\partial \km}{\partial z}=-\frac{1}{\beta c},
+\qquad
+\frac{\partial F(\km)}{\partial z}
+=-\frac{\Rm}{\beta^2c}<0.
+\end{equation}
 
-Figure~\ref{fig:check} compares the closed form of
-Proposition~\ref{prop:effort} with a grid search over $e$. The largest
-absolute gap is reported by \texttt{code/verify.py}, which fails if it exceeds
-the grid resolution.
+\begin{remark}[Local zero effects]
+The zero derivatives are regime statements, not universal claims. A sufficiently
+large price shock can move a constrained firm out of the kink, and a sufficiently
+large increase in the bank ceiling can eliminate market borrowing. The model
+therefore predicts threshold nonlinearities.
+\end{remark}
 
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=.72\linewidth]{../code/figures/effort_check.pdf}
-  \caption{Optimal effort: closed form (lines) and grid search (markers).
-  Source: \texttt{code/verify.py}.}
-  \label{fig:check}
-\end{figure}
+\section{Sectoral aggregation and empirical mapping}
 
-\section{Discussion and limitations}
-\replace{What the result depends on, which assumption does the work, and what
-you could not prove. A stated limitation is worth more than a hidden one.}
+Let $\lambda_s\in[0,1]$ be the share of sector-$s$ activity generated by firms
+in the quantity regime. For a transparent aggregation, suppose firms share
+technology and financing parameters conditional on regime. Sectoral output is
+\begin{equation}\label{eq:aggregate}
+Y_{s,t+1}=\lambda_s F(n+\bar b_s)
++(1-\lambda_s)F\bigl(\km(z_s,\tau_s)\bigr).
+\end{equation}
+
+\begin{assumption}[Sector composition]\label{ass:composition}
+The non-tradable sector contains a larger share of bank-dependent,
+quantity-constrained firms:
+\begin{equation}
+0\le\lambda_T<\lambda_N\le1.
+\end{equation}
+\end{assumption}
+
+\begin{proposition}[Sectoral sensitivity ranking]\label{prop:sector}
+Under Assumption~\ref{ass:composition} and common conditional primitives,
+\begin{align}
+\frac{\partial Y_N}{\partial\bar b}
+&>\frac{\partial Y_T}{\partial\bar b}\ge0,\label{eq:quantorder}\\
+\left|\frac{\partial Y_N}{\partial z}\right|
+&<\left|\frac{\partial Y_T}{\partial z}\right|.\label{eq:priceorder}
+\end{align}
+In the quadratic specialization,
+\begin{align}
+\frac{\partial Y_s}{\partial\bar b}
+&=\lambda_s\bigl[a-c(n+\bar b)\bigr],\label{eq:aggquantity}\\
+\left|\frac{\partial Y_s}{\partial z}\right|
+&=(1-\lambda_s)\frac{\Rm}{\beta^2c}.
+\label{eq:aggprice}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Differentiate \eqref{eq:aggregate} and apply
+Proposition~\ref{prop:regimes}. The quantity response is the positive
+within-regime marginal product multiplied by $\lambda_s$. The absolute price
+response is the positive within-regime magnitude multiplied by
+$1-\lambda_s$. Therefore $\lambda_N>\lambda_T$ establishes both strict
+rankings. Equations \eqref{eq:aggquantity}--\eqref{eq:aggprice} substitute the
+quadratic derivatives.
+\end{proof}
+
+This proposition offers a candidate interpretation for the thesis. If
+bank-dependent small firms are more prevalent in non-tradable activities,
+variation in available bank credit contains more information about their
+feasible investment and subsequent production. If tradable firms are more
+likely to access alternative sources, observed bank quantity can change
+through substitution without a corresponding change in total finance. A broad
+spread may then be more informative about their marginal funding condition.
+
+The model delivers a structural sign restriction for a forecasting equation,
+not a causal interpretation of an ADL coefficient:
+\begin{equation}\label{eq:forecastmapping}
+\Delta\log Y_{s,t+h}
+\approx \eta^B_s\Delta\log\bar b_{s,t}
+-\eta^z_s\Delta z_{s,t}+u_{s,t+h},
+\end{equation}
+where $\eta^B_N>\eta^B_T\ge0$ and
+$\eta^z_T>\eta^z_N\ge0$. These inequalities are theoretical sign and ranking
+restrictions, not estimates. The two-date model distinguishes a near-term
+quantity channel from a potentially more persistent price channel but does not
+identify exact forecast horizons. Doing so would require gestation lags,
+adjustment costs, or a dynamic capital stock and is an extension rather than a
+hidden assumption.
+
+\section{Transmission mechanism and qualitative predictions}
+
+The timing is central to the forecasting interpretation. At date $t$, the
+bank ceiling and the common funding factor are observed before capital becomes
+productive at $t+1$. They can therefore predict future activity even when the
+model makes no causal claim about the reduced-form forecasting coefficient.
+The predictive content comes from different sufficient statistics in the two
+regimes.
+
+\paragraph{Quantity-constrained firms.}
+At the kink, the unconstrained bank-financed target lies above the cap, while
+the market-financed target lies below it. The positive left derivative of
+profits means that an additional unit of cheap bank funding would be installed
+immediately. Observed bank credit is therefore informative about the feasible
+investment pipeline, and the multiplier in \eqref{eq:quantityeffects} is the
+marginal product of the capital unlocked by the line. A small spread movement
+does not change capital while the firm remains at the kink; its first-order
+real effect is locally muted.
+
+\paragraph{Market-access firms.}
+Once outside finance funds the marginal unit, bank lending is no longer a
+sufficient statistic for total finance. A change in the bank line can induce a
+one-for-one substitution between bank and market funding with no change in
+capital. The common funding factor instead enters the marginal first-order
+condition directly. It changes the desired capital stock and, with installation
+or project-completion lags, can affect output over a more extended horizon.
+This mechanism requires the measured spread to proxy for the relevant common
+external-finance condition; it does not require literal bond issuance by every
+tradable firm.
+
+\paragraph{Qualitative empirical implications.}
+The model suggests three checks rather than a mechanical mapping from theory
+to forecast peaks. First, quantity predictive content should be stronger where
+bank dependence or the frequency of exhausted credit lines is higher. Second,
+spread predictive content should be stronger where firms have more alternative
+funding access and their marginal cost co-moves with the measured spread.
+Third, an expansion of bank lines should raise total investment for firms at
+the cap but mainly change financing composition for firms already using
+outside finance. These cross-sectional interactions are sharper tests of the
+mechanism than any single preferred forecast horizon.
+
+\section{Numerical illustration}
+
+Consider $\beta=0.95$, $a=2$, $c=0.5$, $n=0.4$,
+$\bar b=0.5$, $\Rb=0.5$, and $\Rm=1.4$. Then
+\begin{equation}
+\bar k=0.9,\qquad \kb=2.947,\qquad \km=1.053.
+\end{equation}
+A bank-only firm is quantity constrained at $k=0.9$. A market-access firm
+uses $0.5$ of bank credit and approximately $0.153$ of market finance to reach
+$k=1.053$.
+
+\begin{table}[ht]
+\centering
+\caption{Illustrative regime responses}
+\begin{tabular}{lcc}
+\toprule
+Experiment & Quantity-regime firm & Price-regime firm\\
+\midrule
+Baseline capital & 0.900 & 1.053\\
+Baseline output & 1.598 & 1.828\\
+$\bar b$ rises by 0.10 & capital rises to 1.000 & capital unchanged\\
+$z$ rises by 0.02 & capital unchanged & capital falls to 1.011\\
+Financing adjustment & more total bank credit & bank/market substitution\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+With $\lambda_N=0.8$ and $\lambda_T=0.2$, the marginal quantity responses are
+$1.24$ and $0.31$, respectively. The absolute spread responses are about
+$0.62$ and $2.48$. The values are illustrative comparative statics, not a
+calibration to Peru.
+
+\section{Extensions and limitations}\label{sec:extensions}
+
+\paragraph{Endogenous bank ceiling.}
+Let $\bar b_{i,t}=\phi_s n_{i,t}$, with pledgeability $\phi_s>0$. In the
+quantity regime, $k_{i,t}=(1+\phi_s)n_{i,t}$, so a net-worth shock changes
+investment directly and through borrowing capacity. Adding
+$n_{i,t+1}=\omega\Pi_{i,t}$ creates a simple financial accelerator. This
+extension is useful for propagation, but not necessary for the core
+price-versus-quantity proposition.
+
+\paragraph{Continuous market access.}
+The baseline binary distinction can be replaced by heterogeneous wedges
+$\tau_i$ or finite outside-finance limits $\bar m_i$. Lower wedges make
+$\bar k<\km$ more likely; higher wedges make the kink regime more likely.
+The sectoral share $\lambda_s$ can therefore be derived from a distribution of
+net worth, pledgeability, and access wedges.
+
+\paragraph{Dynamic capital and horizons.}
+A disciplined dynamic version introduces
+$K_{t+1}=(1-\delta)K_t+I_t$, a convex installation cost $\Phi_s(I_t)$, and
+the same two financing tranches for investment.  Let $q_{i,t}$ denote the
+current-value shadow price of installed capital.  The investment and capital
+first-order conditions imply
+\begin{align}
+ q_{i,t}
+   &= R_{j,t}+\Phi_s'(I_{i,t})+\mu_{i,t},
+   \label{eq:q-investment}\\
+ q_{i,t}
+   &= \beta\E_t\!\left[
+       F_s'(K_{i,t+1})+(1-\delta)q_{i,t+1}
+     \right],
+   \label{eq:q-capital}
+\end{align}
+where $j=B$ when the marginal unit is bank financed and $j=M$ when it is
+market financed.  The term $\mu_{i,t}\geq0$ is the shadow wedge attached to a
+binding quantity limit; it is zero away from that limit (with the bank/market
+cost gap instead determining which tranche is marginal).  Combining
+\eqref{eq:q-investment}--\eqref{eq:q-capital} yields the Euler equation
+\begin{equation}
+ R_{j,t}+\Phi_s'(I_{i,t})+\mu_{i,t}
+ =\beta\E_t\!\left[
+ F_s'(K_{i,t+1})+(1-\delta)
+ \{R_{j',t+1}+\Phi_s'(I_{i,t+1})+\mu_{i,t+1}\}
+ \right].
+ \label{eq:dynamic-euler}
+\end{equation}
+Thus a credit-quantity innovation operates through the current and expected
+shadow wedges, whereas a spread innovation changes the marginal financing
+price directly. Sector-specific curvature in $\Phi_s$, depreciation, or
+project gestation lags can shift the output response across horizons and may
+rationalize why preliminary quantity evidence appears at relatively short
+horizons while price information appears over a longer horizon. Estimating
+those dynamic parameters is left outside the current proposition so that the
+first deliverable remains exactly provable by hand; equation
+\eqref{eq:dynamic-euler} states the disciplined route for the next version
+rather than claiming to identify the observed horizons already.
+
+\paragraph{Measurement.}
+The model's $z$ is a common marginal-finance factor. The thesis uses a bank
+loan spread assigned by firm size because sector-level rates are unavailable.
+The empirical proxy may therefore contain measurement error and need not move
+one for one with bond or foreign-credit costs. A stronger empirical design
+would test whether the spread predicts substitution across funding sources.
+
+\paragraph{Boundaries of the result.}
+The model abstracts from default, risk choice, lender optimization, general
+equilibrium, and feedback from future expected output to current credit supply.
+It explains a conditional transmission mechanism, not the origin of the
+credit ceiling or the causal identification of credit shocks.
 
 \section{Conclusion}
-\replace{One paragraph. No new results.}
 
-\bibliographystyle{plainnat}
-\bibliography{references}
+The same observed credit system can transmit shocks through different margins.
+For a bank-dependent firm at a binding ceiling, additional credit raises
+investment and future output. For a firm that can finance the marginal unit in
+an external market, a larger bank line changes the source of funds but not the
+scale of investment; the common funding spread governs that scale. A higher
+share of the first type makes non-tradable activity quantity-sensitive, while
+a higher share of the second makes tradable activity price-sensitive.
+
+This mechanism turns the thesis's preliminary forecasting pattern into a
+formal economic hypothesis with explicit assumptions, first-order conditions, regime
+boundaries, and falsifiable predictions. Its value for the course is not that
+it replaces the empirical thesis, but that it supplies the model the empirical
+exercise previously treated as a black box.
 
 \appendix
+\section{Additional derivations}
 
-\section{Omitted proofs}\label{app:proofs}
-\replace{Proofs and derivations moved out of the body. The handwritten,
-step-by-step version of every derivation lives in \texttt{hand/}.}
+For the quadratic technology, profit on a segment with marginal funding cost
+$R$ is, up to constants,
+\begin{equation}
+\pi_R(k)=\beta\left(ak-\frac c2k^2\right)-Rk.
+\end{equation}
+The FOC and second-order condition are
+\begin{equation}
+\pi_R'(k)=\beta(a-ck)-R=0,\qquad
+\pi_R''(k)=-\beta c<0.
+\end{equation}
+Completing the square gives the global identity
+\begin{equation}
+\pi_R(k_R)-\pi_R(k)=\frac{\beta c}{2}(k-k_R)^2\ge0,
+\end{equation}
+where $k_R=(\beta a-R)/(\beta c)$. At the bank ceiling, global optimality in
+the kink regime follows from
+\begin{align}
+\Pi(\bar k)-\Pi(k)
+&=(\bar k-k)\bigl[\beta F'(\bar k)-\Rb\bigr]
++\frac{\beta c}{2}(\bar k-k)^2\ge0,
+&&k\le\bar k,\\
+\Pi(\bar k)-\Pi(k)
+&=(k-\bar k)\bigl[\Rm-\beta F'(\bar k)\bigr]
++\frac{\beta c}{2}(k-\bar k)^2\ge0,
+&&k\ge\bar k.
+\end{align}
+These are the identities formalized by the Lean theorem
+\texttt{kink\_regime\_optimal}.
 
-\section{Lean formalization}\label{app:lean}
-\replace{One row per numbered result of the paper. ``Status'' is one of:
-\emph{proved} (no \texttt{sorry}, no added hypothesis), \emph{proved under an
-added hypothesis} (state it), or \emph{open} (state the exact blocker). Report
-the paper commit that was formalized and the output of
-\texttt{paper\_contribution.py check <Folder> --fast}.}
+\section{Cobb-Douglas robustness}
 
-\begin{center}
-\begin{tabular}{llll}
+If $F(k)=Ak^\alpha$ with $A>0$ and $0<\alpha<1$, the two unconstrained targets
+are
+\begin{equation}
+k_j=\left(\frac{\beta\alpha A}{R_j}\right)^{\frac{1}{1-\alpha}},
+\qquad j\in\{B,M\}.
+\end{equation}
+The policy function retains exactly the four cases in
+Lemma~\ref{lem:policy}. In the market-finance regime,
+\begin{equation}
+\frac{\partial k_M}{\partial z}
+=-\frac{k_M}{(1-\alpha)R_M}<0,
+\qquad
+\frac{\partial F(k_M)}{\partial z}
+=-\frac{\alpha}{1-\alpha}\frac{F(k_M)}{R_M}<0.
+\end{equation}
+Thus the regime ranking is not an artifact of the quadratic technology.
+
+\section{Lean formalization status}
+
+Table~\ref{tab:lean} records the declaration-level status of every numbered
+result. The current files in \texttt{lean/}\allowbreak\texttt{prototype/} are a direct Lean 4
+prototype: they verify the main quadratic identities and sensitivity
+inequalities without \texttt{sorry}, but they are not yet the complete folder
+generated by the course's Applied\-Modeling\-Lib workflow. Before the final paper,
+the merged paper PDF will be pinned to a commit, the workflow will be run on
+that version, and the entire generated folder will replace the prototype.
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Paper result to Lean declaration map}
+\label{tab:lean}
+\begin{tabular}{@{}p{0.20\linewidth}p{0.30\linewidth}p{0.40\linewidth}@{}}
 \toprule
-Paper & Lean declaration & File in \texttt{lean/} & Status \\
+Paper result & Prototype declaration(s) & Current status \\
 \midrule
-Proposition~\ref{prop:effort} & \texttt{<Folder>.prop\_effort} &
-  \texttt{MainTheorems.lean} & \emph{example row} \\
+Lemma~\ref{lem:policy} & \texttt{kink\_regime\_}\newline
+\texttt{optimal}; \texttt{market\_regime\_}\newline
+\texttt{optimal} & Core kink and market branches proved;
+full four-case wrapper pending Applied\-Modeling\-Lib run. \\
+Proposition~\ref{prop:regimes} & \texttt{quantity\_output\_gain};
+\texttt{market\_target\_}\newline
+\texttt{decreases} & Proved for the quadratic
+specialization and strict local regimes. \\
+Proposition~\ref{prop:sector} & \texttt{quantity\_sensitivity\_}\newline
+\texttt{order}; \texttt{price\_sensitivity\_}\newline
+\texttt{order} & Proved under $\lambda_T<\lambda_N$ and
+the positivity assumptions stated in the paper. \\
 \bottomrule
 \end{tabular}
-\end{center}
+\end{table}
 
-\section{AI collaboration log}\label{app:ai}
-\replace{For each relevant contribution of a language model: what it claimed,
-your verdict (correct, incorrect, or not verifiable) with the reason, and how
-you checked it. The raw prompts and answers are in \texttt{prompts.md}.}
+Lean verifies mathematics conditional on supplied assumptions. It does not
+verify that those assumptions hold in Peruvian data, that the literature
+review is exhaustive, or that the empirical estimates identify causal
+effects. Paper commit formalized: \textbf{pending}; Applied\-Modeling\-Lib
+\texttt{check --fast}: \textbf{pending}.
 
-\begin{center}
-\begin{tabular}{p{.30\linewidth}p{.22\linewidth}p{.36\linewidth}}
+\section{AI collaboration log}
+
+AI assistance was used to search and compare the literature, propose the
+two-tranche financing model, check symbolic and numerical claims, draft LaTeX,
+and prototype Lean statements. The author retained responsibility for the
+economic question, the interpretation of the thesis evidence, and each
+accepted assumption. Raw prompts and relevant answers are preserved in
+\texttt{prompts.md}.
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Claims checked during AI-assisted development}
+\begin{tabular}{p{0.29\linewidth}p{0.27\linewidth}p{0.34\linewidth}}
 \toprule
-Claim by the model & Verdict & How it was checked \\
+AI-assisted claim & Independent check & Verdict \\
 \midrule
-\emph{example:} ``$e^{*}=a/c$ for any $a$'' & Incorrect as stated &
-  Fails for $a \le 0$: the corner $e^{*}=0$ binds. Hand derivation, p.~1. \\
+A binding cheap-bank cap makes capital locally quantity-sensitive and
+price-insensitive. & Hand derivation, regime inequalities, and
+\texttt{code/verify.py}. & Accepted only for strict local kink regimes; large
+shocks can switch regimes. \\
+Outside finance makes the spread relevant and the bank line irrelevant for
+total capital. & FOC, implicit derivative, numerical check. & Accepted while
+market finance remains strictly positive; bank credit still affects profits
+and funding composition. \\
+Sector composition generates the tradable/non-tradable ranking. & Direct
+differentiation of \eqref{eq:aggregate} and literature audit. & Accepted as a
+conditional prediction, not as proof that the composition assumption holds in
+Peru. \\
+The model explains exact empirical forecast horizons. & Compared the static
+timing with the unfinished thesis results. & Rejected. The draft now states
+only a qualitative short-versus-longer-horizon interpretation. \\
+The sector pattern itself is novel. & Checked Muller and Verner (2024), its
+appendices, and related working papers. & Rejected. Novelty is limited to the
+explicit quantity-versus-price comparative-static ranking. \\
 \bottomrule
 \end{tabular}
-\end{center}
+\end{table}
+
+\begin{thebibliography}{99}
+
+\bibitem{BGG1999}
+Bernanke, B. S., Gertler, M., and Gilchrist, S. (1999).
+The financial accelerator in a quantitative business cycle framework.
+In J. B. Taylor and M. Woodford (eds.), \emph{Handbook of Macroeconomics},
+Vol. 1C, 1341--1393.
+
+\bibitem{ButronPozo2025}
+Butron, N., and Pozo, J. (2025).
+Dynamic relationship between credit and economic growth.
+BCRP Working Paper 2025-011.
+
+\bibitem{Thesis2026}
+Fernandez, S. A., and Chavez, A. M. (2026).
+\emph{Credit Indicators and Sectoral Activity in Peru: Evidence on Predictive
+Power, 2008--2024}. Undergraduate research thesis, Universidad del Pacifico.
+
+\bibitem{FaustEtAl2013}
+Faust, J., Gilchrist, S., Wright, J. H., and Zakrajsek, E. (2013).
+Credit spreads as predictors of real-time economic activity: A Bayesian
+model-averaging approach. \emph{Review of Economics and Statistics},
+95(5), 1501--1519.
+
+\bibitem{GertlerGilchrist1994}
+Gertler, M., and Gilchrist, S. (1994).
+Monetary policy, business cycles, and the behavior of small manufacturing
+firms. \emph{Quarterly Journal of Economics}, 109(2), 309--340.
+
+\bibitem{GilchristZakrajsek2012}
+Gilchrist, S., and Zakrajsek, E. (2012).
+Credit spreads and business cycle fluctuations.
+\emph{American Economic Review}, 102(4), 1692--1720.
+
+\bibitem{GilchristSimZakrajsek2014}
+Gilchrist, S., Sim, J. W., and Zakrajsek, E. (2014).
+Uncertainty, financial frictions, and investment dynamics.
+NBER Working Paper 20038.
+
+\bibitem{HolmstromTirole1997}
+Holmstrom, B., and Tirole, J. (1997).
+Financial intermediation, loanable funds, and the real sector.
+\emph{Quarterly Journal of Economics}, 112(3), 663--691.
+
+\bibitem{KiyotakiMoore1997}
+Kiyotaki, N., and Moore, J. (1997).
+Credit cycles. \emph{Journal of Political Economy}, 105(2), 211--248.
+
+\bibitem{Lahura2011}
+Lahura, E. (2011).
+An empirical analysis of the credit-output relationship: Evidence from Peru.
+BCRP Working Paper 2011-018.
+
+\bibitem{MullerVerner2024}
+Muller, K., and Verner, E. (2024).
+Credit allocation and macroeconomic fluctuations.
+\emph{Review of Economic Studies}, 91(6), 3645--3676.
+
+\bibitem{PetersenRajan1994}
+Petersen, M. A., and Rajan, R. G. (1994).
+The benefits of lending relationships: Evidence from small business data.
+\emph{Journal of Finance}, 49(1), 3--37.
+
+\bibitem{StiglitzWeiss1981}
+Stiglitz, J. E., and Weiss, A. (1981).
+Credit rationing in markets with imperfect information.
+\emph{American Economic Review}, 71(3), 393--410.
+
+\bibitem{StockWatson2003}
+Stock, J. H., and Watson, M. W. (2003).
+Forecasting output and inflation: The role of asset prices.
+\emph{Journal of Economic Literature}, 41(3), 788--829.
+
+\end{thebibliography}
 
 \end{document}

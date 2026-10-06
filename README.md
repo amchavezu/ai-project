@@ -1,124 +1,66 @@
-# Term project — template
+# Credit Quantity, Credit Prices, and Future Output
 
-**Artificial Intelligence and Economic Modeling · UP 2026-II**
+**Track B — a model for an existing thesis · AI and Economic Modeling · UP 2026-II**
 
-> **This is the template for the term project.** Press **Use this template**,
-> name your repository **`ai-project`**, and replace the content. Every project
-> in the course has this structure, so that anyone can open any repository and
-> find the paper, the slides, the code and the Lean proofs in the same place.
->
-> Dates, page limits and what is graded are in the
-> [project issue](https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7)
-> of the course repository. **Delete this block and the next two sections when
-> you write your own README.**
+Planned public repository: <https://github.com/amchavezu/ai-project>. Course
+requirements and deadlines: [project issue #7](https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7).
 
-## What goes where
+## Question
 
-One repository for the whole project: it grows from the topic presentation to
-the final paper.
+Why might bank-credit quantity contain more forecasting information for
+non-tradable activity at relatively short horizons, while a credit-price
+spread becomes more informative for tradable activity over a longer horizon?
+The empirical pattern is preliminary; this project builds a conditional
+mechanism rather than asserting exact forecast peaks or causality.
 
-| Path | What it holds | Needed for |
-|---|---|---|
-| `README.md` | One page: the question, the model, the main result with all its conditions, and the status of the project | always |
-| `proposal/proposal.tex` · `.pdf` | The topic document, **2–4 pages** | topic presentation |
-| `slides/topic.tex` · `.pdf` | Deck for the 20-minute topic presentation | topic presentation |
-| `slides/final.tex` · `.pdf` | Deck for the final presentation | final presentation |
-| `paper/paper.tex` · `references.bib` · `paper.pdf` | The final paper, **8–20 pages**, in LaTeX with its compiled PDF | final paper |
-| `code/` | Simulations and symbolic checks; `code/verify.py` runs them all and **fails** if a claim does not hold | final paper |
-| `lean/` | The Lean formalization of **your** paper, generated with AppliedModelingLib | final paper |
-| `hand/` | The handwritten appendix: every derivation, step by step | final paper |
-| `prompts.md` | Your prompts and the relevant answers, raw | always |
-| `.github/workflows/build.yml` | Compiles the PDFs and runs `code/verify.py` on every push | — leave it as it is |
+## Model
 
-Keep the file names. If a script, figure or section needs more files, add them
-inside the folder where they belong.
+A firm with internal funds \(n\) chooses capital \(k\), bank borrowing \(b\),
+and outside finance \(m\):
 
-Work as in the weekly repositories: **branch → pull request → merge**. Nothing
-is written directly to `main`, and what is graded is what is on `main` at the
-deadline.
+\[
+\max_{k,b,m}\ \beta F(k)-R_Bb-R_Mm
+\quad\text{s.t.}\quad
+k=n+b+m,\quad 0\le b\le \bar b,\quad m\ge0,
+\]
 
-## Building
+where \(F'>0\), \(F''<0\), and \(R_B\le R_M\). Bank credit is relatively
+cheap but capped. Firms differ in whether outside finance is available and in
+its access wedge. The quadratic specialization is
+\(F(k)=ak-ck^2/2\), with \(a,c>0\).
 
-```bash
-python3 -m pip install -r code/requirements.txt
-python3 code/verify.py                      # checks + figures
+## Main result and conditions
 
-cd paper    && latexmk -pdf paper.tex       # or: tectonic paper.tex
-cd proposal && latexmk -pdf proposal.tex
-cd slides   && latexmk -pdf topic.tex final.tex
-```
+Let \(\bar k=n+\bar b\), and let \(k_B\) and \(k_M\) solve
+\(\beta F'(k_B)=R_B\) and \(\beta F'(k_M)=R_M\).
 
-**Commit the compiled PDFs** next to their sources. The workflow in
-`.github/workflows/` recompiles everything from source on every push: the
-green check on your repository is the evidence that the PDF you committed is
-the one your LaTeX produces. If the check is red, the Actions tab shows the
-LaTeX error.
+- **Quantity regime:** if \(k_M<\bar k<k_B\), then \(k^*=\bar k\), so
+  \(\partial k^*/\partial\bar b=1\) and a sufficiently small common-spread
+  change has zero local effect on capital.
+- **Price regime:** if \(\bar k<k_M\), then \(k^*=k_M\), so a larger bank line
+  substitutes bank for market finance without changing capital, while
+  \(\partial k^*/\partial z=1/[\beta F''(k_M)]<0\).
+- **Sector ranking:** under common conditional primitives and
+  \(0\le\lambda_T<\lambda_N\le1\), where \(\lambda_s\) is the share of firms
+  in the quantity regime, non-tradables are more quantity-sensitive and
+  tradables are more price-sensitive.
 
-Every orange **Replace** box in the PDFs is an instruction to you. A submitted
-document has none left.
-
-## The Lean component
-
-The target is that **every numbered result of your paper is stated and proved
-in Lean**, with no `sorry` and no hypothesis that smuggles in the conclusion.
-It is the same workflow as in the weekly repositories, pointed at your own
-paper instead of a published one.
-
-1. Merge the version of `paper/paper.pdf` you want formalized and copy the
-   commit hash.
-2. From the root of your [AppliedModelingLib](https://gargnikhil.com/AppliedModelingLib/)
-   clone (`git pull` first), with the same agent configuration as in the weekly
-   repositories, give the agent this task:
-
-   ```text
-   Please formalize my own paper, an unpublished manuscript with no arXiv
-   record: https://github.com/<your-user>/ai-project/blob/<commit>/paper/paper.pdf
-   (pinned at commit <commit>), using the paper-formalization skill and
-   workflow in this repository.
-   Use <Surname>26<ShortTitle> as the paper folder.
-   ```
-
-3. Run the paper-scoped check and keep its output:
-
-   ```bash
-   python3 scripts/paper_contribution.py check <Surname>26<ShortTitle> --fast
-   ```
-
-4. Copy the **entire** generated `papers/<Surname>26<ShortTitle>/` folder,
-   exactly as generated, into this repository as `lean/`. Stage it with
-   `git add lean/` and respect the generated `.gitignore` — never `git add -f`.
-5. Fill in the *Lean formalization* appendix of the paper: one row per numbered
-   result, the Lean declaration that proves it, and its status.
-
-If you change a proposition after the run, the Lean folder no longer matches
-the paper: run the workflow again. If a result is still open at the deadline,
-say exactly which one and what blocks it — an honest partial result is graded,
-a hidden gap is not.
-
----
-
-# Your title
-
-**Replace everything below with your own README — one page.**
-
-*Track A (extension of …) or Track B (thesis model).*
-
-## The question
-
-## The model
-
-The agent's problem, written formally: what is maximised, over which variable,
-under which constraints.
-
-## The main result, with all its conditions
+These are local, regime-specific comparative statics. They do not establish
+that the composition assumption holds in Peru, that the measured spread is a
+causal shock, or that the model identifies exact forecasting horizons.
 
 ## Status
 
-| Component | State |
+| Component | State on the topic-presentation branch |
 |---|---|
-| Topic document and slides | |
-| Final slides | |
-| Paper | |
-| Simulations (`python3 code/verify.py`) | |
-| Lean (`check --fast` result, paper commit formalized) | |
-| Handwritten appendix | |
+| Topic document and slides | Complete; compiled PDFs visually checked (3 pages and 9 slides) |
+| Final slides | Substantive work-in-progress deck, not the final submission |
+| Paper | Full draft with assumptions, FOCs, proofs, mechanisms, limitations, and appendices |
+| Verification | `python code/verify.py` checks the algebra and numerical illustration and writes a CSV |
+| Lean | Direct no-`sorry` prototype for the quadratic core; required AppliedModelingLib run pending |
+| Hand appendix | Step-by-step derivation guide present; handwritten scan pending |
+| Workflow | Official template workflow retained unchanged |
+
+The repository follows the official structure. Work is prepared on a branch
+and will be merged through a pull request; only the merged `main` version is a
+course submission.

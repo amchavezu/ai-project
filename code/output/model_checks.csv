@@ -1,0 +1,15 @@
+quantity,checked_value
+bank_target,2.947368421
+market_target,1.052631579
+bank_ceiling_capital,0.900000000
+constrained_output,1.597500000
+market_output,1.828254848
+constrained_capital_after_ceiling_shock,1.000000000
+market_capital_after_ceiling_shock,1.052631579
+constrained_capital_after_spread_shock,0.900000000
+market_capital_after_spread_shock,1.010526316
+market_output_after_spread_shock,1.765761773
+quantity_marginal_nontradable,1.240000000
+quantity_marginal_tradable,0.310000000
+price_magnitude_nontradable,0.620498615
+price_magnitude_tradable,2.481994460

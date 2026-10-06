@@ -1,107 +1,194 @@
-% Final presentation -- work in progress, presented for critique.
-% No animations and no screenshots of papers: equations are typeset in LaTeX.
+% Final-presentation work-in-progress deck.
+% No animations and no paper screenshots; all equations are typeset in LaTeX.
 \documentclass[aspectratio=169,11pt]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
-\usepackage{graphicx}
-\usepackage{newunicodechar}
-% Lean code is full of Unicode that typewriter fonts do not have. Each line
-% maps one symbol to math mode, so Lean can be pasted into a verbatim block
-% as it is (inside a [fragile] frame). Add a line for any symbol you need.
-\newunicodechar{∀}{\ensuremath{\forall}}  \newunicodechar{∃}{\ensuremath{\exists}}
-\newunicodechar{→}{\ensuremath{\to}}      \newunicodechar{↔}{\ensuremath{\leftrightarrow}}
-\newunicodechar{∧}{\ensuremath{\land}}    \newunicodechar{∨}{\ensuremath{\lor}}
-\newunicodechar{¬}{\ensuremath{\lnot}}    \newunicodechar{×}{\ensuremath{\times}}
-\newunicodechar{∈}{\ensuremath{\in}}      \newunicodechar{∉}{\ensuremath{\notin}}
-\newunicodechar{≤}{\ensuremath{\le}}      \newunicodechar{≥}{\ensuremath{\ge}}
-\newunicodechar{≠}{\ensuremath{\ne}}      \newunicodechar{↦}{\ensuremath{\mapsto}}
-\newunicodechar{ℝ}{\ensuremath{\mathbb{R}}} \newunicodechar{ℕ}{\ensuremath{\mathbb{N}}}
-\newunicodechar{⟨}{\ensuremath{\langle}}  \newunicodechar{⟩}{\ensuremath{\rangle}}
-\newunicodechar{λ}{\ensuremath{\lambda}}  \newunicodechar{α}{\ensuremath{\alpha}}
-\newunicodechar{β}{\ensuremath{\beta}}    \newunicodechar{ε}{\ensuremath{\varepsilon}}
+\usepackage{xcolor}
 \usetheme{default}
 \usecolortheme{seahorse}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]
 \setbeamerfont{frametitle}{size=\large}
+\definecolor{ink}{RGB}{32,48,71}
+\definecolor{accent}{RGB}{30,113,120}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamercolor{structure}{fg=accent}
 
-\title{Your Title}
-\subtitle{Final presentation}
-\author{Your Name}
-\date{October--November 2026}
+\newcommand{\kb}{k_B}
+\newcommand{\km}{k_M}
+\newcommand{\Rb}{R_B}
+\newcommand{\Rm}{R_M}
+
+\title{Credit Quantity, Credit Prices, and Future Output}
+\subtitle{A model of heterogeneous financing access\\Final presentation --- work in progress}
+\author{Alvaro Marcelo Chavez Unyen}
+\institute{Universidad del Pacifico}
+\date{October 2026}
 
 \begin{document}
 
-% The title slide carries the repository link.
 \begin{frame}[plain]
   \titlepage
   \begin{center}\small
-    \texttt{github.com/your-user/ai-project}
+    \href{https://github.com/amchavezu/ai-project}{\texttt{github.com/amchavezu/ai-project}}
   \end{center}
 \end{frame}
 
-\begin{frame}{1 \textperiodcentered{} The question and the answer}
-  \textbf{Replace.} The question, and your result in one sentence --- with its
-  condition.
+\begin{frame}{1 \textperiodcentered{} Question and conditional answer}
+\textbf{Question.} Why can credit quantity be more informative for one sector,
+while the price of credit is more informative for another?
+
+\medskip
+\textbf{Answer.} The relevant indicator depends on which financing margin
+determines the marginal unit of capital:
+\begin{itemize}
+  \item at a binding cheap-bank cap, quantity determines feasible investment;
+  \item with outside finance at the margin, its common price determines desired investment.
+\end{itemize}
+
+\medskip
+\alert{The thesis evidence is preliminary: the model explains a qualitative
+short-versus-longer-horizon pattern, not exact forecast peaks.}
 \end{frame}
 
-\begin{frame}{2 \textperiodcentered{} The model}
-  \textbf{Replace.} Primitives, timing, and the agent's problem.
-  \[
-    \max_{e \ge 0}\; a e - \frac{c}{2}\, e^{2}, \qquad a > 0,\; c > 0
-  \]
+\begin{frame}{2 \textperiodcentered{} Agent, timing, and financing order}
+At date $t$, a firm with internal funds $n$ chooses capital $k$, bank credit
+$b$, and outside finance $m$. Capital produces at $t+1$.
+\[
+\max_{k,b,m}\ \beta F(k)-\Rb b-\Rm m
+\quad\text{s.t.}\quad
+k=n+b+m,\quad 0\le b\le\bar b,\quad m\ge0.
+\]
+\[
+F'>0,\quad F''<0,\quad 0<\Rb\le\Rm<\beta F'(0).
+\]
+Bank finance is cheaper but capped; the outside-finance wedge captures access,
+issuance, and information costs.
 \end{frame}
 
-\begin{frame}{3 \textperiodcentered{} The result, with all its conditions}
-  \textbf{Replace.} The proposition as it is stated in the paper.
-
-  \medskip
-  \textbf{Proposition 1.} If $a > 0$ and $c > 0$, the unique solution is
-  $e^{*} = a/c$, and $\partial e^{*}/\partial a = 1/c > 0$.
+\begin{frame}{3 \textperiodcentered{} Piecewise optimum}
+Let $\bar k=n+\bar b$, and define the two unconstrained targets by
+\[
+\beta F'(\kb)=\Rb,\qquad \beta F'(\km)=\Rm,
+\qquad \km\le\kb.
+\]
+Then
+\[
+k^*=\begin{cases}
+n, & \kb\le n,\\
+\kb, & n<\kb<\bar k,\\
+\bar k, & \km\le\bar k\le\kb,\\
+\km, & \bar k<\km.
+\end{cases}
+\]
+The empirical mechanism compares the third line (quantity regime) with the
+fourth line (price regime).
 \end{frame}
 
-\begin{frame}{4 \textperiodcentered{} The proof: what is done and what is open}
-  \textbf{Replace.} The idea of the proof, the step that was hard, and what is
-  still open today. This is a progress report: say where you are.
+\begin{frame}{4 \textperiodcentered{} Main result: two transmission margins}
+\small
+\begin{tabular}{p{0.27\linewidth}p{0.31\linewidth}p{0.31\linewidth}}
+\toprule
+ & Binding bank cap & Outside finance at margin \\
+\midrule
+Strict regime & $\km<\bar k<\kb$ & $\bar k<\km$ \\
+Capital & $k^*=n+\bar b$ & $k^*=\km(z,\tau)$ \\
+Bank-line effect & $\partial k^*/\partial\bar b=1$ & $\partial k^*/\partial\bar b=0$ \\
+Spread effect & $\partial k^*/\partial z=0$ locally &
+$\partial k^*/\partial z=1/[\beta F''(\km)]<0$ \\
+Economic signal & feasible investment pipeline & marginal cost of total finance \\
+\bottomrule
+\end{tabular}
+
+\medskip
+Zero effects are local: sufficiently large shocks can cross regime thresholds.
 \end{frame}
 
-\begin{frame}{5 \textperiodcentered{} Simulations}
-  \begin{columns}
-    \column{.56\linewidth}
-    \includegraphics[width=\linewidth]{../code/figures/effort_check.pdf}
-    \column{.40\linewidth}
-    \textbf{Replace.} What the script checks, on which parameter range, and
-    what a simulation cannot show.
-  \end{columns}
+\begin{frame}{5 \textperiodcentered{} From firm heterogeneity to sectors}
+Let $\lambda_s$ be the share of sector $s$ in the quantity regime:
+\[
+Y_{s,t+1}=\lambda_s F(n+\bar b_s)
++(1-\lambda_s)F\!\left(\km(z_s,\tau_s)\right).
+\]
+If $0\le\lambda_T<\lambda_N\le1$ and conditional primitives are common,
+\[
+\frac{\partial Y_N}{\partial\bar b}>
+\frac{\partial Y_T}{\partial\bar b}\ge0,
+\qquad
+\left|\frac{\partial Y_N}{\partial z}\right|<
+\left|\frac{\partial Y_T}{\partial z}\right|.
+\]
+This is a conditional composition result. Whether $\lambda_N>\lambda_T$ in
+Peru is an empirical assumption to test, not a theorem.
 \end{frame}
 
-% Required: paper statement -> Lean statement -> what Lean verifies.
-\begin{frame}[fragile]{6 \textperiodcentered{} Lean: what is verified}
-  \textbf{In the paper.} $a > 0,\ c > 0 \;\Longrightarrow\; e^{*} = a/c$.
+\begin{frame}{6 \textperiodcentered{} Mechanism and empirical checks}
+\begin{enumerate}
+  \item \textbf{Bank dependence:} quantity predictive content should rise with
+  exhausted credit lines or dependence on relationship banks.
+  \item \textbf{Alternative funding:} spread predictive content should rise
+  with access to bonds, foreign credit, or other external finance.
+  \item \textbf{Substitution:} a larger bank line should raise total investment
+  at the cap, but mainly replace outside finance for market-access firms.
+\end{enumerate}
 
-  \medskip
-  \textbf{In Lean} (replace with your own statement and proof fragment):
-\begin{verbatim}
-theorem prop_effort (a c : ℝ) (ha : 0 < a) (hc : 0 < c) :
-    a / c ∈ Set.Ici (0 : ℝ) ∧
-    IsMaxOn (fun e => a * e - c / 2 * e ^ 2) (Set.Ici 0) (a / c)
-\end{verbatim}
-  \textbf{Replace.} How the objects and assumptions are represented, whether
-  Lean verifies the paper's claim exactly or under an added hypothesis, and the
-  result of the check.
+\medskip
+Project gestation and adjustment costs can make the price channel appear over a
+longer horizon. The present static proposition does not identify those dynamic
+parameters.
 \end{frame}
 
-\begin{frame}{7 \textperiodcentered{} Where I did not believe the AI}
-  \textbf{Replace.} One claim of the model, your verdict with its reason, and
-  the hand derivation on screen.
+\begin{frame}{7 \textperiodcentered{} Checks and numerical illustration}
+For $\beta=.95$, $a=2$, $c=.5$, $n=.4$, $\bar b=.5$, $\Rb=.5$, $\Rm=1.4$:
+\[
+\bar k=.900,\qquad \kb=2.947,\qquad \km=1.053.
+\]
+\begin{center}
+\small
+\begin{tabular}{lcc}
+\toprule
+Experiment & Quantity regime & Price regime \\
+\midrule
+$\bar b$ rises by $.10$ & capital $\uparrow$ to $1.000$ & capital unchanged \\
+$z$ rises by $.02$ & capital unchanged & capital $\downarrow$ to $1.011$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\texttt{code/verify.py} independently checks the FOCs, regime inequalities,
+comparative statics, and all reported values; it fails if a check is false.
 \end{frame}
 
-\begin{frame}{8 \textperiodcentered{} What I want from you}
-  \textbf{Replace.} The two or three questions on which you want the class's
-  critique before writing the final version.
+\begin{frame}{8 \textperiodcentered{} Formalization and audit trail}
+\begin{itemize}
+  \item The hand appendix derives the policy and both propositions step by step.
+  \item The current Lean 4 prototype proves the quadratic core and sectoral
+  inequalities with no \texttt{sorry}.
+  \item The required AppliedModelingLib-generated folder, pinned paper commit,
+  and \texttt{check --fast} output remain pending for the final deadline.
+  \item The paper appendix maps every numbered result to its Lean declaration.
+  \item \texttt{prompts.md} preserves the raw AI exchanges and the paper records
+  accepted, corrected, and rejected claims.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{9 \textperiodcentered{} Limitations and next decisions}
+\textbf{Known limits}
+\begin{itemize}
+  \item credit ceilings and sector composition are reduced-form primitives;
+  \item the measured loan spread may not equal the marginal outside-finance cost;
+  \item the forecasting relation is not a causal identification result.
+\end{itemize}
+
+\medskip
+\textbf{Feedback sought}
+\begin{enumerate}
+  \item Is the two-tranche model the right minimum mechanism for the thesis?
+  \item Should the next extension endogenize the ceiling or model dynamics first?
+  \item Which Peruvian proxy best measures alternative-finance access by sector?
+\end{enumerate}
 \end{frame}
 
 \end{document}
