@@ -1,66 +1,123 @@
-"""Symbolic and numerical check of Proposition 1 of the template's toy model.
+"""Symbolic and numerical checks for the credit-transmission model.
 
-    python3 code/verify.py
-
-Writes code/output/effort_check.csv and code/figures/effort_check.pdf, and
-exits with an error if the closed form and the grid search disagree by more
-than the grid resolution. Replace the toy model with yours; keep the idea that
-the script *fails* when the paper's claim does not hold.
+The script is intentionally independent of the Lean proof. It verifies the
+closed forms, regime inequalities, numerical table, and sectoral derivatives
+reported in ``paper/paper.tex``. It also writes the checked values to
+``code/output/model_checks.csv``.
 """
-from pathlib import Path
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
+from __future__ import annotations
+
+import math
+import csv
+from pathlib import Path
 import sympy as sp
 
-HERE = Path(__file__).resolve().parent
-(HERE / "output").mkdir(exist_ok=True)
-(HERE / "figures").mkdir(exist_ok=True)
 
-# --- 1. Symbolic: first-order condition, second-order condition, comparative static
-a, c, e = sp.symbols("a c e", positive=True)
-objective = a * e - c * e**2 / 2
-e_star = sp.solve(sp.diff(objective, e), e)
-assert e_star == [a / c], f"unexpected stationary point: {e_star}"
-soc = sp.diff(objective, e, 2)
-assert soc == -c, f"unexpected second derivative: {soc}"
-static = sp.diff(e_star[0], a)
-assert sp.simplify(static - 1 / c) == 0
-print(f"symbolic   e* = {e_star[0]},  d2/de2 = {soc},  de*/da = {static}")
+def symbolic_checks() -> None:
+    beta, a, c, r_b, r_m, n, bbar, k, delta = sp.symbols(
+        "beta a c R_B R_M n bbar k delta", positive=True
+    )
+    output = a * k - c * k**2 / 2
+    bank_profit = beta * output - r_b * (k - n)
+    market_profit = (
+        beta * output - r_b * bbar - r_m * (k - n - bbar)
+    )
 
-# --- 2. Numerical: grid search over e for a set of (a, c)
-grid = np.linspace(0.0, 10.0, 200_001)          # resolution 5e-5
-step = grid[1] - grid[0]
-rows = []
-for c_val in (0.5, 1.0, 2.0):
-    for a_val in np.linspace(0.5, 3.0, 11):
-        payoff = a_val * grid - c_val * grid**2 / 2
-        rows.append({"a": a_val, "c": c_val,
-                     "e_grid": grid[np.argmax(payoff)],
-                     "e_closed_form": a_val / c_val})
-table = pd.DataFrame(rows)
-table["abs_gap"] = (table["e_grid"] - table["e_closed_form"]).abs()
-table.to_csv(HERE / "output" / "effort_check.csv", index=False)
+    k_b = sp.simplify((beta * a - r_b) / (beta * c))
+    k_m = sp.simplify((beta * a - r_m) / (beta * c))
 
-worst = table["abs_gap"].max()
-print(f"numerical  {len(table)} parameter pairs, largest |gap| = {worst:.2e} "
-      f"(grid step {step:.0e})")
-if worst > step:
-    raise SystemExit("FAIL: grid search and closed form disagree")
+    assert sp.simplify(sp.diff(bank_profit, k).subs(k, k_b)) == 0
+    assert sp.simplify(sp.diff(market_profit, k).subs(k, k_m)) == 0
+    assert sp.simplify(sp.diff(bank_profit, k, 2)) == -beta * c
+    assert sp.simplify(sp.diff(market_profit, k, 2)) == -beta * c
 
-# --- 3. Figure used by paper/paper.tex and slides/final.tex
-fig, ax = plt.subplots(figsize=(6.0, 3.6))
-for c_val, group in table.groupby("c"):
-    line, = ax.plot(group["a"], group["e_closed_form"], lw=1.6,
-                    label=f"$c={c_val:g}$")
-    ax.plot(group["a"], group["e_grid"], "o", ms=4, color=line.get_color())
-ax.set_xlabel("productivity with AI, $a$")
-ax.set_ylabel("optimal effort, $e^*$")
-ax.legend(frameon=False, title="closed form (line), grid search (marker)")
-ax.spines[["top", "right"]].set_visible(False)
-fig.tight_layout()
-fig.savefig(HERE / "figures" / "effort_check.pdf")
-print("OK: wrote code/output/effort_check.csv and code/figures/effort_check.pdf")
+    shifted_target = (beta * a - (r_m + delta)) / (beta * c)
+    assert sp.simplify(shifted_target - (k_m - delta / (beta * c))) == 0
+
+    x = sp.symbols("x", real=True)
+    f = lambda q: a * q - c * q**2 / 2
+    increment = sp.expand(f(x + delta) - f(x))
+    expected = sp.expand(delta * (a - c * x) - c * delta**2 / 2)
+    assert sp.simplify(increment - expected) == 0
+
+
+def numerical_checks() -> dict[str, float]:
+    beta = 0.95
+    a = 2.0
+    c = 0.5
+    n = 0.4
+    bbar = 0.5
+    r_b = 0.5
+    r_m = 1.4
+    spread_shock = 0.02
+    ceiling_shock = 0.10
+
+    f = lambda q: a * q - c * q**2 / 2
+    cap = n + bbar
+    k_b = (beta * a - r_b) / (beta * c)
+    k_m = (beta * a - r_m) / (beta * c)
+
+    assert cap < k_m < k_b
+
+    constrained_k = cap
+    market_k = k_m
+    constrained_after_ceiling = cap + ceiling_shock
+    market_after_ceiling = market_k
+    market_after_spread = (beta * a - (r_m + spread_shock)) / (beta * c)
+    constrained_after_spread = constrained_k
+
+    assert market_after_spread > cap  # no regime switch in the experiment
+    assert constrained_after_ceiling < k_b
+
+    lambda_n = 0.8
+    lambda_t = 0.2
+    mp_at_cap = a - c * cap
+    price_unit = r_m / (beta**2 * c)
+    quantity_n = lambda_n * mp_at_cap
+    quantity_t = lambda_t * mp_at_cap
+    price_n = (1 - lambda_n) * price_unit
+    price_t = (1 - lambda_t) * price_unit
+
+    assert quantity_n > quantity_t > 0
+    assert price_t > price_n > 0
+
+    return {
+        "bank_target": k_b,
+        "market_target": k_m,
+        "bank_ceiling_capital": cap,
+        "constrained_output": f(constrained_k),
+        "market_output": f(market_k),
+        "constrained_capital_after_ceiling_shock": constrained_after_ceiling,
+        "market_capital_after_ceiling_shock": market_after_ceiling,
+        "constrained_capital_after_spread_shock": constrained_after_spread,
+        "market_capital_after_spread_shock": market_after_spread,
+        "market_output_after_spread_shock": f(market_after_spread),
+        "quantity_marginal_nontradable": quantity_n,
+        "quantity_marginal_tradable": quantity_t,
+        "price_magnitude_nontradable": price_n,
+        "price_magnitude_tradable": price_t,
+    }
+
+
+def main() -> None:
+    symbolic_checks()
+    results = numerical_checks()
+    output_path = Path(__file__).resolve().parent / "output" / "model_checks.csv"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(["quantity", "checked_value"])
+        for key, value in results.items():
+            if not math.isfinite(value):
+                raise ValueError(f"Non-finite result: {key}={value}")
+            writer.writerow([key, f"{value:.9f}"])
+
+    print("All symbolic and numerical checks passed.\n")
+    for key, value in results.items():
+        print(f"{key}: {value:.6f}")
+    print(f"\nWrote {output_path}")
+
+
+if __name__ == "__main__":
+    main()

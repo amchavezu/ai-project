@@ -11,56 +11,198 @@
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]
 \setbeamerfont{frametitle}{size=\large}
+\setbeamercolor{alerted text}{fg=blue!55!black}
 
-\title{Your Working Title}
-\subtitle{Topic presentation --- Track A or Track B}
-\author{Your Name}
-\date{October 2026}
+\newcommand{\Rb}{R_B}
+\newcommand{\Rm}{R_M}
+\newcommand{\kb}{k_B}
+\newcommand{\km}{k_M}
+
+\title{Credit Quantity, Credit Prices, and Future Output}
+\subtitle{A model of heterogeneous financing access -- Track B}
+\author{Alvaro Marcelo Ch\'avez Unyen}
+\date{October 7, 2026}
 
 \begin{document}
 
-% The title slide carries the repository link.
 \begin{frame}[plain]
   \titlepage
   \begin{center}\small
-    \texttt{github.com/your-user/ai-project}
+    \url{https://github.com/amchavezu/ai-project}
   \end{center}
 \end{frame}
 
-\begin{frame}{1 \textperiodcentered{} The question}
-  \textbf{Replace.} The question in one sentence, and why the answer is not
-  obvious.
+\begin{frame}{1 \textperiodcentered{} The question and Track B}
+\large
+When does the \alert{quantity} of bank credit contain more information about
+future production than the \alert{price} of credit?
+
+\medskip
+\normalsize
+\begin{itemize}
+  \item Track B: formulate the firm model missing from my undergraduate thesis.
+  \item Preliminary estimates suggest different credit indicators may be useful
+        for non-tradable and tradable activity.
+  \item I treat that evidence as qualitative and unfinished. The model targets
+        the cross-sector mechanism, not exact horizons or causality.
+\end{itemize}
 \end{frame}
 
-\begin{frame}{2 \textperiodcentered{} The baseline model}
-  \textbf{Replace.} The agent's problem, written formally.
-  \[
-    \max_{e \ge 0}\; a e - \frac{c}{2}\, e^{2}
-  \]
-  Cite the paper, the proposition and the page.
+\begin{frame}{1 \textperiodcentered{} The pattern that needs a mechanism}
+\begin{columns}[T,onlytextwidth]
+  \column{.47\linewidth}
+  \textbf{Preliminary quantity pattern}
+
+  Bank credit volume appears more informative for non-tradable activity at a
+  relatively short horizon.
+
+  \medskip
+  Candidate mechanism: bank-dependent firms cannot replace a missing loan.
+
+  \column{.47\linewidth}
+  \textbf{Preliminary price pattern}
+
+  A credit-price indicator may become more informative for tradable activity
+  over a longer horizon.
+
+  \medskip
+  Candidate mechanism: firms with alternative finance choose scale using the
+  marginal funding cost.
+\end{columns}
+
+\vfill
+\footnotesize These are working hypotheses from a thesis in progress, not
+final empirical findings.
 \end{frame}
 
-\begin{frame}{3 \textperiodcentered{} The assumption I change}
-  \textbf{Replace.} Which assumption, in the paper's notation, and what
-  replaces it.
+\begin{frame}{2 \textperiodcentered{} The model missing from the thesis}
+At date zero, firm $i$ has internal funds $n_i$ and chooses capital $k_i$,
+bank credit $b_i$, and outside finance $m_i$:
+\[
+ \max_{k_i,b_i,m_i}\quad
+ \beta F_i(k_i)-\Rb b_i-\Rm m_i
+\]
+\[
+ k_i=n_i+b_i+m_i,\qquad
+ 0\leq b_i\leq\bar b_i,\qquad m_i\geq0.
+\]
+
+\begin{itemize}
+  \item $F_i'(k)>0$ and $F_i''(k)<0$.
+  \item $0<\Rb\leq\Rm=\Rb+\tau_i$: bank funds are cheaper but capped.
+  \item A bank-dependent firm has $m_i=0$; a market-access firm may have
+        $m_i>0$.
+\end{itemize}
 \end{frame}
 
-\begin{frame}{4 \textperiodcentered{} The result I expect}
-  \textbf{Replace.} The first-order condition you expect, and which result of
-  the baseline should change and in which direction.
-  \[
-    a - c e = 0 \quad\Longrightarrow\quad e^{*} = \frac{a}{c}
-  \]
+\begin{frame}{2 \textperiodcentered{} Two margins of transmission}
+Let $\bar k_i=n_i+\bar b_i$ be capital after exhausting the bank line.
+
+\medskip
+\begin{center}
+\begin{tabular}{p{.24\linewidth}p{.31\linewidth}p{.31\linewidth}}
+\toprule
+ & \textbf{Quantity-sensitive kink} & \textbf{Price-sensitive margin}\\
+\midrule
+Marginal finance & No cheap substitute for the bank line & Outside finance\\
+Choice of capital & $k_i^*=\bar k_i$ & $\beta F_i'(k_i^*)=\Rm$\\
+Larger bank line & Raises total capital & Replaces outside finance\\
+Higher common spread & No local scale effect at the kink & Lowers desired capital\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+The comparison is local: small changes must leave the firm in the same regime.
 \end{frame}
 
-\begin{frame}{5 \textperiodcentered{} Why this is not already solved}
-  \textbf{Replace.} Where you looked --- appendices, working-paper versions,
-  citing papers --- and what you found.
+\begin{frame}{3 \textperiodcentered{} The result I expect}
+With $F_i(k)=a_i k-c_i k^2/2$, define
+\[
+ \kb=\frac{\beta a_i-\Rb}{\beta c_i},\qquad
+ \km=\frac{\beta a_i-\Rm}{\beta c_i},\qquad \km\leq\kb.
+\]
+\[
+k_i^*=\begin{cases}
+n_i, & \kb\leq n_i,\\
+\kb, & n_i<\kb<\bar k_i,\\
+\bar k_i, & \km\leq\bar k_i\leq\kb,\\
+\km, & \bar k_i<\km.
+\end{cases}
+\]
+
+\small
+The third line is the binding quantity regime. The fourth is the
+market-finance regime. Strict inequalities deliver the comparative statics
+without a regime switch.
 \end{frame}
 
-\begin{frame}{6 \textperiodcentered{} Plan and risks}
-  \textbf{Replace.} What you will prove, simulate and formalize in Lean; the
-  step most likely to fail.
+\begin{frame}{3 \textperiodcentered{} Expected sectoral ranking}
+Let $\lambda_s$ be the share of sector $s$ at the quantity-sensitive kink:
+\[
+Y_s=\lambda_s F(n+\bar b)+(1-\lambda_s)F(k_M).
+\]
+If $\lambda_N>\lambda_T$ and marginal products are positive, I expect
+\[
+ \frac{\partial Y_N}{\partial\bar b}>
+ \frac{\partial Y_T}{\partial\bar b},
+ \qquad
+ \left|\frac{\partial Y_N}{\partial z}\right|<
+ \left|\frac{\partial Y_T}{\partial z}\right|.
+\]
+
+\begin{itemize}
+  \item Credit quantity signals the feasible project scale for constrained firms.
+  \item The spread signals the marginal cost and desired project scale for firms
+        that can substitute across funding sources.
+  \item Adjustment speeds may affect timing, but the baseline does not derive
+        exact forecast horizons.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{4 \textperiodcentered{} Why this is not already solved}
+\small
+\begin{tabular}{p{.25\linewidth}p{.30\linewidth}p{.35\linewidth}}
+\toprule
+\textbf{Closest work} & \textbf{What it establishes} & \textbf{What remains for this project}\\
+\midrule
+Holmstr\"om--Tirole (1997) & Capital, monitoring, and access to direct finance & No sectoral ranking of quantity and price predictors\\
+Gilchrist--Zakraj\v{s}ek (2012) & Credit spreads predict aggregate activity & No binding bank-quantity comparison at the firm level\\
+M\"uller--Verner (2024) & Sectoral credit allocation predicts different macro outcomes & No capped-bank versus marginal-market threshold\\
+\bottomrule
+\end{tabular}
+
+\medskip
+I checked the published versions, public working-paper versions, and the
+relevant appendices and follow-on investment paper. The contribution is a
+narrow synthesis tailored to the thesis, not a claim that the underlying
+financial-friction mechanisms are new.
+\end{frame}
+
+\begin{frame}{5 \textperiodcentered{} Plan and risks}
+\begin{columns}[T,onlytextwidth]
+  \column{.48\linewidth}
+  \textbf{Plan}
+  \begin{itemize}
+    \item Prove the piecewise optimum and sectoral rankings.
+    \item Check every reported result with \texttt{code/verify.py}.
+    \item Simulate behavior near regime boundaries.
+    \item Formalize every numbered result through AppliedModelingLib.
+  \end{itemize}
+
+  \column{.48\linewidth}
+  \textbf{Main risks}
+  \begin{itemize}
+    \item Outside-finance access is not directly measured in the thesis data.
+    \item Endogenous credit limits may remove the sharp local zero.
+    \item A static model cannot identify exact forecast timing.
+    \item The piecewise global optimum is the hardest Lean step.
+  \end{itemize}
+\end{columns}
+
+\vfill
+\small If a step fails, I will keep the result conditional and report the exact
+open case rather than strengthen the assumptions silently.
 \end{frame}
 
 \end{document}

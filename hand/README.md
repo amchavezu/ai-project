@@ -1,8 +1,14 @@
-# `hand/` — placeholder
+# Handwritten derivations
 
-Delete this file when you add your derivations. This folder holds the
-**handwritten appendix**: every derivation of the paper, step by step and with
-no skipped steps — each algebraic manipulation written out, each rule named,
-each condition checked where it is used. Photographed or scanned, as long as it
-is legible. Name the files so the order is obvious (`01-foc.pdf`,
-`02-proposition-1.pdf`, …).
+`DERIVATION_GUIDE.md` is the ordered checklist for the handwritten appendix.
+Before the final-paper deadline, each section must be re-derived by the author,
+scanned legibly, and saved here in order, for example:
+
+1. `01-firm-problem-and-focs.pdf`
+2. `02-piecewise-policy.pdf`
+3. `03-quantity-price-proposition.pdf`
+4. `04-sectoral-ranking.pdf`
+5. `05-dynamic-extension.pdf`
+
+The guide is not a substitute for the required handwritten files. Current
+status: derivation guide complete; scans pending.

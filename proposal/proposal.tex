@@ -1,59 +1,187 @@
-% Topic document -- 2 to 4 pages in THIS format (11pt, 1-inch margins).
-% It accompanies the 20-minute topic presentation.
+% Topic document -- 2 to 4 pages in the course template format.
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb}
-\usepackage{xcolor}
+\usepackage{booktabs}
 \usepackage[round]{natbib}
+\usepackage{xcolor}
 \usepackage[colorlinks=true,allcolors=blue!50!black]{hyperref}
 
-\newcommand{\replace}[1]{\par\smallskip\noindent
-  \fcolorbox{orange!80!black}{yellow!12}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{%
-  \small\textbf{Replace.} #1}}\par\smallskip}
+\newcommand{\kb}{k_B}
+\newcommand{\km}{k_M}
+\newcommand{\Rb}{R_B}
+\newcommand{\Rm}{R_M}
 
-\title{Project Topic: Your Working Title}
-\author{Your Name \\ \small\url{https://github.com/your-user/ai-project}}
-\date{Topic presentation, October 2026}
+\title{Project Topic: Credit Quantity, Credit Prices, and Future Output\\
+\large A model of heterogeneous financing access}
+\author{Alvaro Marcelo Ch\'avez Unyen\\
+\small\url{https://github.com/amchavezu/ai-project}}
+\date{Topic presentation, October 7, 2026}
 
 \begin{document}
 \maketitle
 
 \section{The question and the track}
-\replace{One paragraph. The question in one sentence, and the track:
-\textbf{Track A} --- you relax an assumption of a course paper and re-derive the
-proposition it affects; or \textbf{Track B} --- you formulate the economic model
-behind your own thesis.}
 
-\section{The baseline and the assumption you change}
-\replace{Track A: cite the paper, the exact proposition and page, and state the
-assumption you relax, in the paper's notation. Track B: state the model your
-thesis currently lacks or cites as a black box. Write the agent's problem
-formally --- what is maximised, over which variable, under which constraints.}
+This is a \textbf{Track B} project: I formulate the economic model that is
+currently missing from my undergraduate thesis. The question is: \emph{when
+does the quantity of bank credit contain more information about firms' future
+production than the price of credit, and can heterogeneous access to outside
+finance explain why those margins may differ across sectors?}
 
-\section{The result you expect}
-\replace{Write the first-order condition you expect to obtain, and say which
-result of the baseline you expect to change and in which direction. This is a
-conjecture: it is graded on being precise, not on being right.}
+The thesis is still in progress. Its preliminary forecasting estimates suggest
+that credit quantities may be more informative for non-tradable activity at
+relatively short horizons, while a credit-price indicator may become more
+informative for tradable activity over a longer horizon. I treat this as a
+qualitative pattern to motivate the model, not as a settled empirical fact or a
+causal estimate. The project asks for a mechanism that can generate the
+cross-sector ranking before trying to explain its exact timing.
 
-\begin{equation}\label{eq:foc}
-  \frac{\partial}{\partial e}\Bigl[\, a e - \tfrac{c}{2} e^{2} \Bigr]
-  \;=\; a - c e \;=\; 0 .
+\section{The baseline and the assumption I add}
+
+The empirical thesis compares autoregressive forecasts with and without credit
+indicators. That exercise can establish incremental predictive content, but it
+does not contain a firm problem that distinguishes the quantity of funds from
+their marginal price. I add firms that differ in their access to alternative
+finance.
+
+There are two dates. Firm $i$ enters date zero with internal funds $n_i>0$,
+chooses capital $k_i$, bank borrowing $b_i$, and outside finance $m_i$, and
+produces $F_i(k_i)$ at date one. It solves
+\begin{equation}\label{eq:problem}
+ \max_{k_i,b_i,m_i}\quad
+ \beta F_i(k_i)-\Rb b_i-\Rm m_i
+ \quad\text{s.t.}\quad
+ k_i=n_i+b_i+m_i,\quad 0\leq b_i\leq\bar b_i,\quad m_i\geq0.
+\end{equation}
+For a bank-dependent firm, $m_i=0$. A firm with market access may use $m_i>0$
+after exhausting its bank line. The maintained conditions are
+\begin{align*}
+ &F_i'(k)>0,\qquad F_i''(k)<0,\\
+ &0<\Rb\leq\Rm=\Rb+\tau_i,\qquad \tau_i\geq0.
+\end{align*}
+The financing order means that the firm uses internal funds first, bank credit
+second, and outside finance last. The bank line creates a quantity margin;
+$\Rm$ creates a marginal-price margin. For closed forms and formal verification
+I use
+\begin{equation}\label{eq:technology}
+ F_i(k)=a_i k-\frac{c_i}{2}k^2,\qquad a_i,c_i>0,
+\end{equation}
+on its increasing region. Let $\bar k_i=n_i+\bar b_i$ denote capital at the bank
+ceiling. This is a deliberately small partial-equilibrium model. It takes the
+credit line and finance wedges as given rather than claiming to identify the
+source of a credit shock.
+
+\section{The result I expect}
+
+The left and right marginal conditions are
+\begin{equation}\label{eq:focs}
+ \beta F_i'(k)=\Rb
+ \quad\text{and}\quad
+ \beta F_i'(k)=\Rm.
+\end{equation}
+Under equation~\eqref{eq:technology}, the corresponding targets are
+\[
+ \kb=\frac{\beta a_i-\Rb}{\beta c_i},
+ \qquad
+ \km=\frac{\beta a_i-\Rm}{\beta c_i},
+ \qquad \km\leq\kb.
+\]
+I expect the market-access firm's policy to be
+\begin{equation}\label{eq:policy}
+k_i^*=\begin{cases}
+n_i, & \kb\leq n_i,\\
+\kb, & n_i<\kb<\bar k_i,\\
+\bar k_i, & \km\leq\bar k_i\leq\kb,\\
+\km, & \bar k_i<\km.
+\end{cases}
 \end{equation}
 
+The main conjecture compares the last two economically relevant cases, holding
+the regime fixed under a small parameter change. If
+$\km<\bar k_i<\kb$, the bank ceiling binds at a kink and
+\[
+ \frac{\partial k_i^*}{\partial\bar b_i}=1,
+ \qquad
+ \frac{\partial F_i(k_i^*)}{\partial\bar b_i}=F_i'(\bar k_i)>0.
+\]
+The available quantity of bank finance therefore determines the scale of the
+project. A small common spread movement has no local real effect while the firm
+stays at the kink.
+
+If $\bar k_i<\km$, outside finance funds the marginal unit. A larger bank line
+then replaces outside finance without changing total capital, while a common
+credit-cost factor $z$ that raises both $\Rb$ and $\Rm$ gives
+\[
+ \frac{\partial k_i^*}{\partial\bar b_i}=0,
+ \qquad
+ \frac{\partial k_i^*}{\partial z}
+ =\frac{1}{\beta F_i''(\km)}<0.
+\]
+The spread matters because it changes the cost of the marginal unit, not merely
+because it correlates with the business cycle.
+
+Let $\lambda_s$ be the share of firms in sector $s$ at the quantity-sensitive
+kink. If $\lambda_N>\lambda_T$ and marginal products are positive, then the
+non-tradable sector is more sensitive to the credit ceiling and the tradable
+sector is more sensitive, in absolute value, to the common spread. This is the
+qualitative bridge to the preliminary thesis pattern. Slow-moving financing
+access can make current credit quantities reveal the near-term investment
+pipeline of constrained firms. Credit prices can contain information about the
+desired scale of projects for firms that can substitute across funding sources.
+Different adjustment speeds may move the peak response across horizons, but the
+baseline model does not yet derive exact forecast horizons.
+
 \section{Why this is not already solved}
-\replace{Where you looked: the paper's appendices, its working-paper versions,
-and the papers that cite it. Say what you found and why it does not answer your
-question. ``The model did not find it'' is not evidence.}
+
+I compared the published articles, publicly available working-paper versions,
+and appendices of the closest contributions. \citet{holmstromtirole1997}
+derive how firm and intermediary capital determine monitored and direct
+finance. Their mechanism motivates heterogeneous access, but it does not rank
+credit quantities and prices as sector-specific forecasting indicators.
+\citet{gilchristzakrajsek2012} show that corporate-bond spreads predict
+aggregate activity and decompose the spread into expected-default and excess
+premium components. Their working-paper forecasting exercises cover short and
+longer horizons, but they do not compare that price signal with a binding bank
+quantity at the firm level.
+
+\citet{mullerverner2024} are the closest sectoral paper. Their published
+\emph{Review of Economic Studies} article and its NBER working-paper appendix
+show that non-tradable credit expansions have different macroeconomic content
+from tradable credit expansions and examine bond issuance as a robustness
+check. Their object is the allocation of credit across sectors, not the choice
+between a capped bank tranche and a more expensive marginal source. Follow-on
+work such as \citet{gilchristsimzakrajsek2014} models how spreads affect firm
+investment, but does not deliver the quantity-versus-price sectoral ranking.
+The proposed contribution is therefore narrow: a transparent threshold model
+tailored to the thesis's two predictors. I do not claim that credit rationing,
+outside finance, or sectoral heterogeneity is new.
 
 \section{Plan and risks}
-\replace{What you will prove, what you will simulate, and what you will
-formalize in Lean. Name the step most likely to fail and what you will do if it
-does.}
+
+The next steps are to (i) prove the complete piecewise policy and both sectoral
+comparative statics; (ii) make \texttt{code/verify.py} reproduce every reported
+number and fail outside the stated conditions; (iii) test behavior close to the
+regime boundaries; and (iv) formalize every numbered result in Lean using the
+course's AppliedModelingLib workflow. A dynamic extension will add capital
+accumulation, adjustment costs, and the shadow value of the credit limit, but it
+will remain separate from the baseline proposition until its conditions can be
+proved.
+
+The main empirical risk is that the thesis data do not directly measure firms'
+outside-finance access, so the sectoral composition condition
+$\lambda_N>\lambda_T$ may remain a plausible hypothesis rather than an
+identified fact. The main theoretical risk is that the sharp local zero in the
+kink regime disappears once the credit ceiling or funding costs are jointly
+endogenous. If either risk materializes, I will keep the result conditional,
+report regime switching in simulations, and avoid using the model to claim
+exact timing or causality. The Lean risk is the piecewise optimum; the fallback
+is to formalize the quadratic specialization first and label any remaining
+general concave result as open.
 
 \bibliographystyle{plainnat}
 \bibliography{../paper/references}
-\nocite{acemoglu2018race}
 
 \end{document}
