@@ -1,5 +1,25 @@
 # Compliance audit against course issue #7
 
+## Reformulation v2 for the final presentation — 2026-10-26
+
+The final-presentation branch now uses one continuous access wedge `tau` and
+the endogenous threshold
+`tau_star = beta F'(n+B) - R_B`. The sectoral mapping is postponed until after
+the firm problem and uses distributions `G_s(tau)` rather than assigning binary
+firm types directly.
+
+| Final-presentation requirement | V2 evidence | Current status |
+|---|---|---|
+| Question and conditional answer | `README.md`; final slides 2 and 6 | Complete in source |
+| Model and timing | final slide 4; `paper/paper.tex`, Environment | Complete in source |
+| Proposition with all conditions | final slides 5–6; Proposition 1 | Complete in source |
+| Proof: done, hard, open | final slide 7 | Complete in source |
+| Simulations and their limits | final slides 9 and 12; `code/verify.py` | Checks pass |
+| Lean statement and proof fragment | final slide 13; prototype Lean file | Statement added; full build pending |
+| AI skepticism and hand derivation | final slide 14; `hand/DERIVATION_GUIDE.md` | Argument complete; handwritten scan pending |
+| Two or three critique questions | final slide 15 | Complete in source |
+| Compiled `slides/final.pdf` | Built-in compiler currently unresponsive | Pending |
+
 Audited on 2026-10-06 against the official project issue and presentation
 schedule.
 

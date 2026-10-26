@@ -5,14 +5,16 @@ import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
 
 /-!
-# Credit quantity, credit prices, and future output
+# Bank credit limits, alternative finance, and firm investment
 
 This file formalizes the quadratic specialization of a two-date firm problem.
-A firm has internal funds, a cheap but capped bank loan, and (when accessible)
-more expensive market finance. The paper's two central regimes are:
+A firm has internal funds, a cheap but capped bank loan, and more expensive
+alternative finance carrying an access wedge. The paper's central threshold
+separates:
 
-* a kink regime in which the bank-credit ceiling determines investment; and
-* a market-finance regime in which the marginal financing price determines
+* a high-wedge regime in which the bank-credit ceiling determines investment;
+  and
+* a low-wedge regime in which the alternative-finance cost determines
   investment while the bank ceiling only changes financing composition.
 
 The formalization proves the algebraic first-order conditions, global
@@ -45,6 +47,11 @@ def totalProfit (β a c RB RM n cap k : ℝ) : ℝ :=
 cost `R` in the quadratic technology. -/
 def targetCapital (β a c R : ℝ) : ℝ := (β * a - R) / (β * c)
 
+/-- Maximum alternative-finance wedge at which the firm still wants to invest
+beyond the bank-credit limit `cap`. -/
+def accessThreshold (β a c RB cap : ℝ) : ℝ :=
+  β * (a - c * cap) - RB
+
 /-- Marginal output response to a larger bank ceiling for a sector with share
 `lambda` in the quantity regime. -/
 def quantityMarginal (lambda a c n B : ℝ) : ℝ :=
@@ -66,6 +73,41 @@ theorem targetCapital_spread_shift {β a c R delta : ℝ} :
     targetCapital β a c (R + delta) =
       targetCapital β a c R - delta / (β * c) := by
   unfold targetCapital
+  ring
+
+/-- The quadratic amount invested beyond the bank limit equals the distance
+below the access threshold divided by curvature and discounting. -/
+theorem targetCapital_sub_cap_eq_threshold_gap
+    (β a c RB cap tau : ℝ) :
+    targetCapital β a c (RB + tau) - cap =
+      (accessThreshold β a c RB cap - tau) / (β * c) := by
+  unfold targetCapital accessThreshold
+  ring
+
+/-- In the quadratic model, access is affordable exactly when the
+outside-finance target lies above the bank-credit limit. -/
+theorem access_below_threshold_iff {β a c RB cap tau : ℝ}
+    (hβ : 0 < β) (hc : 0 < c) :
+    tau < accessThreshold β a c RB cap ↔
+      cap < targetCapital β a c (RB + tau) := by
+  have hden : 0 < β * c := mul_pos hβ hc
+  unfold accessThreshold targetCapital
+  constructor
+  · intro h
+    apply (lt_div_iff₀ hden).2
+    nlinarith
+  · intro h
+    have h' := (lt_div_iff₀ hden).1 h
+    nlinarith
+
+/-- At the access-cost threshold, the outside-finance target equals the bank
+limit, so the policy is continuous across regimes. -/
+theorem market_target_at_access_threshold {β a c RB cap : ℝ}
+    (hβ : 0 < β) (hc : 0 < c) :
+    targetCapital β a c (RB + accessThreshold β a c RB cap) = cap := by
+  have hβc : β * c ≠ 0 := ne_of_gt (mul_pos hβ hc)
+  unfold accessThreshold targetCapital
+  field_simp [hβc]
   ring
 
 theorem market_target_decreases {β a c R delta : ℝ}
