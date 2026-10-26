@@ -206,7 +206,14 @@ Enfatizar que son interacciones observables:
 > bancario. Lean comprueba el álgebra bajo los supuestos declarados; no comprueba
 > la interpretación económica.
 
-### 14. Verificación de IA — 1.5 minutos
+### 14. Fragmento de la prueba Lean — 1 minuto
+
+> La prueba primero utiliza que `beta*c` es positivo. Eso permite eliminar el
+> denominador sin cambiar el sentido de la desigualdad. Después despliega las
+> definiciones y `nlinarith` verifica la equivalencia algebraica. La implicación
+> inversa repite los mismos pasos.
+
+### 15. Verificación de IA — 1.5 minutos
 
 > La versión inicial trataba `lambda_N>lambda_T` como mecanismo. Eso era
 > circular: asumíamos el ranking que queríamos explicar. La corrección fue
@@ -215,7 +222,7 @@ Enfatizar que son interacciones observables:
 Debe mostrarse la derivación manuscrita del signo de `tau_star-tau` y de
 `k_M(tau_star)=k_bar`.
 
-### 15. Límites y preguntas — 2 minutos
+### 16. Límites y preguntas — 2 minutos
 
 Cerrar sin introducir una extensión nueva. La última frase debe ser:
 

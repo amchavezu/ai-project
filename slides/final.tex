@@ -312,29 +312,61 @@ Lean verifies the algebraic equivalence under positivity assumptions. It does
 not verify the empirical interpretation of $\tau$ or the sectoral distribution.
 \end{frame}
 
-\begin{frame}{14 \textperiodcentered{} Where the AI claim was rejected}
-\textbf{Initial AI claim:}
-\[
-\lambda_N>\lambda_T
-\quad\text{was treated as the sectoral mechanism.}
-\]
+\begin{frame}{14 \textperiodcentered{} Lean: relevant proof fragment}
+\small
+\begin{block}{}
+\ttfamily
+have hden : 0 < beta * c := mul\_pos hbeta hc\\
+unfold accessThreshold targetCapital\\
+constructor\\
+\quad . intro h\\
+\qquad apply (lt\_div\_iff0 hden).2\\
+\qquad nlinarith
+\end{block}
 
-\textbf{Problem found by hand:} the ranking was assumed rather than generated.
+\begin{itemize}
+  \item Positivity permits multiplying by $\beta c$ without reversing the inequality.
+  \item Unfolding replaces the economic names by their algebraic definitions.
+  \item \texttt{nlinarith} verifies that the threshold inequality and the
+        capital-target inequality are equivalent.
+\end{itemize}
 
 \medskip
-\textbf{Revision:}
-\[
-\lambda_s=1-G_s(\tau^*).
-\]
-The model now derives the constrained share from a distribution of access
-costs. Whether $G_N$ differs from $G_T$ remains an empirical hypothesis.
-
-\medskip
-\alert{Pending before submission: insert the handwritten threshold derivation
-and the author's signed verdict on this slide.}
+The reverse implication repeats the same steps in the opposite direction.
 \end{frame}
 
-\begin{frame}{15 \textperiodcentered{} Limitations and feedback sought}
+\begin{frame}{15 \textperiodcentered{} Where the AI claim was rejected}
+\begin{columns}[T,onlytextwidth]
+  \column{.53\linewidth}
+  \textbf{Initial AI claim:}
+  \[
+  \lambda_N>\lambda_T
+  \]
+  was treated as the sectoral mechanism.
+
+  \textbf{Problem found by hand:} the ranking was assumed rather than generated.
+
+  \textbf{Revision:}
+  \[
+  \lambda_s=1-G_s(\tau^*).
+  \]
+  Whether $G_N$ differs from $G_T$ remains an empirical hypothesis.
+
+  \column{.43\linewidth}
+  \centering
+  \IfFileExists{../hand/threshold_derivation.png}{%
+    \includegraphics[width=\linewidth,height=.66\textheight,keepaspectratio]
+      {../hand/threshold_derivation.png}%
+  }{%
+    \fbox{\parbox[c][.55\textheight][c]{.90\linewidth}{\centering
+      Insert the author's handwritten derivation of\\[4pt]
+      $\Pi'_+(\bar k)=\tau^*-\tau$\\[4pt]
+      and signed verdict here.}}
+  }
+\end{columns}
+\end{frame}
+
+\begin{frame}{16 \textperiodcentered{} Limitations and feedback sought}
 \textbf{Known limits}
 \begin{itemize}
   \item $\bar b$ and $\tau$ remain reduced-form primitives;
