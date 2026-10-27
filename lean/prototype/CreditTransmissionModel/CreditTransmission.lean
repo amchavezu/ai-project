@@ -78,10 +78,12 @@ theorem targetCapital_spread_shift {β a c R delta : ℝ} :
 /-- The quadratic amount invested beyond the bank limit equals the distance
 below the access threshold divided by curvature and discounting. -/
 theorem targetCapital_sub_cap_eq_threshold_gap
-    (β a c RB cap tau : ℝ) :
+    (β a c RB cap tau : ℝ) (hβ : 0 < β) (hc : 0 < c) :
     targetCapital β a c (RB + tau) - cap =
       (accessThreshold β a c RB cap - tau) / (β * c) := by
+  have hβc : β * c ≠ 0 := ne_of_gt (mul_pos hβ hc)
   unfold targetCapital accessThreshold
+  field_simp [hβc]
   ring
 
 /-- In the quadratic model, access is affordable exactly when the

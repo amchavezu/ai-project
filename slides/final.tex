@@ -67,7 +67,8 @@ The answer depends on one comparison:
 investment and output for a firm facing a bank-credit limit?
 
 \medskip
-\textbf{Answer.} There is an access-cost threshold:
+\textbf{Answer.} For a firm that would exhaust its bank line at the bank
+financing cost, there is an access-cost threshold:
 \begin{itemize}
   \item above it, the firm stops at the bank limit, so credit availability
         determines investment;
@@ -97,8 +98,9 @@ an indicator should peak.
 \end{frame}
 
 \begin{frame}{4 \textperiodcentered{} Agent, timing, and financing order}
-At date $t$, a firm with internal funds $n$ chooses capital $k$, bank credit
-$b$, and alternative finance $m$. Capital produces at $t+1$.
+At date $t$, a firm with internal funds $n$ committed to the project chooses
+capital $k$, bank credit $b$, and alternative finance $m$. Capital produces at
+$t+1$.
 \[
 \max_{k,b,m}\ \beta F(k)-\Rb b-(\Rb+\tau)m
 \quad\text{s.t.}\quad
@@ -107,8 +109,9 @@ k=n+b+m,\quad 0\le b\le\bar b,\quad m\ge0.
 \[
  F'>0,\quad F''<0,\quad \tau\ge0.
 \]
-Bank finance is cheaper but capped. The wedge $\tau$ captures issuance,
-information, collateral, and other costs of raising funds outside the bank.
+Bank finance is cheaper but capped. $\Rb$ and $\Rb+\tau$ are present-value
+costs per financed unit. The per-unit wedge $\tau$ captures issuance,
+information, and risk-premium costs outside the bank.
 \end{frame}
 
 \begin{frame}{5 \textperiodcentered{} The access-cost threshold}
@@ -137,7 +140,7 @@ This single threshold replaces the earlier binary access/no-access cases.
 \toprule
  & Expensive access & Affordable access \\
 \midrule
-Condition & $\tau>\tau^*$ & $0\le\tau<\tau^*$ \\
+Condition & $\tau\ge\tau^*$ & $0\le\tau<\tau^*$ \\
 Capital & $k^*=\bar k=n+\bar b$ & $\beta F'(k^*)=\Rb+\tau$ \\
 Bank-line effect & $\partial k^*/\partial\bar b=1$ & $\partial k^*/\partial\bar b=0$ \\
 Access-cost effect & $\partial k^*/\partial\tau=0$ locally &
@@ -173,8 +176,9 @@ At the bank limit, the right-hand slope is
 \end{itemize}
 
 \vfill
-\footnotesize\textbf{Proof status:} threshold and comparative statics complete;
-formal sectoral aggregation and empirical discipline of $G_s$ remain open.
+\footnotesize\textbf{Proof status:} the firm-level threshold and comparative
+statics are complete. The sectoral formula is derived, but the empirical
+distributions $G_s$ remain to be estimated.
 \end{frame}
 
 \begin{frame}{8 \textperiodcentered{} Quadratic specialization}
@@ -272,7 +276,7 @@ financing wedge. The mapping must be tested rather than assumed.
 \end{frame}
 
 \begin{frame}{12 \textperiodcentered{} What the simulation checks}
-\texttt{code/verify.py} is being aligned to verify:
+\texttt{code/verify.py} verifies:
 \begin{itemize}
   \item the formula for $\tau^*$ and the identity $k_M(\tau^*)=\bar k$;
   \item the first-order condition on each side of the threshold;
@@ -308,8 +312,9 @@ theorem access\_below\_threshold\_iff\\
 \qquad cap < targetCapital beta a c (RB + tau)
 \end{block}
 
-Lean verifies the algebraic equivalence under positivity assumptions. It does
-not verify the empirical interpretation of $\tau$ or the sectoral distribution.
+The prototype states the algebraic equivalence under positivity assumptions.
+A clean end-to-end AppliedModelingLib check is still pending; Lean cannot test
+the empirical interpretation of $\tau$ or the sectoral distribution.
 \end{frame}
 
 \begin{frame}{14 \textperiodcentered{} Lean: relevant proof fragment}
@@ -320,15 +325,15 @@ have hden : 0 < beta * c := mul\_pos hbeta hc\\
 unfold accessThreshold targetCapital\\
 constructor\\
 \quad . intro h\\
-\qquad apply (lt\_div\_iff0 hden).2\\
+\qquad apply (lt\_div\_iff\textsubscript{0} hden).2\\
 \qquad nlinarith
 \end{block}
 
 \begin{itemize}
   \item Positivity permits multiplying by $\beta c$ without reversing the inequality.
   \item Unfolding replaces the economic names by their algebraic definitions.
-  \item \texttt{nlinarith} verifies that the threshold inequality and the
-        capital-target inequality are equivalent.
+  \item In this proof, \texttt{nlinarith} discharges the equivalence between
+        the threshold inequality and the capital-target inequality.
 \end{itemize}
 
 \medskip
@@ -346,7 +351,7 @@ The reverse implication repeats the same steps in the opposite direction.
 
   \textbf{Problem found by hand:} the ranking was assumed rather than generated.
 
-  \textbf{Revision:}
+  \textbf{Verdict: rejected.} The revision derives
   \[
   \lambda_s=1-G_s(\tau^*).
   \]
@@ -354,9 +359,9 @@ The reverse implication repeats the same steps in the opposite direction.
 
   \column{.43\linewidth}
   \centering
-  \IfFileExists{../hand/threshold_derivation.png}{%
+  \IfFileExists{../hand/threshold_derivation.jpeg}{%
     \includegraphics[width=\linewidth,height=.66\textheight,keepaspectratio]
-      {../hand/threshold_derivation.png}%
+      {../hand/threshold_derivation.jpeg}%
   }{%
     \fbox{\parbox[c][.55\textheight][c]{.90\linewidth}{\centering
       Insert the author's handwritten derivation of\\[4pt]

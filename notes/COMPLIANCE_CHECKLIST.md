@@ -1,6 +1,6 @@
 # Compliance audit against course issue #7
 
-## Reformulation v2 for the final presentation — 2026-10-26
+## Reformulation v2 for the final presentation — updated 2026-10-27
 
 The final-presentation branch now uses one continuous access wedge `tau` and
 the endogenous threshold
@@ -15,10 +15,11 @@ firm types directly.
 | Proposition with all conditions | final slides 5–6; Proposition 1 | Complete in source |
 | Proof: done, hard, open | final slide 7 | Complete in source |
 | Simulations and their limits | final slides 9 and 12; `code/verify.py` | Checks pass |
-| Lean statement and proof fragment | final slide 13; prototype Lean file | Statement added; full build pending |
-| AI skepticism and hand derivation | final slide 14; `hand/DERIVATION_GUIDE.md` | Argument complete; handwritten scan pending |
-| Two or three critique questions | final slide 15 | Complete in source |
-| Compiled `slides/final.pdf` | Built-in compiler currently unresponsive | Pending |
+| Lean statement and proof fragment | final slides 13--14; prototype Lean file | Source present; complete AppliedModelingLib build remains a final-paper task |
+| AI skepticism and hand derivation | final slide 15; `hand/threshold_derivation.jpeg` | Corrected handwritten derivation inserted in source |
+| Two or three critique questions | final slide 16 | Complete in source |
+| Compiled `slides/final.pdf` | Previous PDF and CI build are green; source compiles with the new scan | Rebuild, inspect, and commit the new PDF |
+| Submission state | branch `final-presentation-reformulation` | Pull request and merge to `main` pending |
 
 Audited on 2026-10-06 against the official project issue and presentation
 schedule.
