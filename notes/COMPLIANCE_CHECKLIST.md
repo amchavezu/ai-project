@@ -19,7 +19,7 @@ firm types directly.
 | AI skepticism and hand derivation | final slide 15; `hand/threshold_derivation.jpeg` | Corrected handwritten derivation inserted in source |
 | Two or three critique questions | final slide 16 | Complete in source |
 | Compiled `slides/final.pdf` | 17-page PDF rebuilt by CI with the handwritten scan; visual inspection complete | Complete |
-| Submission state | branch `final-presentation-reformulation` | Pull request and merge to `main` pending |
+| Submission state | pull request 2, merge commit `4838deb` | Merged to `main`; post-merge build passed |
 
 Audited on 2026-10-06 against the official project issue and presentation
 schedule.

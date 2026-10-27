@@ -176,9 +176,11 @@ At the bank limit, the right-hand slope is
 \end{itemize}
 
 \vfill
-\footnotesize\textbf{Proof status:} the firm-level threshold and comparative
-statics are complete. The sectoral formula is derived, but the empirical
-distributions $G_s$ remain to be estimated.
+\footnotesize
+\textbf{Hard step:} proving that the kink is the unique global optimum, not
+only a local sign change; strict concavity completes that step.\par
+\textbf{Status:} the firm-level result and the sectoral formula are derived.
+The empirical distributions $G_s$ remain to be estimated.
 \end{frame}
 
 \begin{frame}{8 \textperiodcentered{} Quadratic specialization}
@@ -312,9 +314,10 @@ theorem access\_below\_threshold\_iff\\
 \qquad cap < targetCapital beta a c (RB + tau)
 \end{block}
 
-The prototype states the algebraic equivalence under positivity assumptions.
-A clean end-to-end AppliedModelingLib check is still pending; Lean cannot test
-the empirical interpretation of $\tau$ or the sectoral distribution.
+The prototype states the algebraic equivalence under the same positivity
+assumptions used in the quadratic model; it adds no assumption containing the
+conclusion. A clean end-to-end AppliedModelingLib check is still pending. Lean
+cannot test the empirical interpretation of $\tau$ or the sectoral distribution.
 \end{frame}
 
 \begin{frame}{14 \textperiodcentered{} Lean: relevant proof fragment}

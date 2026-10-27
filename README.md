@@ -89,7 +89,7 @@ uses the same financing regime.
 | Verification | Threshold-specific symbolic and numerical checks pass; two CSV files reproduced |
 | Lean | Threshold equivalence added to the quadratic prototype; complete AppliedModelingLib check pending |
 | Hand appendix | Presentation derivation present; full final-paper appendix pending |
-| Workflow | Official build and verification pass on the final-presentation branch; PR and merge remain |
+| Workflow | Final-presentation changes merged to `main`; official build and verification pass |
 
 The repository follows the official structure. Work is prepared on a branch
 and will be merged through a pull request; only the merged `main` version is a
