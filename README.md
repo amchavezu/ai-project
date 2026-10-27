@@ -84,12 +84,12 @@ uses the same financing regime.
 | Component | Current state |
 |---|---|
 | Topic document and slides | Historical deliverable retained unchanged |
-| Final slides | Rebuilt around the access-cost threshold; handwritten derivation inserted in source; final PDF rebuild pending |
+| Final slides | Rebuilt around the access-cost threshold; handwritten derivation included; 17-page PDF compiled and visually checked |
 | Paper | Question, model, proposition, aggregation, and illustration revised |
 | Verification | Threshold-specific symbolic and numerical checks pass; two CSV files reproduced |
 | Lean | Threshold equivalence added to the quadratic prototype; complete AppliedModelingLib check pending |
 | Hand appendix | Presentation derivation present; full final-paper appendix pending |
-| Workflow | Official template workflow retained; current branch still requires PR and merge |
+| Workflow | Official build and verification pass on the final-presentation branch; PR and merge remain |
 
 The repository follows the official structure. Work is prepared on a branch
 and will be merged through a pull request; only the merged `main` version is a

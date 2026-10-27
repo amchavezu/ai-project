@@ -18,7 +18,7 @@ firm types directly.
 | Lean statement and proof fragment | final slides 13--14; prototype Lean file | Source present; complete AppliedModelingLib build remains a final-paper task |
 | AI skepticism and hand derivation | final slide 15; `hand/threshold_derivation.jpeg` | Corrected handwritten derivation inserted in source |
 | Two or three critique questions | final slide 16 | Complete in source |
-| Compiled `slides/final.pdf` | Previous PDF and CI build are green; source compiles with the new scan | Rebuild, inspect, and commit the new PDF |
+| Compiled `slides/final.pdf` | 17-page PDF rebuilt by CI with the handwritten scan; visual inspection complete | Complete |
 | Submission state | branch `final-presentation-reformulation` | Pull request and merge to `main` pending |
 
 Audited on 2026-10-06 against the official project issue and presentation
