@@ -74,3 +74,88 @@ the mechanism; audited every required path; and made the Lean status explicit.
 Before the final-paper deadline, the author will append any additional raw
 prompt/answer exchanges used for substantive changes. This file must not be
 replaced by a retrospective summary.
+
+## 3. 2026-10-26 -- reformulation for clarity
+
+**Prompt**
+
+```text
+no entiendo para nada la nueva pregunta:
+
+¿Cómo determina el acceso a financiamiento alternativo si un cambio en la disponibilidad de crédito bancario modifica la inversión o solamente la mezcla de financiamiento?
+
+yo haria algo mas como que: en que medida el acceso a lfinanciamiento externo afecta a la produccion o una cosa asi no estoy seguro.
+
+no entiendo nada l oque pusiste en todo caso pongamoslo en otras plaabras mucho msa claras.
+
+hagamos el modelo mas simple. Que quede clara la notacion antes teniamos transable no transable, firm acon acceso sin acceso y terminaba siendo demasiado. Tal vez simplificamos un pooc esas casuisitcas y ahondamos un poco mas en el desarrollo del modeo. No sé. L aidea es que sea mas fácil de explicar. tengamos claro eso antes de empezar a desarrollar desarrolalr el modelo.
+veamos cual es mejor approach
+
+Esto estoy de acuerdo esto me gusta:
+
+Cuando el límite bancario es vinculante y sustituir el crédito es demasiado
+costoso, la cantidad disponible determina la inversión. Cuando la firma puede
+financiar la unidad marginal fuera del banco, ampliar la línea bancaria solo
+sustituye fuentes; el costo marginal del financiamiento determina la
+inversión.
+
+totalmente de acuerdo pero cambiaria el wording d el apregunta central ahora confunde mucho
+```
+
+**Recovery summary (not a raw answer)**
+
+```text
+The reformulation uses the question: "How does the cost of accessing
+alternative finance affect investment and output for a firm facing a
+bank-credit limit?" The firm-level model is solved first with one continuous
+access wedge. Tradable and non-tradable sectors enter only after the threshold
+result, through sector-specific distributions of that wedge.
+```
+
+**What I did with it:** Replaced the earlier binary financing types with one
+continuous wedge, derived the threshold from the firm's marginal decision, and
+moved the sectoral application after the firm-level proposition.
+
+## 4. 2026-10-26--27 -- handwritten derivation and full audit
+
+**Prompt**
+
+```text
+hazme en latex algo ligeramente mas desarrollado (que no pase de una página) que sea mi derivacion manual. Particularme me gustaria o desarrollar lo que propones o desarrollar como llegmaos a la ocnclusion princila del modelo
+```
+
+**Recovery summary (not a raw answer)**
+
+```text
+Preparé una derivación en LaTeX de una sola página, estructurada para llegar
+directamente a la conclusión principal del modelo: problema de la empresa,
+orden de financiamiento, comparación marginal, umbral, dos regímenes y
+magnitud en el caso cuadrático. Para cumplir el requisito de derivación manual,
+debe utilizarse como guía y copiarse a mano.
+```
+
+**Prompt**
+
+```text
+la derivación a mano es lo único que queda pendiente? Quiero revisar de nuevo todo el documento quiero ver que todos los supuestos que tomamos sean intuitivos y que no estemos forzando nada. Que todo sea defendibl e intuitivo y fácil de explicar, por favor
+```
+
+**Recovery summary (not a raw answer)**
+
+```text
+La conclusión principal es correcta y defendible, pero la derivación no era el
+único pendiente. La auditoría separó los requisitos de la presentación de los
+del paper final y precisó la interpretación de los fondos internos, los costos
+de financiamiento, el caso tau=0, la heterogeneidad sectorial y el alcance de
+la verificación en Lean.
+```
+
+**What I did with it:** Checked the paper and final deck, reran the symbolic
+and numerical verification, corrected the regime signs in the handwritten
+page, clarified the assumptions in the deck, and made the unfinished Lean
+status explicit.
+
+**Preservation note:** The prompts above are copied verbatim from the current
+session. The displayed answer text is explicitly labeled as a recovery summary
+rather than a raw answer. The full session export should replace these
+summaries before the final-paper deadline if the interface makes it available.

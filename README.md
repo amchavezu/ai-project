@@ -1,66 +1,100 @@
-# Credit Quantity, Credit Prices, and Future Output
+# Bank Credit Limits, Alternative Finance, and Firm Investment
 
 **Track B — a model for an existing thesis · AI and Economic Modeling · UP 2026-II**
 
-Planned public repository: <https://github.com/amchavezu/ai-project>. Course
+Public repository: <https://github.com/amchavezu/ai-project>. Course
 requirements and deadlines: [project issue #7](https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7).
 
 ## Question
 
-Why might bank-credit quantity contain more forecasting information for
-non-tradable activity at relatively short horizons, while a credit-price
-spread becomes more informative for tradable activity over a longer horizon?
-The empirical pattern is preliminary; this project builds a conditional
-mechanism rather than asserting exact forecast peaks or causality.
+How does the cost of accessing alternative finance affect investment and
+output for a firm facing a bank-credit limit?
+
+Preliminary thesis evidence suggests that credit volume and a credit spread
+contain different information across Peruvian sectors. That evidence motivates
+the model, but the model does not claim to derive forecast accuracy, causality,
+or exact forecast horizons.
 
 ## Model
 
 A firm with internal funds \(n\) chooses capital \(k\), bank borrowing \(b\),
-and outside finance \(m\):
+and alternative finance \(m\):
 
 \[
-\max_{k,b,m}\ \beta F(k)-R_Bb-R_Mm
+\max_{k,b,m}\ \beta F(k)-R_Bb-(R_B+\tau)m
 \quad\text{s.t.}\quad
 k=n+b+m,\quad 0\le b\le \bar b,\quad m\ge0,
 \]
 
-where \(F'>0\), \(F''<0\), and \(R_B\le R_M\). Bank credit is relatively
-cheap but capped. Firms differ in whether outside finance is available and in
-its access wedge. The quadratic specialization is
-\(F(k)=ak-ck^2/2\), with \(a,c>0\).
+where \(F'>0\) and \(F''<0\). Bank credit is cheaper but capped. The access
+wedge \(\tau\ge0\) captures the extra cost of raising funds outside the bank.
+Let \(\bar k=n+\bar b\) denote capital after the bank line is exhausted.
 
 ## Main result and conditions
 
-Let \(\bar k=n+\bar b\), and let \(k_B\) and \(k_M\) solve
-\(\beta F'(k_B)=R_B\) and \(\beta F'(k_M)=R_M\).
+Focus on a firm that would like to invest beyond its bank line at the bank
+rate, so \(\beta F'(\bar k)>R_B\). Define the access-cost threshold
 
-- **Quantity regime:** if \(k_M<\bar k<k_B\), then \(k^*=\bar k\), so
-  \(\partial k^*/\partial\bar b=1\) and a sufficiently small common-spread
-  change has zero local effect on capital.
-- **Price regime:** if \(\bar k<k_M\), then \(k^*=k_M\), so a larger bank line
-  substitutes bank for market finance without changing capital, while
-  \(\partial k^*/\partial z=1/[\beta F''(k_M)]<0\).
-- **Sector ranking:** under common conditional primitives and
-  \(0\le\lambda_T<\lambda_N\le1\), where \(\lambda_s\) is the share of firms
-  in the quantity regime, non-tradables are more quantity-sensitive and
-  tradables are more price-sensitive.
+\[
+\tau^*=\beta F'(\bar k)-R_B>0.
+\]
 
-These are local, regime-specific comparative statics. They do not establish
-that the composition assumption holds in Peru, that the measured spread is a
-causal shock, or that the model identifies exact forecasting horizons.
+- If \(\tau\ge\tau^*\), alternative finance is too expensive and
+  \(k^*=\bar k\). Locally,
+  \(\partial k^*/\partial\bar b=1\) and
+  \(\partial k^*/\partial\tau=0\).
+- If \(0\le\tau<\tau^*\), the firm finances the marginal unit outside the
+  bank. Its optimum satisfies \(\beta F'(k^*)=R_B+\tau\), with
+  \(k^*>\bar k\). Locally,
+  \(\partial k^*/\partial\bar b=0\) and
+  \(\partial k^*/\partial\tau=1/[\beta F''(k^*)]<0\).
+
+Thus the bank limit determines real investment when access is sufficiently
+costly. When access is sufficiently cheap, a larger bank line only substitutes
+bank funding for alternative funding, while the marginal financing cost
+determines investment.
+
+For the quadratic specialization, the amount invested beyond the bank limit is
+
+\[
+k^*-\bar k
+=\max\left\{0,\frac{\tau^*-\tau}{\beta c}\right\}.
+\]
+
+This expression shows both the threshold and the magnitude of the investment
+response: a larger distance below \(\tau^*\) produces more additional capital,
+while greater technological curvature \(c\) dampens the response.
+
+## Sectoral extension
+
+If firms in sector \(s\) draw access wedges from \(G_s(\tau)\), the model
+endogenously determines the constrained share:
+
+\[
+\lambda_s=\Pr(\tau_i\ge\tau^*)=1-G_s(\tau^*).
+\]
+
+A sector whose distribution is shifted toward higher access costs contains
+more firms whose investment is governed by bank-credit availability. This is a
+testable composition hypothesis, not an assumption that every firm in a sector
+uses the same financing regime.
 
 ## Status
 
-| Component | State on the topic-presentation branch |
+| Component | Current state |
 |---|---|
-| Topic document and slides | Complete; compiled PDFs visually checked (3 pages and 9 slides) |
-| Final slides | Substantive work-in-progress deck, not the final submission |
-| Paper | Full draft with assumptions, FOCs, proofs, mechanisms, limitations, and appendices |
-| Verification | `python code/verify.py` checks the algebra and numerical illustration and writes a CSV |
-| Lean | Direct no-`sorry` prototype for the quadratic core; required AppliedModelingLib run pending |
-| Hand appendix | Step-by-step derivation guide present; handwritten scan pending |
-| Workflow | Official template workflow retained unchanged |
+| Topic document and slides | Historical deliverable retained unchanged |
+| Final slides | Rebuilt around the access-cost threshold; handwritten derivation included; 17-page PDF compiled and visually checked |
+| Paper | Question, model, proposition, aggregation, and illustration revised |
+| Verification | Threshold-specific symbolic and numerical checks pass; two CSV files reproduced |
+| Lean | Threshold equivalence added to the quadratic prototype; complete AppliedModelingLib check pending |
+| Hand appendix | Presentation derivation present; full final-paper appendix pending |
+| Workflow | Official build and verification pass on the final-presentation branch; PR and merge remain |
 
 The repository follows the official structure. Work is prepared on a branch
 and will be merged through a pull request; only the merged `main` version is a
 course submission.
+
+All comparative statics are local to a strict regime. Observed credit volume
+is only a proxy for the bank limit, and the measured spread is only a proxy for
+the relevant marginal financing wedge.

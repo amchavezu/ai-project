@@ -1,0 +1,97 @@
+\documentclass[10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=1.45cm]{geometry}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=2pt}
+\newcommand{\Rb}{R_B}
+
+\begin{document}
+
+\begin{center}
+{\large\bfseries Derivación de la conclusión principal del modelo}\\[-1pt]
+{\small ¿Cuándo el acceso a financiamiento alternativo aumenta la inversión?}
+\end{center}
+
+\textbf{1. Problema de la empresa.}
+La firma tiene fondos internos \(n\), puede pedir crédito bancario \(b\) hasta
+un límite \(\bar b\), y puede obtener financiamiento alternativo \(m\geq 0\).
+El banco cobra \(\Rb\) y la fuente alternativa cobra \(\Rb+\tau\), donde
+\(\tau\geq 0\) es el costo adicional de acceso. La firma elige
+\[
+ \max_{k,b,m}\;
+ \beta F(k)-\Rb b-(\Rb+\tau)m
+ \quad\text{s.a.}\quad
+ k=n+b+m,\qquad 0\leq b\leq\bar b,\quad m\geq0,
+\]
+con \(F'(k)>0\) y \(F''(k)<0\). Como \(\Rb\leq\Rb+\tau\), la firma usa primero
+el crédito bancario y solo después la fuente alternativa.
+
+\textbf{2. Capital disponible al agotar el banco.}
+Si la firma usa toda su línea bancaria, alcanza
+\[
+ \bar k\equiv n+\bar b.
+\]
+Nos concentramos en una firma que todavía querría invertir más si pudiera
+financiar la siguiente unidad al costo bancario:
+\[
+ \beta F'(\bar k)>\Rb.
+\]
+Por tanto, la pregunta relevante es si el rendimiento de una unidad adicional,
+\(\beta F'(\bar k)\), cubre su costo alternativo, \(\Rb+\tau\).
+
+\textbf{3. La comparación marginal genera el umbral.}
+Inmediatamente a la derecha de \(\bar k\), la pendiente del beneficio es
+\[
+ \Pi'_+(\bar k)
+ =\beta F'(\bar k)-(\Rb+\tau).
+\]
+Definimos el costo de acceso máximo que la firma está dispuesta a pagar:
+\[
+ \boxed{\tau^*\equiv\beta F'(\bar k)-\Rb>0}.
+\]
+Sustituyendo esta definición,
+\[
+ \boxed{\Pi'_+(\bar k)=\tau^*-\tau}.
+\]
+Esta igualdad resume el mecanismo completo:
+
+\begin{enumerate}
+ \item Si \(\tau\geq\tau^*\), entonces
+ \(\Pi'_+(\bar k)\leq0\). Continuar después del límite no es rentable.
+ Como el beneficio es cóncavo, la firma se detiene en
+ \[
+   \boxed{k^*=\bar k=n+\bar b.}
+ \]
+ En este régimen, ampliar la línea bancaria sí aumenta la inversión.
+
+ \item Si \(0\leq\tau<\tau^*\), entonces
+ \(\Pi'_+(\bar k)>0\). La firma usa financiamiento alternativo e invierte
+ más que \(\bar k\), hasta que
+ \[
+   \boxed{\beta F'(k^*)=\Rb+\tau,\qquad k^*>\bar k.}
+ \]
+ Aquí una línea bancaria mayor sustituye financiamiento alternativo, mientras
+ que una reducción de \(\tau\) eleva la inversión total.
+\end{enumerate}
+
+\textbf{4. Magnitud en el caso cuadrático.}
+Si \(F(k)=ak-\frac{c}{2}k^2\), con \(c>0\), entonces
+\[
+ \tau^*=\beta[a-c(n+\bar b)]-\Rb,\qquad
+ k^*-\bar k=
+ \boxed{\max\left\{0,\frac{\tau^*-\tau}{\beta c}\right\}}.
+\]
+Así, no basta con que exista financiamiento alternativo: su costo determina
+si el límite bancario restringe la inversión y, cuando no la restringe,
+cuánto capital adicional instala la firma.
+
+\end{document}

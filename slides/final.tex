@@ -22,8 +22,8 @@
 \newcommand{\Rb}{R_B}
 \newcommand{\Rm}{R_M}
 
-\title{Credit Quantity, Credit Prices, and Future Output}
-\subtitle{A model of heterogeneous financing access\\Final presentation --- work in progress}
+\title{Bank Credit Limits, Alternative Finance, and Firm Investment}
+\subtitle{An access-cost threshold model\\Final presentation --- work in progress}
 \author{Alvaro Marcelo Chavez Unyen}
 \institute{Universidad del Pacifico}
 \date{October 2026}
@@ -37,157 +37,357 @@
   \end{center}
 \end{frame}
 
-\begin{frame}{1 \textperiodcentered{} Question and conditional answer}
-\textbf{Question.} Why can credit quantity be more informative for one sector,
-while the price of credit is more informative for another?
+\begin{frame}{1 \textperiodcentered{} The economic problem}
+A firm has a profitable project, but its bank will lend only up to a limit.
+After exhausting that line, the firm faces a choice:
 
 \medskip
-\textbf{Answer.} The relevant indicator depends on which financing margin
-determines the marginal unit of capital:
+\begin{center}
+\Large
+stop investing
+\quad or \quad
+pay more for another source of funds?
+\end{center}
+
+\medskip
+The answer depends on one comparison:
+\[
+\text{marginal return at the bank limit}
+\quad\text{versus}\quad
+\text{cost of alternative finance}.
+\]
+
+\vfill
+\centering
+\alert{Access is not simply ``yes'' or ``no'': its cost determines the choice.}
+\end{frame}
+
+\begin{frame}{2 \textperiodcentered{} Question and answer}
+\textbf{Question.} How does the cost of accessing alternative finance affect
+investment and output for a firm facing a bank-credit limit?
+
+\medskip
+\textbf{Answer.} For a firm that would exhaust its bank line at the bank
+financing cost, there is an access-cost threshold:
 \begin{itemize}
-  \item at a binding cheap-bank cap, quantity determines feasible investment;
-  \item with outside finance at the margin, its common price determines desired investment.
+  \item above it, the firm stops at the bank limit, so credit availability
+        determines investment;
+  \item below it, the firm invests beyond the limit, so the marginal financing
+        cost determines investment.
 \end{itemize}
 
 \medskip
-\alert{The thesis evidence is preliminary: the model explains a qualitative
-short-versus-longer-horizon pattern, not exact forecast peaks.}
+The model derives the threshold, the two optimal choices, and their comparative
+statics.
 \end{frame}
 
-\begin{frame}{2 \textperiodcentered{} Agent, timing, and financing order}
-At date $t$, a firm with internal funds $n$ chooses capital $k$, bank credit
-$b$, and outside finance $m$. Capital produces at $t+1$.
+\begin{frame}{3 \textperiodcentered{} What motivates the model}
+The thesis finds a preliminary qualitative pattern: credit volume and a credit
+spread may contain different forecasting information across Peruvian sectors.
+
+\medskip
+\begin{block}{What this paper does}
+It derives a mechanism linking financing access to investment responses and
+states cross-sectional predictions that the thesis can test.
+\end{block}
+
+\begin{alertblock}{What this paper does not do}
+It does not derive forecast accuracy, causal effects, or the horizon at which
+an indicator should peak.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{4 \textperiodcentered{} Agent, timing, and financing order}
+At date $t$, a firm with internal funds $n$ committed to the project chooses
+capital $k$, bank credit $b$, and alternative finance $m$. Capital produces at
+$t+1$.
 \[
-\max_{k,b,m}\ \beta F(k)-\Rb b-\Rm m
+\max_{k,b,m}\ \beta F(k)-\Rb b-(\Rb+\tau)m
 \quad\text{s.t.}\quad
 k=n+b+m,\quad 0\le b\le\bar b,\quad m\ge0.
 \]
 \[
-F'>0,\quad F''<0,\quad 0<\Rb\le\Rm<\beta F'(0).
+ F'>0,\quad F''<0,\quad \tau\ge0.
 \]
-Bank finance is cheaper but capped; the outside-finance wedge captures access,
-issuance, and information costs.
+Bank finance is cheaper but capped. $\Rb$ and $\Rb+\tau$ are present-value
+costs per financed unit. The per-unit wedge $\tau$ captures issuance,
+information, and risk-premium costs outside the bank.
 \end{frame}
 
-\begin{frame}{3 \textperiodcentered{} Piecewise optimum}
-Let $\bar k=n+\bar b$, and define the two unconstrained targets by
+\begin{frame}{5 \textperiodcentered{} The access-cost threshold}
+Let $\bar k=n+\bar b$ be capital after the bank line is exhausted. Focus on a
+firm that still wants to invest at that point at the bank rate:
 \[
-\beta F'(\kb)=\Rb,\qquad \beta F'(\km)=\Rm,
-\qquad \km\le\kb.
+\beta F'(\bar k)>\Rb.
 \]
-Then
+
+The next unit costs $\Rb+\tau$ outside the bank. It is profitable when
 \[
-k^*=\begin{cases}
-n, & \kb\le n,\\
-\kb, & n<\kb<\bar k,\\
-\bar k, & \km\le\bar k\le\kb,\\
-\km, & \bar k<\km.
-\end{cases}
+\beta F'(\bar k)>\Rb+\tau.
 \]
-The empirical mechanism compares the third line (quantity regime) with the
-fourth line (price regime).
+
+Therefore the threshold is
+\[
+\boxed{\tau^*=\beta F'(\bar k)-\Rb>0.}
+\]
+
+This single threshold replaces the earlier binary access/no-access cases.
 \end{frame}
 
-\begin{frame}{4 \textperiodcentered{} Main result: two transmission margins}
+\begin{frame}{6 \textperiodcentered{} Main proposition}
 \small
 \begin{tabular}{p{0.27\linewidth}p{0.31\linewidth}p{0.31\linewidth}}
 \toprule
- & Binding bank cap & Outside finance at margin \\
+ & Expensive access & Affordable access \\
 \midrule
-Strict regime & $\km<\bar k<\kb$ & $\bar k<\km$ \\
-Capital & $k^*=n+\bar b$ & $k^*=\km(z,\tau)$ \\
+Condition & $\tau\ge\tau^*$ & $0\le\tau<\tau^*$ \\
+Capital & $k^*=\bar k=n+\bar b$ & $\beta F'(k^*)=\Rb+\tau$ \\
 Bank-line effect & $\partial k^*/\partial\bar b=1$ & $\partial k^*/\partial\bar b=0$ \\
-Spread effect & $\partial k^*/\partial z=0$ locally &
-$\partial k^*/\partial z=1/[\beta F''(\km)]<0$ \\
-Economic signal & feasible investment pipeline & marginal cost of total finance \\
+Access-cost effect & $\partial k^*/\partial\tau=0$ locally &
+ $\partial k^*/\partial\tau=1/[\beta F''(k^*)]<0$ \\
+What determines scale? & bank-credit limit & marginal financing cost \\
 \bottomrule
 \end{tabular}
 
 \medskip
-Zero effects are local: sufficiently large shocks can cross regime thresholds.
+At $\tau=\tau^*$ the policy is continuous but has a kink. Comparative statics
+are local to a strict side of the threshold.
 \end{frame}
 
-\begin{frame}{5 \textperiodcentered{} From firm heterogeneity to sectors}
-Let $\lambda_s$ be the share of sector $s$ in the quantity regime:
+\begin{frame}{7 \textperiodcentered{} Why the proposition is true}
+After substituting the financing identity, profit has two slopes:
 \[
-Y_{s,t+1}=\lambda_s F(n+\bar b_s)
-+(1-\lambda_s)F\!\left(\km(z_s,\tau_s)\right).
+\Pi'(k)=
+\begin{cases}
+\beta F'(k)-\Rb, & k<\bar k,\\
+\beta F'(k)-(\Rb+\tau), & k>\bar k.
+\end{cases}
 \]
-If $0\le\lambda_T<\lambda_N\le1$ and conditional primitives are common,
+
+At the bank limit, the right-hand slope is
 \[
-\frac{\partial Y_N}{\partial\bar b}>
-\frac{\partial Y_T}{\partial\bar b}\ge0,
-\qquad
-\left|\frac{\partial Y_N}{\partial z}\right|<
-\left|\frac{\partial Y_T}{\partial z}\right|.
+\Pi'_+(\bar k)=\beta F'(\bar k)-\Rb-\tau=\tau^*-\tau.
 \]
-This is a conditional composition result. Whether $\lambda_N>\lambda_T$ in
-Peru is an empirical assumption to test, not a theorem.
+
+\begin{itemize}
+  \item If $\tau\ge\tau^*$, the slope turns non-positive at the kink.
+  \item If $\tau<\tau^*$, profit keeps increasing beyond the bank limit.
+  \item Strict concavity makes the resulting optimum global and unique.
+\end{itemize}
+
+\vfill
+\footnotesize\textbf{Proof status:} the firm-level threshold and comparative
+statics are complete. The sectoral formula is derived, but the empirical
+distributions $G_s$ remain to be estimated.
 \end{frame}
 
-\begin{frame}{6 \textperiodcentered{} Mechanism and empirical checks}
-\begin{enumerate}
-  \item \textbf{Bank dependence:} quantity predictive content should rise with
-  exhausted credit lines or dependence on relationship banks.
-  \item \textbf{Alternative funding:} spread predictive content should rise
-  with access to bonds, foreign credit, or other external finance.
-  \item \textbf{Substitution:} a larger bank line should raise total investment
-  at the cap, but mainly replace outside finance for market-access firms.
-\end{enumerate}
+\begin{frame}{8 \textperiodcentered{} Quadratic specialization}
+Let
+\[
+F(k)=ak-\frac{c}{2}k^2,\qquad a,c>0.
+\]
+Then
+\[
+\tau^*=\beta\bigl[a-c(n+\bar b)\bigr]-\Rb,
+\]
+and the outside-finance target is
+\[
+k_M(\tau)=\frac{\beta a-\Rb-\tau}{\beta c}.
+\]
 
-\medskip
-Project gestation and adjustment costs can make the price channel appear over a
-longer horizon. The present static proposition does not identify those dynamic
-parameters.
+Within the focal domain,
+\[
+\boxed{k^*(\tau)=\max\{n+\bar b,\,k_M(\tau)\}}.
+\]
+Equivalently,
+\[
+\boxed{k^*(\tau)-\bar k
+=\max\left\{0,\frac{\tau^*-\tau}{\beta c}\right\}}.
+\]
+
+The distance below the threshold maps directly into additional investment and,
+because $F'>0$, additional output.
 \end{frame}
 
-\begin{frame}{7 \textperiodcentered{} Checks and numerical illustration}
-For $\beta=.95$, $a=2$, $c=.5$, $n=.4$, $\bar b=.5$, $\Rb=.5$, $\Rm=1.4$:
+\begin{frame}{9 \textperiodcentered{} Numerical illustration}
+For $\beta=.95$, $a=2$, $c=.5$, $n=.4$, $\bar b=.5$, and $\Rb=.5$:
 \[
-\bar k=.900,\qquad \kb=2.947,\qquad \km=1.053.
+\bar k=.900,\qquad \tau^*=.9725.
 \]
+
 \begin{center}
 \small
 \begin{tabular}{lcc}
 \toprule
-Experiment & Quantity regime & Price regime \\
+ & Expensive access & Affordable access \\
 \midrule
-$\bar b$ rises by $.10$ & capital $\uparrow$ to $1.000$ & capital unchanged \\
-$z$ rises by $.02$ & capital unchanged & capital $\downarrow$ to $1.011$ \\
+Access wedge & $\tau=1.10$ & $\tau=.90$ \\
+Optimal capital & $k^*=.900$ & $k^*=1.053$ \\
+Output & $F(k^*)=1.598$ & $F(k^*)=1.828$ \\
+Larger bank line & raises capital locally & changes funding mix locally \\
+Lower $\tau$ & no local scale effect & raises capital and output \\
 \bottomrule
 \end{tabular}
 \end{center}
-\texttt{code/verify.py} independently checks the FOCs, regime inequalities,
-comparative statics, and all reported values; it fails if a check is false.
+
+At $\tau=.90$, affordable access adds $0.153$ units of capital and $0.231$
+units of output relative to stopping at the bank limit.
+
+\medskip
+The interesting object is the change in behavior at $\tau^*$, not the chosen
+calibration.
 \end{frame}
 
-\begin{frame}{8 \textperiodcentered{} Formalization and audit trail}
+\begin{frame}{10 \textperiodcentered{} From firms to sectors}
+Let firms in sector $s$ draw access wedges from $G_s(\tau)$. The constrained
+share is generated by the threshold:
+\[
+\lambda_s
+=\Pr(\tau_i\ge\tau^*)
+=1-G_s(\tau^*).
+\]
+
 \begin{itemize}
-  \item The hand appendix derives the policy and both propositions step by step.
-  \item The current Lean 4 prototype proves the quadratic core and sectoral
-  inequalities with no \texttt{sorry}.
-  \item The required AppliedModelingLib-generated folder, pinned paper commit,
-  and \texttt{check --fast} output remain pending for the final deadline.
-  \item The paper appendix maps every numbered result to its Lean declaration.
-  \item \texttt{prompts.md} preserves the raw AI exchanges and the paper records
-  accepted, corrected, and rejected claims.
+  \item A distribution shifted toward high wedges produces more firms whose
+        investment is governed by the bank limit.
+  \item A distribution shifted toward low wedges produces more firms whose
+        investment is governed by marginal financing costs.
+  \item Tradable and non-tradable labels enter only here, as an empirical
+        hypothesis about $G_T$ and $G_N$.
 \end{itemize}
+
+\alert{The model no longer assumes directly that an entire sector is one firm type.}
 \end{frame}
 
-\begin{frame}{9 \textperiodcentered{} Limitations and next decisions}
-\textbf{Known limits}
+\begin{frame}{11 \textperiodcentered{} Empirical implications}
+The mechanism suggests sharper tests than comparing forecast peaks:
+\begin{enumerate}
+  \item Credit-quantity effects should be stronger among firms with exhausted
+        bank lines and high alternative-finance wedges.
+  \item Financing-cost effects should be stronger among firms already using
+        bonds, foreign credit, or other non-bank sources.
+  \item A larger bank line should raise total finance above $\tau^*$, but should
+        mainly change debt composition below $\tau^*$.
+\end{enumerate}
+
+\medskip
+The thesis's credit volume and spread are proxies for $\bar b$ and the relevant
+financing wedge. The mapping must be tested rather than assumed.
+\end{frame}
+
+\begin{frame}{12 \textperiodcentered{} What the simulation checks}
+\texttt{code/verify.py} verifies:
 \begin{itemize}
-  \item credit ceilings and sector composition are reduced-form primitives;
-  \item the measured loan spread may not equal the marginal outside-finance cost;
-  \item the forecasting relation is not a causal identification result.
+  \item the formula for $\tau^*$ and the identity $k_M(\tau^*)=\bar k$;
+  \item the first-order condition on each side of the threshold;
+  \item continuity and the change in local derivatives at the kink;
+  \item every numerical value reported in the paper and slides.
 \end{itemize}
 
 \medskip
-\textbf{Feedback sought}
+It cannot establish:
+\begin{itemize}
+  \item that $G_N$ is shifted above $G_T$ in Peru;
+  \item that the observed spread equals $\tau$;
+  \item causality or exact forecast horizons.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{13 \textperiodcentered{} Lean: statement and scope}
+\small
+\textbf{Paper statement:}
+\[
+\tau<\tau^*
+\quad\Longleftrightarrow\quad
+\bar k<k_M(\tau)
+\qquad\text{(quadratic technology).}
+\]
+
+\textbf{Corresponding Lean declaration:}
+\begin{block}{}
+\ttfamily
+theorem access\_below\_threshold\_iff\\
+\quad (hbeta : 0 < beta) (hc : 0 < c) :\\
+\quad tau < accessThreshold beta a c RB cap <->\\
+\qquad cap < targetCapital beta a c (RB + tau)
+\end{block}
+
+The prototype states the algebraic equivalence under positivity assumptions.
+A clean end-to-end AppliedModelingLib check is still pending; Lean cannot test
+the empirical interpretation of $\tau$ or the sectoral distribution.
+\end{frame}
+
+\begin{frame}{14 \textperiodcentered{} Lean: relevant proof fragment}
+\small
+\begin{block}{}
+\ttfamily
+have hden : 0 < beta * c := mul\_pos hbeta hc\\
+unfold accessThreshold targetCapital\\
+constructor\\
+\quad . intro h\\
+\qquad apply (lt\_div\_iff\textsubscript{0} hden).2\\
+\qquad nlinarith
+\end{block}
+
+\begin{itemize}
+  \item Positivity permits multiplying by $\beta c$ without reversing the inequality.
+  \item Unfolding replaces the economic names by their algebraic definitions.
+  \item In this proof, \texttt{nlinarith} discharges the equivalence between
+        the threshold inequality and the capital-target inequality.
+\end{itemize}
+
+\medskip
+The reverse implication repeats the same steps in the opposite direction.
+\end{frame}
+
+\begin{frame}{15 \textperiodcentered{} Where the AI claim was rejected}
+\begin{columns}[T,onlytextwidth]
+  \column{.46\linewidth}
+  \textbf{Initial AI claim:}
+  \[
+  \lambda_N>\lambda_T
+  \]
+  was treated as the sectoral mechanism.
+
+  \textbf{Problem found by hand:} the ranking was assumed rather than generated.
+
+  \textbf{Verdict: rejected.} The revision derives
+  \[
+  \lambda_s=1-G_s(\tau^*).
+  \]
+  Whether $G_N$ differs from $G_T$ remains an empirical hypothesis.
+
+  \column{.51\linewidth}
+  \centering
+  \IfFileExists{../hand/threshold_derivation.jpeg}{%
+    \includegraphics[width=\linewidth,height=.79\textheight,keepaspectratio]
+      {../hand/threshold_derivation.jpeg}%
+  }{%
+    \fbox{\parbox[c][.55\textheight][c]{.90\linewidth}{\centering
+      Insert the author's handwritten derivation of\\[4pt]
+      $\Pi'_+(\bar k)=\tau^*-\tau$\\[4pt]
+      and signed verdict here.}}
+  }
+\end{columns}
+\end{frame}
+
+\begin{frame}{16 \textperiodcentered{} Limitations and feedback sought}
+\textbf{Known limits}
+\begin{itemize}
+  \item $\bar b$ and $\tau$ remain reduced-form primitives;
+  \item the observed loan spread may not equal the alternative-finance wedge;
+  \item the static model does not generate forecast horizons or causal effects.
+\end{itemize}
+
+\medskip
+\textbf{Questions for the class}
 \begin{enumerate}
-  \item Is the two-tranche model the right minimum mechanism for the thesis?
-  \item Should the next extension endogenize the ceiling or model dynamics first?
-  \item Which Peruvian proxy best measures alternative-finance access by sector?
+  \item Is the observed spread a defensible proxy for $\tau$, or should the
+        empirical mapping use another financing-cost measure?
+  \item Which observable best disciplines $G_s$: firm size, exporter status,
+        bond issuance, or foreign-credit access?
+  \item Should the next extension endogenize $\bar b$ through net worth, or add
+        investment dynamics first?
 \end{enumerate}
 \end{frame}
 
