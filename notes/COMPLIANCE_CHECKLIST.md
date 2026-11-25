@@ -15,7 +15,7 @@ firm types directly.
 | Proposition with all conditions | final slides 5–6; Proposition 1 | Complete in source |
 | Proof: done, hard, open | final slide 7 | Complete in source |
 | Simulations and their limits | final slides 9 and 12; `code/verify.py` | Checks pass |
-| Lean statement and proof fragment | final slides 13--14; prototype Lean file | Source present; complete AppliedModelingLib build remains a final-paper task |
+| Lean statement and proof fragment | final slides 13--14; `lean/Chavez26CreditAccess/` | Complete package; focused builds and `check --fast` pass |
 | AI skepticism and hand derivation | final slide 15; `hand/threshold_derivation.jpeg` | Corrected handwritten derivation inserted in source |
 | Two or three critique questions | final slide 16 | Complete in source |
 | Compiled `slides/final.pdf` | 17-page PDF rebuilt by CI with the handwritten scan; visual inspection complete | Complete |
@@ -35,11 +35,11 @@ schedule.
 | Plan and risks | proposal section 5; topic slide 9 | Complete |
 | Proposal length 2–4 pages | `proposal/proposal.pdf` is 3 pages | Complete |
 | 20-minute deck; same five points in order | `slides/topic.pdf` is 9 slides | Complete |
-| Repository link on title slide | Planned `github.com/amchavezu/ai-project` | Source complete; remote pending authentication |
+| Repository link on title slide | Planned `github.com/amchavezu/ai-project` | Historical external-publication item; no action in this uncommitted local handoff |
 | No animations or paper screenshots; equations in LaTeX | `slides/topic.tex` | Complete |
-| Public repository named `ai-project`, started from official template | Local repository is cloned from `alexanderquispe/ai-project-template` | Local complete; public remote pending |
-| Branch → pull request → merge to `main` | Current branch: `topic-presentation` | Branch complete; PR/merge pending remote |
-| Comment course issue with public URL | Requires public remote | Pending remote |
+| Public repository named `ai-project`, started from official template | Local repository is cloned from `alexanderquispe/ai-project-template` | Local requirement evidenced; external publication is outside this no-commit handoff |
+| Branch → pull request → merge to `main` | Historical topic branch | Topic-delivery history closed; final academic tree intentionally remains uncommitted |
+| Comment course issue with public URL | Requires a published remote | External coordination item, not an unfinished local artifact |
 
 Presentation slot: **Wednesday 2026-10-07, 07:30–07:50 Lima**.
 
@@ -53,22 +53,22 @@ Presentation slot: **Wednesday 2026-10-07, 07:30–07:50 Lima**.
 | `slides/final.tex`, `final.pdf` | Substantive work-in-progress present |
 | `paper/paper.tex`, `references.bib`, `paper.pdf` | Present; paper has 8 body pages plus appendices/references |
 | `code/verify.py`, `requirements.txt` | Present; checks pass and CSV is reproduced |
-| `lean/` | Honest direct prototype present; final AppliedModelingLib folder pending |
-| `hand/` | Derivation guide present; required handwritten scans pending |
+| `lean/` | Complete `Chavez26CreditAccess` package and validation receipt present |
+| `hand/` | Ten-page handwritten scan present at `hand/manual_derivation.pdf` |
 | `prompts.md` | Raw current exchange present; one earlier assistant answer disclosed as unavailable |
 | `.github/workflows/build.yml` | Official template file unchanged |
 
-## Final deliverables still pending
+## Final handoff state
 
 - Final presentation: **2026-10-28, 07:30–08:15 Lima**.
 - Final paper: **2026-11-26, 22:00 Lima**.
-- Run AppliedModelingLib on the exact merged paper commit, copy the entire
-  generated folder, obtain a clean paper-scoped `check --fast`, and update the
-  paper's declaration table.
-- Write and scan every handwritten derivation following
-  `hand/DERIVATION_GUIDE.md`.
-- Export and append any additional raw substantive AI exchanges.
-- Confirm the GitHub Actions build is green after the pull request is merged.
+- AppliedModelingLib package copied in full; paper-scoped `check --fast` passes;
+  the declaration table is current. The formalized source is the explicitly
+  recorded working-tree snapshot because no academic commit was requested.
+- The handwritten appendix is in `hand/manual_derivation.pdf`. The numerical
+  example is checked by `code/verify.py`.
+- External publication, pull-request, and course-issue actions require a future
+  user decision and are not local document or code defects.
 
 ## Claim discipline adopted in this revision
 

@@ -18,3 +18,13 @@ affordable_capital_after_access_cost_shock,1.010526316
 affordable_output_after_access_cost_shock,1.765761773
 illustrative_constrained_share_nontradable,0.568750000
 illustrative_constrained_share_tradable,0.068750000
+nontradable_discount_factor,0.920000000
+nontradable_access_wedge,1.050000000
+nontradable_threshold,0.926000000
+nontradable_capital_at_t,0.900000000
+nontradable_output_at_t_plus_1,1.597500000
+tradable_discount_factor,0.980000000
+tradable_access_wedge,0.800000000
+tradable_threshold,1.019000000
+tradable_capital_at_t,1.346938776
+tradable_output_at_t_plus_1,2.240316535

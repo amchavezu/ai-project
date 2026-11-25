@@ -1,7 +1,8 @@
 # Hand derivation guide
 
-The handwritten appendix must be the student's own work. Do not copy this file
-line by line. Use it only as a checklist after attempting the derivation.
+The handwritten appendix must be the student's own work. Transcribe the complete
+ordered appendix in `manual_derivation/main.tex`, checking each algebraic step
+as you write it. Use the list below as the final completeness checklist.
 
 1. Write the firm's two-date profit problem and budget identity.
 2. Substitute the financing identity to obtain the piecewise profit function.
@@ -21,7 +22,7 @@ line by line. Use it only as a checklist after attempting the derivation.
 12. Introduce a continuous sector distribution `G_s(tau)` and derive
     `lambda_s=1-G_s(tau_star)` rather than assuming `lambda_s` directly.
 
-Recommended photographed check for the final-presentation slide: derive the
-right slope `Pi'_+(n+B)=tau_star-tau`, show how its sign selects the regime,
-and prove `k_M(tau_star)=n+B`. Then compare your proof with the Lean theorem
-`access_below_threshold_iff`.
+Before scanning, verify again the right slope
+`Pi'_+(n+B)=tau_star-tau`, show how its sign selects the regime, and prove
+`k_M(tau_star)=n+B`. Then compare your calculation with the Lean endpoint
+`access_threshold_investment_output_realizes_spec`.

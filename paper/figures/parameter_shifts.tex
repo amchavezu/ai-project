@@ -1,0 +1,58 @@
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=3 by 1, horizontal sep=0.72cm},
+  width=0.29\linewidth,
+  height=5.0cm,
+  xmin=0.55, xmax=1.25,
+  ymin=0.84, ymax=2.14,
+  xlabel={$\tau$},
+  axis lines=left,
+  tick align=outside,
+  grid=major,
+  grid style={draw=black!8},
+  title style={font=\small, align=center},
+  label style={font=\small},
+  tick label style={font=\scriptsize},
+  legend style={draw=none, fill=none, font=\scriptsize,
+    at={(0.03,0.97)}, anchor=north west},
+]
+\nextgroupplot[
+  title={\shortstack{Higher bank limit\\$\bar b: 0.50\to0.65$}},
+  ylabel={Optimal capital $k^*$},
+]
+  \addplot[blue!75!black, thick, domain=0.55:1.25, samples=100]
+    {max(0.9,(1.4-x)/0.475)};
+  \addlegendentry{Baseline}
+  \addplot[red!75!black, thick, dashed, domain=0.55:1.25, samples=100]
+    {max(1.05,(1.4-x)/0.475)};
+  \addlegendentry{Parameter shift}
+  \addplot[blue!50!black, densely dotted]
+    coordinates {(0.9725,0.84) (0.9725,2.14)};
+  \addplot[red!60!black, densely dotted]
+    coordinates {(0.90125,0.84) (0.90125,2.14)};
+
+\nextgroupplot[
+  title={\shortstack{Higher productivity\\$a: 2.00\to2.15$}},
+]
+  \addplot[blue!75!black, thick, domain=0.55:1.25, samples=100]
+    {max(0.9,(1.4-x)/0.475)};
+  \addplot[red!75!black, thick, dashed, domain=0.55:1.25, samples=100]
+    {max(0.9,(1.5425-x)/0.475)};
+  \addplot[blue!50!black, densely dotted]
+    coordinates {(0.9725,0.84) (0.9725,2.14)};
+  \addplot[red!60!black, densely dotted]
+    coordinates {(1.115,0.84) (1.115,2.14)};
+
+\nextgroupplot[
+  title={\shortstack{Higher curvature\\$c: 0.50\to0.65$}},
+]
+  \addplot[blue!75!black, thick, domain=0.55:1.25, samples=100]
+    {max(0.9,(1.4-x)/0.475)};
+  \addplot[red!75!black, thick, dashed, domain=0.55:1.25, samples=100]
+    {max(0.9,(1.4-x)/0.6175)};
+  \addplot[blue!50!black, densely dotted]
+    coordinates {(0.9725,0.84) (0.9725,2.14)};
+  \addplot[red!60!black, densely dotted]
+    coordinates {(0.84425,0.84) (0.84425,2.14)};
+\end{groupplot}
+\end{tikzpicture}
