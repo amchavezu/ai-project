@@ -92,11 +92,9 @@ assumption that every firm in a sector uses the same financing regime.
 | Verification | Symbolic and numerical checks pass; two CSV files are reproduced and every value shown in the three native PGFPlots figures is checked |
 | Lean | Complete `Chavez26CreditAccess` package; four-case policy and threshold proposition compile without `sorry`; AppliedModelingLib `check --fast` passes |
 | Hand appendix | Ten-page handwritten scan in `hand/manual_derivation.pdf`. Numerical checks are in `code/verify.py`. |
-| Workflow | Final-paper work remains uncommitted on branch `final-paper`, as requested; code and formalization checks pass |
+| Workflow | Final-paper branch `final-paper` is the source of the submission pull request |
 
-The repository follows the official structure. Work is prepared on a branch
-and will be merged through a pull request; only the merged `main` version is a
-course submission.
+The course grades the version merged into `main` through the final-paper pull request.
 
 All comparative statics are local to a strict regime. Observed credit volume
 is only a proxy for the bank limit, and the measured spread is only a proxy for

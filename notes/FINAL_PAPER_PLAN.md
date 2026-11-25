@@ -73,8 +73,8 @@ complete repository merged into `main` by that time.
 
 ## Current handoff state
 
-- The final AppliedModelingLib `check --fast` run passed on November 17, 2026,
-  against the uncommitted working-tree snapshot requested for this handoff.
+- The AppliedModelingLib `check --fast` run passed on November 17, 2026.
+  Commit `20a1f28` records the checked model and results.
 - The numerical verification passes, and the native PGFPlots/TikZ figures and
   compiled paper and slides have been visually inspected.
 - The student's ten-page handwritten appendix is saved as

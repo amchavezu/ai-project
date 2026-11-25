@@ -35,11 +35,11 @@ schedule.
 | Plan and risks | proposal section 5; topic slide 9 | Complete |
 | Proposal length 2–4 pages | `proposal/proposal.pdf` is 3 pages | Complete |
 | 20-minute deck; same five points in order | `slides/topic.pdf` is 9 slides | Complete |
-| Repository link on title slide | Planned `github.com/amchavezu/ai-project` | Historical external-publication item; no action in this uncommitted local handoff |
+| Repository link on title slide | `github.com/amchavezu/ai-project` | Present |
 | No animations or paper screenshots; equations in LaTeX | `slides/topic.tex` | Complete |
-| Public repository named `ai-project`, started from official template | Local repository is cloned from `alexanderquispe/ai-project-template` | Local requirement evidenced; external publication is outside this no-commit handoff |
-| Branch → pull request → merge to `main` | Historical topic branch | Topic-delivery history closed; final academic tree intentionally remains uncommitted |
-| Comment course issue with public URL | Requires a published remote | External coordination item, not an unfinished local artifact |
+| Public repository named `ai-project`, started from official template | `amchavezu/ai-project` | Repository exists |
+| Branch → pull request → merge to `main` | Historical topic branch | Topic-delivery history closed |
+| Comment course issue with public URL | [Course issue comment](https://github.com/alexanderquispe/AI-Econ-Modeling/issues/7#issuecomment-6026307155) | Link posted |
 
 Presentation slot: **Wednesday 2026-10-07, 07:30–07:50 Lima**.
 
@@ -62,13 +62,10 @@ Presentation slot: **Wednesday 2026-10-07, 07:30–07:50 Lima**.
 
 - Final presentation: **2026-10-28, 07:30–08:15 Lima**.
 - Final paper: **2026-11-26, 22:00 Lima**.
-- AppliedModelingLib package copied in full; paper-scoped `check --fast` passes;
-  the declaration table is current. The formalized source is the explicitly
-  recorded working-tree snapshot because no academic commit was requested.
+- The paper-scoped AppliedModelingLib `check --fast` passed on November 17.
+  Commit `20a1f28` records the model and results covered by that check.
 - The handwritten appendix is in `hand/manual_derivation.pdf`. The numerical
   example is checked by `code/verify.py`.
-- External publication, pull-request, and course-issue actions require a future
-  user decision and are not local document or code defects.
 
 ## Claim discipline adopted in this revision
 
