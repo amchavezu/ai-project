@@ -67,17 +67,20 @@ while greater technological curvature \(c\) dampens the response.
 
 ## Sectoral extension
 
-If firms in sector \(s\) draw access wedges from \(G_s(\tau)\), the model
-endogenously determines the constrained share:
+If firms in sector \(s\) draw access wedges from \(G_s(\tau)\) and value future
+output with \(\beta_s\), the sector-specific threshold and constrained share are:
 
 \[
-\lambda_s=\Pr(\tau_i\ge\tau^*)=1-G_s(\tau^*).
+\tau_s^*=\beta_sF'(\bar k)-R_B,
+\qquad
+\lambda_s=\Pr(\tau_i\ge\tau_s^*)=1-G_s(\tau_s^*).
 \]
 
 A sector whose distribution is shifted toward higher access costs contains
-more firms whose investment is governed by bank-credit availability. This is a
-testable composition hypothesis, not an assumption that every firm in a sector
-uses the same financing regime.
+more firms whose investment is governed by bank-credit availability, while a
+higher \(\beta_s\) makes outside finance worthwhile over a wider range of access
+costs. These are testable composition and valuation hypotheses, not an
+assumption that every firm in a sector uses the same financing regime.
 
 ## Status
 
@@ -85,15 +88,13 @@ uses the same financing regime.
 |---|---|
 | Topic document and slides | Historical deliverable retained unchanged |
 | Final slides | Rebuilt around the access-cost threshold; handwritten derivation included; 17-page PDF compiled and visually checked |
-| Paper | Question, model, proposition, aggregation, and illustration revised |
-| Verification | Threshold-specific symbolic and numerical checks pass; two CSV files reproduced |
-| Lean | Threshold equivalence added to the quadratic prototype; complete AppliedModelingLib check pending |
-| Hand appendix | Presentation derivation present; full final-paper appendix pending |
-| Workflow | Final-presentation changes merged to `main`; official build and verification pass |
+| Paper | Final-paper draft adds the cutoff, parameter-shift, and two-sector/two-date figures; 12-page PDF visually checked |
+| Verification | Symbolic and numerical checks pass; two CSV files are reproduced and every value shown in the three native PGFPlots figures is checked |
+| Lean | Complete `Chavez26CreditAccess` package; four-case policy and threshold proposition compile without `sorry`; AppliedModelingLib `check --fast` passes |
+| Hand appendix | Ten-page handwritten scan in `hand/manual_derivation.pdf`. Numerical checks are in `code/verify.py`. |
+| Workflow | Final-paper branch `final-paper` is the source of the submission pull request |
 
-The repository follows the official structure. Work is prepared on a branch
-and will be merged through a pull request; only the merged `main` version is a
-course submission.
+The course grades the version merged into `main` through the final-paper pull request.
 
 All comparative statics are local to a strict regime. Observed credit volume
 is only a proxy for the bank limit, and the measured spread is only a proxy for

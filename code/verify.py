@@ -2,9 +2,10 @@
 
 The script is intentionally independent of the Lean proof. It verifies the
 threshold, closed-form policy, local comparative statics, numerical table, and
-illustrative sectoral shares reported in the paper and final slides. It writes
-the checked values to ``code/output/model_checks.csv`` and the simulated policy
-curve to ``code/output/access_curve.csv``.
+illustrative sectoral exercises reported in the paper and final slides. It
+writes the checked values to ``code/output/model_checks.csv`` and the simulated
+policy curve to ``code/output/access_curve.csv``. The final paper's three
+PGFPlots/TikZ figures use the same checked parameterization.
 """
 
 from __future__ import annotations
@@ -12,7 +13,38 @@ from __future__ import annotations
 import math
 import csv
 from pathlib import Path
+
 import sympy as sp
+
+
+BASE = {
+    "beta": 0.95,
+    "a": 2.0,
+    "c": 0.5,
+    "n": 0.4,
+    "bbar": 0.5,
+    "r_b": 0.5,
+}
+
+
+def production(k: float, a: float, c: float) -> float:
+    return a * k - c * k**2 / 2
+
+
+def threshold(params: dict[str, float]) -> float:
+    cap = params["n"] + params["bbar"]
+    return params["beta"] * (params["a"] - params["c"] * cap) - params["r_b"]
+
+
+def market_target(tau: float, params: dict[str, float]) -> float:
+    return (
+        params["beta"] * params["a"] - params["r_b"] - tau
+    ) / (params["beta"] * params["c"])
+
+
+def optimal_capital(tau: float, params: dict[str, float]) -> float:
+    cap = params["n"] + params["bbar"]
+    return max(cap, market_target(tau, params))
 
 
 def symbolic_checks() -> None:
@@ -50,12 +82,12 @@ def symbolic_checks() -> None:
 
 
 def numerical_checks() -> dict[str, float]:
-    beta = 0.95
-    a = 2.0
-    c = 0.5
-    n = 0.4
-    bbar = 0.5
-    r_b = 0.5
+    beta = BASE["beta"]
+    a = BASE["a"]
+    c = BASE["c"]
+    n = BASE["n"]
+    bbar = BASE["bbar"]
+    r_b = BASE["r_b"]
     tau_expensive = 1.10
     tau_affordable = 0.90
     access_cost_shock = 0.02
@@ -108,6 +140,28 @@ def numerical_checks() -> dict[str, float]:
     constrained_share_t = uniform_survival(tau_star, 0.6, 1.0)
     assert constrained_share_n > constrained_share_t >= 0
 
+    bbar_shift = {**BASE, "bbar": 0.65}
+    a_shift = {**BASE, "a": 2.15}
+    c_shift = {**BASE, "c": 0.65}
+    assert threshold(bbar_shift) < threshold(BASE)
+    assert threshold(a_shift) > threshold(BASE)
+    assert threshold(c_shift) < threshold(BASE)
+    assert 1 / (c_shift["beta"] * c_shift["c"]) < 1 / (beta * c)
+
+    sector_n = {**BASE, "beta": 0.92}
+    sector_t = {**BASE, "beta": 0.98}
+    tau_n = 1.05
+    tau_t = 0.80
+    k_n = optimal_capital(tau_n, sector_n)
+    k_t = optimal_capital(tau_t, sector_t)
+    y_n = production(k_n, a, c)
+    y_t = production(k_t, a, c)
+    assert tau_n >= threshold(sector_n)
+    assert math.isclose(k_n, cap)
+    assert tau_t < threshold(sector_t)
+    assert k_t > cap
+    assert y_t > y_n
+
     return {
         "bank_target": k_b,
         "bank_ceiling_capital": cap,
@@ -130,16 +184,26 @@ def numerical_checks() -> dict[str, float]:
         ),
         "illustrative_constrained_share_nontradable": constrained_share_n,
         "illustrative_constrained_share_tradable": constrained_share_t,
+        "nontradable_discount_factor": sector_n["beta"],
+        "nontradable_access_wedge": tau_n,
+        "nontradable_threshold": threshold(sector_n),
+        "nontradable_capital_at_t": k_n,
+        "nontradable_output_at_t_plus_1": y_n,
+        "tradable_discount_factor": sector_t["beta"],
+        "tradable_access_wedge": tau_t,
+        "tradable_threshold": threshold(sector_t),
+        "tradable_capital_at_t": k_t,
+        "tradable_output_at_t_plus_1": y_t,
     }
 
 
 def write_access_curve(output_dir: Path) -> None:
-    beta = 0.95
-    a = 2.0
-    c = 0.5
-    n = 0.4
-    bbar = 0.5
-    r_b = 0.5
+    beta = BASE["beta"]
+    a = BASE["a"]
+    c = BASE["c"]
+    n = BASE["n"]
+    bbar = BASE["bbar"]
+    r_b = BASE["r_b"]
     cap = n + bbar
 
     curve_path = output_dir / "access_curve.csv"

@@ -155,7 +155,7 @@ El modelo propone tres interacciones que la tesis podría investigar:
 | Lean: enunciado y fragmento | Solo se reporta el estado | Incluir código real y explicar exactamente qué verifica |
 | Derivación manual y juicio sobre IA | Se menciona, no se muestra | Incluir un paso concreto y el veredicto |
 | Dos o tres preguntas para crítica | Presente | Reemplazarlas por preguntas más focalizadas |
-| Slides compiladas y fusionadas en `main` | Pendiente | Completar antes del 27 de octubre, 22:00 |
+| Slides compiladas y fusionadas en `main` | Completado posteriormente | Entrega histórica cerrada |
 
 ## 9. Preguntas focalizadas para recibir crítica
 

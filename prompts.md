@@ -159,3 +159,40 @@ status explicit.
 session. The displayed answer text is explicitly labeled as a recovery summary
 rather than a raw answer. The full session export should replace these
 summaries before the final-paper deadline if the interface makes it available.
+
+## 5. 2026-11-12 -- integrating presentation feedback into the final paper
+
+**Prompt**
+
+```text
+hay que seguir reforzando l asecicon de verificacion. UNo de los comentarios que el profesor mehizo fue que agreguemos gráficos para hacer más fácil entender la mecanica, el umbral etc desde cuando es binding la restriccion y cuando no. Te paso mis apuntes de granola de la presentación del trabajo:
+
+Feedback on Marcelo’s Paper
+- Approach of 2-sector distinction seen as a strong move (“golazo”)
+- Suggestion to add simulations to the final submission
+  - Show cutoff point (tau), slope changes, and parameter shifts (A, B̄, C) across periods
+  - Only 2 periods needed for the model
+- Option to run continuous-time simulation to explore sectoral dynamics
+- Sectoral composition detail flagged as complex due to data requirements, but not a blocker
+
+Más específicamente, le pregunté a granola cual fue el feedback y me dijo esto:
+
+- Mantener y desarrollar la distinción de dos sectores.
+- Agregar gráficos y simulaciones al artículo final.
+- Explorar una simulación en tiempo continuo como opción.
+- No dejar que los datos sobre composición sectorial frenen el avance.
+
+intentemos integrar todos los comentarios en el documento final. Gracias!
+```
+
+**Answer (raw progress update)**
+
+```text
+Las tres figuras ya están generadas y verificadas: una muestra el quiebre y las zonas vinculante/no vinculante; otra compara los desplazamientos de B barra, a y c; y la tercera traduce la heterogeneidad sectorial a capital en t y producción en t+1. Ahora estoy recompilando el artículo completo para revisar cómo conviven texto, tablas y figuras página por página.
+```
+
+**What I did with it:** Recovered the presentation transcript, generalized the
+sectoral threshold to allow `beta_s`, added three native PGFPlots/TikZ figures
+whose values are checked by `code/verify.py`, checked the parameter-shift
+directions, added the two-date sectoral illustration, and recorded continuous
+time and general equilibrium as extensions rather than identified results.

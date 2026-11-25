@@ -1,97 +1,446 @@
-\documentclass[10pt]{article}
-
+\documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[spanish]{babel}
-\usepackage{amsmath,amssymb}
-\usepackage[margin=1.45cm]{geometry}
-\usepackage{xcolor}
-\usepackage{microtype}
-\usepackage{enumitem}
-\pagestyle{empty}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{xcolor,microtype,enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\definecolor{guideblue}{RGB}{31,78,121}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{3pt}
-\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=2pt}
+\setlength{\parskip}{5pt}
+\setlist{leftmargin=*,itemsep=3pt,topsep=3pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Apéndice manuscrito --- guía de transcripción}
+\rhead{Modelo de crédito e inversión}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
 \newcommand{\Rb}{R_B}
+\newcommand{\Rm}{R_M}
+\newcommand{\kb}{k_B}
+\newcommand{\km}{k_M}
+\newcommand{\cond}[1]{\textcolor{guideblue}{\textit{Condición: #1}}}
 
 \begin{document}
-
 \begin{center}
-{\large\bfseries Derivación de la conclusión principal del modelo}\\[-1pt]
-{\small ¿Cuándo el acceso a financiamiento alternativo aumenta la inversión?}
+{\LARGE\bfseries Apéndice manuscrito completo}\\[4pt]
+{\large Derivaciones del modelo de crédito, inversión y producción}\\[7pt]
+Álvaro Marcelo Chávez Unyen
 \end{center}
+\hrule
+\vspace{8pt}
 
-\textbf{1. Problema de la empresa.}
-La firma tiene fondos internos \(n\), puede pedir crédito bancario \(b\) hasta
-un límite \(\bar b\), y puede obtener financiamiento alternativo \(m\geq 0\).
-El banco cobra \(\Rb\) y la fuente alternativa cobra \(\Rb+\tau\), donde
-\(\tau\geq 0\) es el costo adicional de acceso. La firma elige
-\[
- \max_{k,b,m}\;
- \beta F(k)-\Rb b-(\Rb+\tau)m
- \quad\text{s.a.}\quad
- k=n+b+m,\qquad 0\leq b\leq\bar b,\quad m\geq0,
-\]
-con \(F'(k)>0\) y \(F''(k)<0\). Como \(\Rb\leq\Rb+\tau\), la firma usa primero
-el crédito bancario y solo después la fuente alternativa.
+\textbf{Cómo usar esta guía.} Escribe a mano las manipulaciones, las reglas
+y las condiciones de cada derivación. Puedes abreviar la prosa y citar los
+resultados que ya demostraste en las hojas anteriores. Numera las hojas y
+escanéalas en orden.
 
-\textbf{2. Capital disponible al agotar el banco.}
-Si la firma usa toda su línea bancaria, alcanza
-\[
- \bar k\equiv n+\bar b.
-\]
-Nos concentramos en una firma que todavía querría invertir más si pudiera
-financiar la siguiente unidad al costo bancario:
-\[
- \beta F'(\bar k)>\Rb.
-\]
-Por tanto, la pregunta relevante es si el rendimiento de una unidad adicional,
-\(\beta F'(\bar k)\), cubre su costo alternativo, \(\Rb+\tau\).
+\textbf{Notación.} Hay dos fechas, $t$ y $t+1$. La firma decide en $t$ y produce
+en $t+1$. Tiene fondos internos $n>0$, crédito bancario $b$, financiamiento
+alternativo $m$, capital $k$, límite bancario $\bar b$, costo bancario $\Rb$ y
+costo alternativo $\Rm=\Rb+\tau$, con $\tau\geq0$. El valor presente de la
+producción futura es $\beta F(k)$, donde $\beta\in(0,1]$.
 
-\textbf{3. La comparación marginal genera el umbral.}
-Inmediatamente a la derecha de \(\bar k\), la pendiente del beneficio es
+\textbf{Supuestos de tecnología.}
 \[
- \Pi'_+(\bar k)
- =\beta F'(\bar k)-(\Rb+\tau).
+F(0)=0,\qquad F'(k)>0,\qquad F''(k)<0.
 \]
-Definimos el costo de acceso máximo que la firma está dispuesta a pagar:
-\[
- \boxed{\tau^*\equiv\beta F'(\bar k)-\Rb>0}.
-\]
-Sustituyendo esta definición,
-\[
- \boxed{\Pi'_+(\bar k)=\tau^*-\tau}.
-\]
-Esta igualdad resume el mecanismo completo:
+La producción aumenta con el capital y el producto marginal es estrictamente
+decreciente.
 
-\begin{enumerate}
- \item Si \(\tau\geq\tau^*\), entonces
- \(\Pi'_+(\bar k)\leq0\). Continuar después del límite no es rentable.
- Como el beneficio es cóncavo, la firma se detiene en
- \[
-   \boxed{k^*=\bar k=n+\bar b.}
- \]
- En este régimen, ampliar la línea bancaria sí aumenta la inversión.
+\newpage
+\section{Problema de la firma y orden de financiamiento}
 
- \item Si \(0\leq\tau<\tau^*\), entonces
- \(\Pi'_+(\bar k)>0\). La firma usa financiamiento alternativo e invierte
- más que \(\bar k\), hasta que
- \[
-   \boxed{\beta F'(k^*)=\Rb+\tau,\qquad k^*>\bar k.}
- \]
- Aquí una línea bancaria mayor sustituye financiamiento alternativo, mientras
- que una reducción de \(\tau\) eleva la inversión total.
-\end{enumerate}
-
-\textbf{4. Magnitud en el caso cuadrático.}
-Si \(F(k)=ak-\frac{c}{2}k^2\), con \(c>0\), entonces
+La firma resuelve
 \[
- \tau^*=\beta[a-c(n+\bar b)]-\Rb,\qquad
- k^*-\bar k=
- \boxed{\max\left\{0,\frac{\tau^*-\tau}{\beta c}\right\}}.
+\max_{k,b,m}\quad \beta F(k)-\Rb b-(\Rb+\tau)m
 \]
-Así, no basta con que exista financiamiento alternativo: su costo determina
-si el límite bancario restringe la inversión y, cuando no la restringe,
-cuánto capital adicional instala la firma.
+sujeto a
+\[
+k=n+b+m,\qquad 0\leq b\leq\bar b,\qquad m\geq0.
+\]
+Para un nivel fijo $k\geq n$, la identidad financiera implica $m=k-n-b$.
+Sustituyendo en el costo:
+\begin{align*}
+C(b,m)
+&=\Rb b+(\Rb+\tau)m\\
+&=\Rb b+(\Rb+\tau)(k-n-b)\\
+&=(\Rb+\tau)(k-n)+[\Rb-(\Rb+\tau)]b\\
+&=(\Rb+\tau)(k-n)-\tau b.
+\end{align*}
+Como $\tau\geq0$, el costo es débilmente decreciente en $b$. La firma usa
+primero todo el crédito bancario disponible:
+\begin{align*}
+b^*(k)&=\min\{k-n,\bar b\},\\
+m^*(k)&=k-n-b^*(k)=\max\{k-n-\bar b,0\}.
+\end{align*}
+Definimos
+\[
+\boxed{\bar k\equiv n+\bar b.}
+\]
+Entonces
+\[
+(b^*(k),m^*(k))=
+\begin{cases}
+(k-n,0),&n\leq k\leq\bar k,\\
+(\bar b,k-\bar k),&k>\bar k.
+\end{cases}
+\]
+\cond{$\tau\geq0$ garantiza que el banco es débilmente más barato. Si
+$\tau=0$, la composición puede no ser única, pero la concavidad estricta puede
+seguir haciendo único el capital.}
+
+\newpage
+\section{Problema reducido y continuidad}
+
+Si $n\leq k\leq\bar k$, entonces $b=k-n$ y $m=0$:
+\[
+\Pi_B(k)=\beta F(k)-\Rb(k-n).
+\]
+Si $k>\bar k$, entonces $b=\bar b$ y $m=k-\bar k$:
+\[
+\Pi_M(k)=\beta F(k)-\Rb\bar b-(\Rb+\tau)(k-\bar k).
+\]
+Por tanto,
+\[
+\boxed{
+\Pi(k)=
+\begin{cases}
+\beta F(k)-\Rb(k-n),&n\leq k\leq\bar k,\\[3pt]
+\beta F(k)-\Rb\bar b-(\Rb+\tau)(k-\bar k),&k>\bar k.
+\end{cases}}
+\]
+Comprobamos continuidad. Por la izquierda:
+\[
+\Pi_B(\bar k)=\beta F(\bar k)-\Rb(\bar k-n)
+=\beta F(\bar k)-\Rb\bar b.
+\]
+Por la derecha:
+\[
+\Pi_M(\bar k)=\beta F(\bar k)-\Rb\bar b
+-(\Rb+\tau)(\bar k-\bar k)
+=\beta F(\bar k)-\Rb\bar b.
+\]
+Luego
+\[
+\boxed{\Pi_B(\bar k)=\Pi_M(\bar k).}
+\]
+Las derivadas son
+\begin{align*}
+\Pi_B'(k)&=\beta F'(k)-\Rb,\\
+\Pi_M'(k)&=\beta F'(k)-(\Rb+\tau),\\
+\Pi_B''(k)&=\Pi_M''(k)=\beta F''(k)<0.
+\end{align*}
+Cada tramo es estrictamente cóncavo y su pendiente es decreciente.
+
+\newpage
+\section{Capitales objetivo y su orden}
+
+Definimos los objetivos no restringidos mediante
+\[
+\beta F'(\kb)=\Rb,\qquad
+\beta F'(\km)=\Rb+\tau.
+\]
+Las soluciones son únicas porque $F'$ es estrictamente decreciente. Como
+$\tau\geq0$,
+\[
+\Rb+\tau\geq\Rb
+\quad\Longrightarrow\quad
+\beta F'(\km)\geq\beta F'(\kb)
+\quad\Longrightarrow\quad
+F'(\km)\geq F'(\kb).
+\]
+Como $F'$ es decreciente, el capital asociado al producto marginal mayor es
+menor. Por tanto,
+\[
+\boxed{\km\leq\kb,}
+\]
+con desigualdad estricta cuando $\tau>0$.
+
+En el caso cuadrático
+\[
+F(k)=ak-\frac{c}{2}k^2,\qquad F'(k)=a-ck,\qquad F''(k)=-c<0.
+\]
+Para el banco:
+\begin{align*}
+\beta(a-c\kb)&=\Rb,\\
+\beta c\kb&=\beta a-\Rb,\\
+\boxed{\kb=\frac{\beta a-\Rb}{\beta c}.}
+\end{align*}
+Para el financiamiento alternativo:
+\begin{align*}
+\beta(a-c\km)&=\Rb+\tau,\\
+\beta c\km&=\beta a-\Rb-\tau,\\
+\boxed{\km(\tau)=\frac{\beta a-\Rb-\tau}{\beta c}.}
+\end{align*}
+
+\newpage
+\section{Derivación completa de las cuatro regiones}
+
+La política óptima es
+\[
+\boxed{
+k^*=\begin{cases}
+n,&\kb\leq n,\\
+\kb,&n<\kb<\bar k,\\
+\bar k,&\km\leq\bar k\leq\kb,\\
+\km,&\bar k<\km.
+\end{cases}}
+\]
+
+\textbf{Caso 1: $\kb\leq n$.} Como $\Pi_B'$ es decreciente y se anula en
+$\kb$, para todo $k\geq n\geq\kb$ se cumple $\Pi_B'(k)\leq0$. Además,
+$\km\leq\kb\leq n$, así que el tramo alternativo tampoco puede tener pendiente
+positiva. El beneficio cae desde el inicio y
+\[
+\boxed{k^*=n.}
+\]
+
+\textbf{Caso 2: $n<\kb<\bar k$.} En el tramo bancario,
+\[
+\Pi_B'(k)
+\begin{cases}
+>0,&k<\kb,\\
+=0,&k=\kb,\\
+<0,&k>\kb.
+\end{cases}
+\]
+Por concavidad estricta, el máximo se alcanza en $\kb$. Como
+$\km\leq\kb<\bar k$, el beneficio ya está decreciendo al comenzar el tramo
+alternativo. Luego
+\[
+\boxed{k^*=\kb.}
+\]
+
+\textbf{Caso 3: $\km\leq\bar k\leq\kb$.} En el límite:
+\begin{align*}
+\Pi'_-(\bar k)=\beta F'(\bar k)-\Rb&\geq0
+&&\text{porque }\bar k\leq\kb,\\
+\Pi'_+(\bar k)=\beta F'(\bar k)-(\Rb+\tau)&\leq0
+&&\text{porque }\km\leq\bar k.
+\end{align*}
+El beneficio aumenta hasta el quiebre y disminuye después. Por tanto,
+\[
+\boxed{k^*=\bar k=n+\bar b.}
+\]
+
+\textbf{Caso 4: $\bar k<\km$.} La pendiente derecha es positiva para
+$\bar k<k<\km$, cero en $\km$ y negativa para $k>\km$. Como
+$\kb\geq\km>\bar k$, el beneficio también venía aumentando en el tramo
+bancario. Luego
+\[
+\boxed{k^*=\km.}
+\]
+
+En las fronteras las fórmulas coinciden: si $\kb=n$, ambos primeros casos dan
+$n$; si $\kb=\bar k$, los casos 2 y 3 dan $\bar k$; y si $\km=\bar k$, los
+casos 3 y 4 dan $\bar k$.
+
+\newpage
+\section{Umbral de acceso y equivalencia de regímenes}
+
+Supongamos $\beta F'(\bar k)>\Rb$ y definamos
+$\tau^*=\beta F'(\bar k)-\Rb>0$. Del apartado 2,
+\[
+\Pi'_-(\bar k)=\tau^*,\qquad
+\Pi'_+(\bar k)=\beta F'(\bar k)-(\Rb+\tau)
+=[\beta F'(\bar k)-\Rb]-\tau=\tau^*-\tau.
+\]
+Por $F'$ estrictamente decreciente, $\beta>0$ y la condición de primer orden
+del apartado 3,
+\begin{align*}
+\km>\bar k
+&\iff F'(\km)<F'(\bar k)
+\iff \beta F'(\km)<\beta F'(\bar k)\\
+&\iff \Rb+\tau<\beta F'(\bar k)
+\iff \tau<\tau^*.
+\end{align*}
+Al negar ambos lados, $\km\leq\bar k\iff\tau\geq\tau^*$.
+Además, $\Pi'_-(\bar k)>0$ implica $\bar k<\kb$. Aplicando los casos 3 y 4
+del apartado 4,
+\[
+k^*=\begin{cases}
+\bar k, & \tau\geq\tau^*\quad\text{(el límite determina la inversión)},\\
+\km>\bar k, & 0\leq\tau<\tau^*\quad\text{(rige el costo alternativo)}.
+\end{cases}
+\]
+En $\tau=\tau^*$, la condición de primer orden da
+$\beta F'(\km)=\Rb+\tau^*=\beta F'(\bar k)$. Por inyectividad de $F'$,
+$\km=\bar k$ y los dos tramos se unen.
+
+\section{Estática comparativa y producción futura}
+
+Para $\tau>\tau^*$, derivar $k^*=n+\bar b$ da
+$\partial k^*/\partial\bar b=1$ y $\partial k^*/\partial\tau=0$.
+Para $0\leq\tau<\tau^*$, diferenciamos $\beta F'(k^*)=\Rb+\tau$:
+\begin{align*}
+\beta F''(k^*)\frac{\partial k^*}{\partial\bar b}&=0
+&&\Rightarrow\quad\frac{\partial k^*}{\partial\bar b}=0,\\
+\beta F''(k^*)\frac{\partial k^*}{\partial\tau}&=1
+&&\Rightarrow\quad\frac{\partial k^*}{\partial\tau}
+=\frac{1}{\beta F''(k^*)}<0.
+\end{align*}
+Usamos $\beta>0$ y $F''(k^*)<0$. Las derivadas valen dentro de cada
+régimen, por la derecha en $\tau=0$. En la asignación que usa primero el
+banco, $b=\bar b$ y $m=k^*-n-\bar b$, de modo que
+$\partial b/\partial\bar b=1$ y $\partial m/\partial\bar b=0-1=-1$.
+Por regla de la cadena,
+\[
+y_{t+1}=F(k_t^*)\quad\Rightarrow\quad
+\frac{\partial y_{t+1}}{\partial x}
+=F'(k_t^*)\frac{\partial k_t^*}{\partial x},
+\qquad x\in\{\bar b,\tau\}.
+\]
+Como $F'(k_t^*)>0$, el efecto sobre el producto tiene el mismo signo.
+
+\section{Caso cuadrático: política, brecha y producto}
+
+Con $F(k)=ak-ck^2/2$ y $\beta,c>0$, sustituimos $F'(\bar k)=a-c\bar k$
+en el umbral y usamos $\km$ del apartado 3:
+\begin{align*}
+\tau^*&=\beta(a-c\bar k)-\Rb,\\
+\km(\tau)-\bar k
+&=\frac{\beta a-\Rb-\tau-\beta c\bar k}{\beta c}
+=\frac{\beta(a-c\bar k)-\Rb-\tau}{\beta c}
+=\frac{\tau^*-\tau}{\beta c}.
+\end{align*}
+En particular, $\km(\tau^*)-\bar k=0$. Por el apartado 5,
+\[
+\Delta k=k^*-\bar k
+=\max\{0,\km(\tau)-\bar k\}
+=\max\left\{0,\frac{\tau^*-\tau}{\beta c}\right\}.
+\]
+La pendiente de $k^*$ respecto de $\tau$ es $-1/(\beta c)$ por debajo del
+umbral y $0$ por encima. Para $\Delta k>0$,
+\begin{align*}
+F(k^*)-F(\bar k)
+&=a\Delta k-\frac c2[(\bar k+\Delta k)^2-\bar k^2]\\
+&=a\Delta k-\frac c2[2\bar k\Delta k+(\Delta k)^2]\\
+&=(a-c\bar k)\Delta k-\frac c2(\Delta k)^2>0,
+\end{align*}
+donde la positividad se sigue de $F'>0$ entre $\bar k$ y $k^*$
+(si $k^*<a/c$).
+
+\section{Optimalidad global en el caso cuadrático}
+
+En un tramo con costo marginal $R$, sea
+$\pi_R(k)=\beta(ak-ck^2/2)-Rk$, salvo constantes. La condición de primer
+orden da $\beta a-R=\beta c k_R$. Completando el cuadrado,
+\begin{align*}
+\pi_R(k)&=-\frac{\beta c}{2}k^2+\beta c k_R k
+=\frac{\beta c}{2}\big[k_R^2-(k-k_R)^2\big],\\
+\pi_R(k_R)-\pi_R(k)&=\frac{\beta c}{2}(k-k_R)^2\geq0.
+\end{align*}
+La igualdad exige $k=k_R$. Para comprobar el máximo en el quiebre, usamos
+las expansiones cuadráticas del apartado 7. Si $n\leq k\leq\bar k$,
+tomamos $d=\bar k-k\geq0$ y obtenemos
+\begin{align*}
+\Pi(\bar k)-\Pi(k)
+&=\beta[F(\bar k)-F(\bar k-d)]-\Rb d\\
+&=\beta[dF'(\bar k)+cd^2/2]-\Rb d\\
+&=d\tau^*+\beta c d^2/2\geq0.
+\end{align*}
+Si $k\geq\bar k$, tomamos $d=k-\bar k\geq0$:
+\begin{align*}
+\Pi(\bar k)-\Pi(k)
+&=-\beta[F(\bar k+d)-F(\bar k)]+\Rm d\\
+&=-\beta[dF'(\bar k)-cd^2/2]+\Rm d\\
+&=d(\tau-\tau^*)+\beta c d^2/2\geq0.
+\end{align*}
+Usamos $\tau^*>0$ a la izquierda y $\tau\geq\tau^*$ a la derecha.
+En ambos casos la igualdad exige $d=0$ porque $\beta c>0$.
+
+\section{Desplazamientos de parámetros}
+
+Derivando $\tau^*=\beta[a-c(n+\bar b)]-\Rb$ con los demás parámetros fijos,
+\begin{align*}
+\partial_a\tau^*&=\beta>0, &
+\partial_{\bar b}\tau^*&=-\beta c<0,\\
+\partial_c\tau^*&=-\beta(n+\bar b)<0, &
+\partial_\beta\tau^*&=a-c\bar k=F'(\bar k)>0.
+\end{align*}
+Para $\km=(\beta a-\Rb-\tau)/(\beta c)$, derivar el numerador respecto
+de $a$ y el factor $1/c$ respecto de $c$ da
+\[
+\partial_a \km=\frac{\beta}{\beta c}=\frac1c>0,\qquad
+\partial_c\km=-\frac{\beta a-\Rb-\tau}{\beta c^2}
+=-\frac{\km}{c}<0
+\]
+cuando $\km>0$. Por el apartado 7,
+$|\partial_\tau\km|=1/(\beta c)$, que cae al subir $c$.
+
+\section{Heterogeneidad y agregación sectorial}
+
+Para un sector $s\in\{N,T\}$ con $\beta_s>0$, repetimos el apartado 5
+con $\tau_s^*=\beta_sF'(\bar k)-\Rb>0$. Si $\tau_i\geq0$ tiene
+distribución continua $G_s$, por la regla del complemento,
+\[
+\lambda_s=\Pr_s(\tau_i\geq\tau_s^*)
+=1-\Pr_s(\tau_i<\tau_s^*)=1-G_s(\tau_s^*).
+\]
+La última igualdad usa $\Pr_s(\tau_i=\tau_s^*)=0$.
+Partimos la esperanza del producto de $t+1$ en los dos regímenes:
+\begin{align*}
+Y_{s,t+1}
+&=\int_0^{\tau_s^*}F(k_{M,s}(\tau))\,dG_s(\tau)
+ +\int_{\tau_s^*}^{\infty}F(\bar k)\,dG_s(\tau)\\
+&=\int_0^{\tau_s^*}F(k_{M,s}(\tau))\,dG_s(\tau)
+ +[1-G_s(\tau_s^*)]F(\bar k).
+\end{align*}
+Aquí $\beta_sF'(k_{M,s}(\tau))=\Rb+\tau$. En $\tau=\tau_s^*$, el
+argumento del apartado 5 da $k_{M,s}(\tau_s^*)=\bar k$. La comparación
+$\lambda_N>\lambda_T$ equivale a $G_N(\tau_N^*)<G_T(\tau_T^*)$ al sustituir
+y restar las dos participaciones.
+
+\section{Ejemplo numérico}
+
+Con $(\beta,a,c,n,\bar b,\Rb)=(0.95,2,0.5,0.4,0.5,0.5)$,
+\begin{align*}
+\bar k&=0.4+0.5=0.9,\qquad \beta c=0.95(0.5)=0.475,\\
+\kb&=\frac{0.95(2)-0.5}{0.475}=\frac{1.4}{0.475}\simeq2.947368,\\
+\tau^*&=0.95[2-0.5(0.9)]-0.5=0.95(1.55)-0.5=0.9725.
+\end{align*}
+Si $\tau=1.10>0.9725$, $k^*=0.9$ y
+$F(0.9)=2(0.9)-0.25(0.9)^2=1.8-0.2025=1.5975$.
+Si $\tau=0.90<0.9725$,
+\begin{align*}
+k^*&=\frac{0.95(2)-0.5-0.90}{0.475}
+=\frac{0.50}{0.475}\simeq1.052632,\\
+\Delta k&=k^*-0.9=\frac{0.9725-0.90}{0.475}
+=\frac{0.0725}{0.475}\simeq0.152632,\\
+F(k^*)&=2(0.50/0.475)-0.25(0.50/0.475)^2\simeq1.828255,\\
+F(k^*)-F(\bar k)&\simeq1.828255-1.5975=0.230755>0.
+\end{align*}
+
+\section{Robustez con tecnología Cobb--Douglas}
+
+Para $F(k)=Ak^\alpha$, con $k>0$, $A>0$ y $0<\alpha<1$,
+$F'(k)=\alpha Ak^{\alpha-1}>0$ y
+$F''(k)=\alpha(\alpha-1)Ak^{\alpha-2}<0$. Despejamos la condición de
+primer orden para $j\in\{B,M\}$ y $R_j>0$:
+\begin{align*}
+\beta\alpha A k_j^{\alpha-1}=R_j
+&\iff k_j^{\alpha-1}=\frac{R_j}{\beta\alpha A}
+\iff k_j^{1-\alpha}=\frac{\beta\alpha A}{R_j}\\
+&\iff k_j=\left(\frac{\beta\alpha A}{R_j}\right)^{1/(1-\alpha)}.
+\end{align*}
+Las cuatro regiones del apartado 4 se mantienen porque $F'$ decrece.
+En el régimen alternativo, tomamos logaritmos y derivamos usando
+$R_M=\Rb+\tau>0$ y $\partial_\tau R_M=1$:
+\begin{align*}
+\log\km&=\frac{\log(\beta\alpha A)-\log R_M}{1-\alpha},\\
+\frac{\partial_\tau\km}{\km}&=-\frac{1}{(1-\alpha)R_M}
+\quad\Rightarrow\quad
+\partial_\tau\km=-\frac{\km}{(1-\alpha)R_M}<0,\\
+\partial_\tau F(\km)&=F'(\km)\partial_\tau\km
+=\frac{\alpha F(\km)}{\km}\left[-\frac{\km}{(1-\alpha)R_M}\right]
+=-\frac{\alpha F(\km)}{(1-\alpha)R_M}<0.
+\end{align*}
+
+\medskip
+\noindent\textit{Antes de escanear:} revisa las condiciones y numera
+las hojas. Si firmas una declaración de revisión, incluye las comprobaciones
+que efectivamente hiciste.
 
 \end{document}

@@ -1,0 +1,47 @@
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=2 by 1, horizontal sep=1.6cm},
+  width=0.39\linewidth,
+  height=5.0cm,
+  xmin=-0.5, xmax=1.5,
+  xtick={0,1},
+  xticklabels={Non-tradable,Tradable},
+  axis lines=left,
+  tick align=outside,
+  grid=major,
+  grid style={draw=black!8},
+  title style={font=\small},
+  label style={font=\small},
+  tick label style={font=\scriptsize},
+]
+\nextgroupplot[
+  title={Date $t$: financing and capital choice},
+  ylabel={Capital $k_t^*$},
+  ymin=0, ymax=1.55,
+]
+  \addplot[ybar, bar width=15mm, bar shift=0pt,
+    fill=red!20, draw=red!75!black]
+    coordinates {(0,0.900)};
+  \addplot[ybar, bar width=15mm, bar shift=0pt,
+    fill=blue!25, draw=blue!75!black]
+    coordinates {(1,1.347)};
+  \addplot[black!60, densely dotted, forget plot]
+    coordinates {(0,0.9) (1,0.9)};
+  \node[font=\scriptsize, anchor=south] at (axis cs:0,0.92) {0.900};
+  \node[font=\scriptsize, anchor=south] at (axis cs:1,1.37) {1.347};
+
+\nextgroupplot[
+  title={Date $t+1$: production},
+  ylabel={Output $F(k_t^*)$},
+  ymin=0, ymax=2.55,
+]
+  \addplot[ybar, bar width=15mm, bar shift=0pt,
+    fill=red!20, draw=red!75!black]
+    coordinates {(0,1.598)};
+  \addplot[ybar, bar width=15mm, bar shift=0pt,
+    fill=blue!25, draw=blue!75!black]
+    coordinates {(1,2.240)};
+  \node[font=\scriptsize, anchor=south] at (axis cs:0,1.63) {1.598};
+  \node[font=\scriptsize, anchor=south] at (axis cs:1,2.27) {2.240};
+\end{groupplot}
+\end{tikzpicture}

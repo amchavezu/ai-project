@@ -1,4 +1,4 @@
-import Mathlib.Data.Real.Basic
+import Chavez26CreditAccess.Core
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Positivity
@@ -22,45 +22,9 @@ optimality on both regimes, comparative statics, and the sector-composition
 ordering used in the paper.
 -/
 
-namespace CreditTransmissionModel
+namespace Chavez26CreditAccess
 
 noncomputable section
-
-/-- Concave quadratic date-one output from date-zero capital. -/
-def output (a c k : ℝ) : ℝ := a * k - c * k ^ 2 / 2
-
-/-- Present-value profit when the marginal unit is bank financed. -/
-def bankProfit (β a c RB n k : ℝ) : ℝ :=
-  β * output a c k - RB * (k - n)
-
-/-- Present-value profit when the bank line is exhausted and the marginal unit
-is market financed. `cap` is total capital at the bank-credit ceiling. -/
-def marketProfit (β a c RB RM n cap k : ℝ) : ℝ :=
-  β * output a c k - RB * (cap - n) - RM * (k - cap)
-
-/-- Continuous piecewise profit schedule. -/
-def totalProfit (β a c RB RM n cap k : ℝ) : ℝ :=
-  if k ≤ cap then bankProfit β a c RB n k
-  else marketProfit β a c RB RM n cap k
-
-/-- The unconstrained capital target associated with gross marginal funding
-cost `R` in the quadratic technology. -/
-def targetCapital (β a c R : ℝ) : ℝ := (β * a - R) / (β * c)
-
-/-- Maximum alternative-finance wedge at which the firm still wants to invest
-beyond the bank-credit limit `cap`. -/
-def accessThreshold (β a c RB cap : ℝ) : ℝ :=
-  β * (a - c * cap) - RB
-
-/-- Marginal output response to a larger bank ceiling for a sector with share
-`lambda` in the quantity regime. -/
-def quantityMarginal (lambda a c n B : ℝ) : ℝ :=
-  lambda * (a - c * (n + B))
-
-/-- Absolute marginal output response to a common spread for a sector whose
-share in the quantity regime is `lambda`. -/
-def priceMagnitude (lambda β c RM : ℝ) : ℝ :=
-  (1 - lambda) * (RM / (β ^ 2 * c))
 
 theorem targetCapital_foc {β a c R : ℝ} (hβc : β * c ≠ 0) :
     β * (a - c * targetCapital β a c R) = R := by
@@ -285,6 +249,136 @@ theorem price_sensitivity_order {lambdaN lambdaT β c RM : ℝ}
   have hshare : 1 - lambdaN < 1 - lambdaT := by linarith
   exact mul_lt_mul_of_pos_right hshare hcoef
 
+/-! ## The complete four-region investment rule -/
+
+/-- When the cheap-finance target is weakly below internal funds, internal
+funds are the globally optimal capital stock on the economically feasible
+domain `k ≥ n`. -/
+theorem internal_funds_regime_optimal {β a c RB RM n cap : ℝ}
+    (hβ : 0 < β) (hc : 0 < c) (hcost : RB ≤ RM)
+    (hncap : n ≤ cap) (htarget : targetCapital β a c RB ≤ n) :
+    ∀ k : ℝ, n ≤ k →
+      totalProfit β a c RB RM n cap k ≤
+        totalProfit β a c RB RM n cap n := by
+  intro k hnk
+  have hβc : 0 < β * c := mul_pos hβ hc
+  have hβcne : β * c ≠ 0 := ne_of_gt hβc
+  let target := targetCapital β a c RB
+  have hfoc : β * (a - c * target) = RB :=
+    targetCapital_foc hβcne
+  have ht_n : target ≤ n := htarget
+  have ht_k : target ≤ k := le_trans ht_n hnk
+  have hsq : (n - target) ^ 2 ≤ (k - target) ^ 2 := by
+    nlinarith [sq_nonneg (k - n)]
+  have hnopt : bankProfit β a c RB n k ≤ bankProfit β a c RB n n := by
+    have hn := bankProfit_target_sub β a c RB n target n hfoc
+    have hk := bankProfit_target_sub β a c RB n target k hfoc
+    nlinarith
+  have hnle : n ≤ cap := hncap
+  by_cases hkcap : k ≤ cap
+  · simpa [totalProfit, hkcap, hnle] using hnopt
+  · have hcapk : cap < k := lt_of_not_ge hkcap
+    have ht_cap : target ≤ cap := le_trans ht_n hncap
+    have hmargin : β * (a - c * cap) ≤ RB := by
+      have hnonneg : 0 ≤ cap - target := sub_nonneg.mpr ht_cap
+      nlinarith
+    have hright : β * (a - c * cap) ≤ RM := le_trans hmargin hcost
+    have hd : 0 ≤ k - cap := sub_nonneg.mpr (le_of_lt hcapk)
+    have hslope : 0 ≤ RM - β * (a - c * cap) := sub_nonneg.mpr hright
+    have hfirst : 0 ≤ (k - cap) * (RM - β * (a - c * cap)) :=
+      mul_nonneg hd hslope
+    have hsecond : 0 ≤ β * c / 2 * (k - cap) ^ 2 := by positivity
+    have hmarket :
+        marketProfit β a c RB RM n cap k ≤
+          marketProfit β a c RB RM n cap cap := by
+      have hdiff := marketProfit_cap_sub β a c RB RM n cap k
+      nlinarith
+    have hbankcap : bankProfit β a c RB n cap ≤ bankProfit β a c RB n n := by
+      have hsq_cap : (n - target) ^ 2 ≤ (cap - target) ^ 2 := by
+        nlinarith [sq_nonneg (cap - n)]
+      have hn := bankProfit_target_sub β a c RB n target n hfoc
+      have hcap := bankProfit_target_sub β a c RB n target cap hfoc
+      nlinarith
+    have hcont := financing_cost_continuous β a c RB RM n cap
+    rw [← hcont] at hmarket
+    have htotal := hmarket.trans hbankcap
+    simpa [totalProfit, hkcap, hnle] using htotal
+
+/-- If the cheap-finance target lies between internal funds and the bank
+ceiling, that target is globally optimal. -/
+theorem bank_regime_optimal {β a c RB RM n cap target : ℝ}
+    (hβ : 0 < β) (hc : 0 < c) (hcost : RB ≤ RM)
+    (htargetcap : target ≤ cap)
+    (hfoc : β * (a - c * target) = RB) :
+    ∀ k : ℝ, n ≤ k →
+      totalProfit β a c RB RM n cap k ≤
+        totalProfit β a c RB RM n cap target := by
+  intro k _
+  have hβc : 0 < β * c := mul_pos hβ hc
+  have htarget_branch : target ≤ cap := htargetcap
+  by_cases hkcap : k ≤ cap
+  · have hsq : 0 ≤ β * c / 2 * (k - target) ^ 2 := by positivity
+    have hdiff := bankProfit_target_sub β a c RB n target k hfoc
+    have hopt : bankProfit β a c RB n k ≤ bankProfit β a c RB n target := by
+      nlinarith
+    simpa [totalProfit, hkcap, htarget_branch] using hopt
+  · have hcapk : cap < k := lt_of_not_ge hkcap
+    have hmargin : β * (a - c * cap) ≤ RB := by
+      have hnonneg : 0 ≤ cap - target := sub_nonneg.mpr htargetcap
+      nlinarith
+    have hright : β * (a - c * cap) ≤ RM := le_trans hmargin hcost
+    have hd : 0 ≤ k - cap := sub_nonneg.mpr (le_of_lt hcapk)
+    have hslope : 0 ≤ RM - β * (a - c * cap) := sub_nonneg.mpr hright
+    have hfirst : 0 ≤ (k - cap) * (RM - β * (a - c * cap)) :=
+      mul_nonneg hd hslope
+    have hsecond : 0 ≤ β * c / 2 * (k - cap) ^ 2 := by positivity
+    have hmarket :
+        marketProfit β a c RB RM n cap k ≤
+          marketProfit β a c RB RM n cap cap := by
+      have hdiff := marketProfit_cap_sub β a c RB RM n cap k
+      nlinarith
+    have hsq : 0 ≤ β * c / 2 * (cap - target) ^ 2 := by positivity
+    have hbank : bankProfit β a c RB n cap ≤ bankProfit β a c RB n target := by
+      have hdiff := bankProfit_target_sub β a c RB n target cap hfoc
+      nlinarith
+    have hcont := financing_cost_continuous β a c RB RM n cap
+    rw [← hcont] at hmarket
+    have htotal := hmarket.trans hbank
+    simpa [totalProfit, hkcap, htarget_branch] using htotal
+
+/-- Global optimality of the complete four-case investment rule. This closes
+the wrapper that was absent from the earlier academic draft. -/
+theorem four_case_policy_optimal {β a c RB RM n cap : ℝ}
+    (hβ : 0 < β) (hc : 0 < c) (hcost : RB ≤ RM) (hncap : n ≤ cap) :
+    ∀ k : ℝ, n ≤ k →
+      totalProfit β a c RB RM n cap k ≤
+        totalProfit β a c RB RM n cap
+          (optimalCapital β a c RB RM n cap) := by
+  intro k hnk
+  have hβc : 0 < β * c := mul_pos hβ hc
+  have hβcne : β * c ≠ 0 := ne_of_gt hβc
+  have hfocB : β * (a - c * targetCapital β a c RB) = RB :=
+    targetCapital_foc hβcne
+  have hfocM : β * (a - c * targetCapital β a c RM) = RM :=
+    targetCapital_foc hβcne
+  unfold optimalCapital
+  dsimp only
+  split_ifs with hB_n hB_cap hM_cap
+  · exact internal_funds_regime_optimal hβ hc hcost hncap hB_n k hnk
+  · exact bank_regime_optimal hβ hc hcost hB_cap hfocB k hnk
+  · have hcapB : cap ≤ targetCapital β a c RB := le_of_not_ge hB_cap
+    have hleft : RB ≤ β * (a - c * cap) := by
+      have hnonneg : 0 ≤ targetCapital β a c RB - cap :=
+        sub_nonneg.mpr hcapB
+      nlinarith
+    have hright : β * (a - c * cap) ≤ RM := by
+      have hnonneg : 0 ≤ cap - targetCapital β a c RM :=
+        sub_nonneg.mpr hM_cap
+      nlinarith
+    exact kink_regime_optimal hβ hc hleft hright k
+  · have hcapM : cap < targetCapital β a c RM := lt_of_not_ge hM_cap
+    exact market_regime_optimal hβ hc hcost hcapM hfocM k
+
 end
 
-end CreditTransmissionModel
+end Chavez26CreditAccess

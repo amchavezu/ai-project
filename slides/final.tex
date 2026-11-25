@@ -1,4 +1,4 @@
-% Final-presentation work-in-progress deck.
+% Final-presentation deck.
 % No animations and no paper screenshots; all equations are typeset in LaTeX.
 \documentclass[aspectratio=169,11pt]{beamer}
 \usepackage[utf8]{inputenc}
@@ -23,10 +23,10 @@
 \newcommand{\Rm}{R_M}
 
 \title{Bank Credit Limits, Alternative Finance, and Firm Investment}
-\subtitle{An access-cost threshold model\\Final presentation --- work in progress}
+\subtitle{An access-cost threshold model\\Final presentation}
 \author{Alvaro Marcelo Chavez Unyen}
 \institute{Universidad del Pacifico}
-\date{October 2026}
+\date{November 2026}
 
 \begin{document}
 
@@ -184,6 +184,7 @@ The empirical distributions $G_s$ remain to be estimated.
 \end{frame}
 
 \begin{frame}{8 \textperiodcentered{} Quadratic specialization}
+\small
 Let
 \[
 F(k)=ak-\frac{c}{2}k^2,\qquad a,c>0.
@@ -314,10 +315,11 @@ theorem access\_below\_threshold\_iff\\
 \qquad cap < targetCapital beta a c (RB + tau)
 \end{block}
 
-The prototype states the algebraic equivalence under the same positivity
+The formalization states the algebraic equivalence under the same positivity
 assumptions used in the quadratic model; it adds no assumption containing the
-conclusion. A clean end-to-end AppliedModelingLib check is still pending. Lean
-cannot test the empirical interpretation of $\tau$ or the sectoral distribution.
+conclusion. The complete AppliedModelingLib package and its paper-scoped
+\texttt{check --fast} pass. Lean cannot test the empirical interpretation of
+$\tau$ or the sectoral distribution.
 \end{frame}
 
 \begin{frame}{14 \textperiodcentered{} Lean: relevant proof fragment}

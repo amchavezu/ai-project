@@ -1,19 +1,19 @@
 # Lean status
 
-`prototype/` contains a direct Lean 4 formalization of the quadratic core. It
-proves the target-capital algebra, kink and market-regime optimality identities,
-the output comparative statics, and the two sectoral sensitivity inequalities
-without `sorry`.
+`Chavez26CreditAccess/` is the complete AppliedModelingLib paper package. It
+contains the source-facing core, implementation proofs, compact paper
+interface, exact-type proof interface, status metadata, and validation receipt.
 
-This is **not yet** the course's final Lean deliverable. For the final paper:
+Verified on November 17, 2026:
 
-1. merge and pin the paper PDF to a commit;
-2. run the paper-formalization workflow from an up-to-date AppliedModelingLib
-   clone against that exact commit;
-3. run `python3 scripts/paper_contribution.py check <folder> --fast`;
-4. replace this prototype with the entire generated paper folder, respecting
-   its generated `.gitignore`;
-5. update the declaration map in the paper appendix.
+1. `Model.lean` elaborates without errors or `sorry`.
+2. `PaperInterface` builds successfully (754 jobs).
+3. `ProofInterface` builds successfully (965 jobs).
+4. The root import elaborates successfully.
+5. `python -m scripts.paper_contribution check Chavez26CreditAccess --fast`
+   passes, including the semantic import-closure and diff checks.
 
-Current status: direct prototype available; AppliedModelingLib folder, pinned
-paper commit, and `check --fast` output pending.
+The November 17 run used the local manuscript snapshot. The linked commit
+records the same mathematical statements and proofs. Both paper-facing
+declarations are in `Chavez26CreditAccess/ProofInterface.lean`.
+[Pinned manuscript](https://github.com/amchavezu/ai-project/blob/20a1f2800b4988d8d2717f540483c62dae2ac941/paper/paper.pdf)
